@@ -1,0 +1,9 @@
+{
+	"name": "bubbles",
+	"version": "0.1.0",
+	"main": "main.js",
+	"license": "MIT",
+	"scripts": {
+		"start": "node main.js"
+	}
+}
