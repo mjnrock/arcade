@@ -9,27 +9,19 @@ export class Bubble {
 		this.r = r;
 		this.color = color;
 
-		// Initialize PIXI Graphics for this bubble
 		this.graphics = new Graphics();
-		this.updateGraphics();
 	}
 
 	update({ dt, vx = this.vx, vy = this.vy } = {}) {
 		this.x += vx * dt;
 		this.y += vy * dt;
-		this.updateGraphics();
 	}
 
-	updateGraphics() {
-		const g = this.graphics;
+	render({ g = this.graphics } = {}) {
 		g.clear();
 		g.beginFill(this.color, 1);
 		g.drawCircle(this.x, this.y, this.r);
 		g.endFill();
-	}
-
-	getGraphics() {
-		return this.graphics;
 	}
 }
 

@@ -1,15 +1,36 @@
-import { Stage } from "@pixi/react";
+import { useState, useEffect } from "react";
+import { Stage, Graphics } from "@pixi/react";
 
-import BubbleGraphics from "./BubbleGraphics.jsx";
-import useGameLogic from "./useGameLogic.js";
+import useGameLogic from "./hooks/useGameLogic";
 
 export const App = () => {
-	const bubbles = useGameLogic();
+	const bubbles = useGameLogic({
+		qty: 100,
+		width: window.innerWidth,
+		height: window.innerHeight,
+	});
+	const [ dimensions, setDimensions ] = useState({
+		width: window.innerWidth,
+		height: window.innerHeight,
+	});
+
+	useEffect(() => {
+		const handleResize = () => {
+			setDimensions({
+				width: window.innerWidth,
+				height: window.innerHeight,
+			});
+		};
+
+		window.addEventListener("resize", handleResize);
+
+		return () => window.removeEventListener("resize", handleResize);
+	}, []);
 
 	return (
-		<Stage width={ 800 } height={ 600 } options={ { background: 0x1099bb } }>
+		<Stage width={ dimensions.width } height={ dimensions.height } options={ { background: 0x1099bb } }>
 			{ bubbles.map((bubble, index) => (
-				<BubbleGraphics key={ index } bubble={ bubble } />
+				<Graphics key={ index } draw={ g => bubble.render({ g }) } />
 			)) }
 		</Stage>
 	);

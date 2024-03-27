@@ -1,14 +1,18 @@
 import { useState, useEffect } from "react";
-import Bubble from "./bubbles/Bubble";
+import Bubble from "../bubbles/Bubble";
 
-export const useGameLogic = () => {
+export const useGameLogic = ({
+	qty = 50,
+	width = 800,
+	height = 600,
+} = {}) => {
 	const [ bubbles, setBubbles ] = useState([]);
 
 	useEffect(() => {
 		// Initialize bubbles
-		const newBubbles = Array.from({ length: 50 }).map(() => new Bubble({
-			x: Math.random() * 800,
-			y: Math.random() * 600,
+		const newBubbles = Array.from({ length: qty }).map(() => new Bubble({
+			x: Math.random() * width,
+			y: Math.random() * height,
 			vx: (Math.random() - 0.5) * 2,
 			vy: (Math.random() - 0.5) * 2,
 			r: Math.random() * 20 + 5,
@@ -36,7 +40,7 @@ export const useGameLogic = () => {
 		return () => {
 			lastTime = 0;
 		};
-	}, []);
+	}, [ qty, width, height ]);
 
 	return bubbles;
 };
