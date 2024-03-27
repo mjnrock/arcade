@@ -1,23 +1,36 @@
+import { Graphics } from "pixi.js";
+
 export class Bubble {
-	constructor ({ x, y, radius, color } = {}) {
+	constructor ({ x, y, vx, vy, r, color } = {}) {
 		this.x = x;
 		this.y = y;
-		this.radius = radius;
+		this.vx = vx;
+		this.vy = vy;
+		this.r = r;
 		this.color = color;
+
+		// Initialize PIXI Graphics for this bubble
+		this.graphics = new Graphics();
+		this.updateGraphics();
 	}
 
-	update({ dt, vx = 0.0, vy = 0.0 } = {}) {
+	update({ dt, vx = this.vx, vy = this.vy } = {}) {
 		this.x += vx * dt;
 		this.y += vy * dt;
+		this.updateGraphics();
 	}
 
-	draw(ctx) {
-		ctx.beginPath();
-		ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
-		ctx.fillStyle = this.color;
-		ctx.fill();
-		ctx.closePath();
+	updateGraphics() {
+		const g = this.graphics;
+		g.clear();
+		g.beginFill(this.color, 1);
+		g.drawCircle(this.x, this.y, this.r);
+		g.endFill();
 	}
-};
+
+	getGraphics() {
+		return this.graphics;
+	}
+}
 
 export default Bubble;
