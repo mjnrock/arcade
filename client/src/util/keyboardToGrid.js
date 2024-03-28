@@ -26,13 +26,6 @@ export function keyEventToGridMiddleware(event) {
 	const key = event.key;
 	const gridCoordinates = getGridCoordinates(key) ?? null;
 
-	if(gridCoordinates) {
-		console.log(`Key: ${ key }, Grid Coordinates: ${ gridCoordinates }`);
-		// You can also call other functions here, passing in the gridCoordinates as needed
-	} else {
-		console.log(`Key: ${ key } is not mapped to a grid coordinate.`);
-	}
-
 	return gridCoordinates;
 };
 

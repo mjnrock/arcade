@@ -1,7 +1,10 @@
+import { v4 as uuid } from "uuid";
 import { Graphics } from "pixi.js";
 
 export class Bubble {
 	constructor ({ x, y, vx, vy, r, color } = {}) {
+		this.id = uuid();
+
 		this.x = x;
 		this.y = y;
 		this.vx = vx;
@@ -10,6 +13,11 @@ export class Bubble {
 		this.color = color;
 
 		this.graphics = new Graphics();
+
+		this.meta = {
+			ts: Date.now(),
+			ttl: 1000 * (Math.random() * 5 + 5),
+		};
 	}
 
 	update({ dt, vx = this.vx, vy = this.vy } = {}) {
