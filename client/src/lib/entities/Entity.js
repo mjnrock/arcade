@@ -8,11 +8,26 @@ export class Entity {
 			ttl: 1000 * (Math.random() * 5 + 5),
 			...meta,
 		};
-		this.components = new Map(components.map(component => [ component.id, component ]));
+		this.components = new Map();
+
+		this.addComponent(...components);
+	}
+
+	get isDead() {
+		return (Date.now() - this.meta.ts) > this.meta.ttl;
 	}
 
 	addComponent(...components) {
-		components.forEach(component => this.components.set(component.id, component));
+		components.forEach(component => {
+			if(Array.isArray(component) && component.length === 2) {
+				const [ Clazz, argsObj ] = component;
+				const instance = new Clazz(typeof argsObj === "function" ? argsObj() : argsObj);
+
+				this.components.set(instance.id, instance);
+			} else {
+				this.components.set(component.id, component);
+			}
+		});
 		return this;
 	}
 
@@ -20,6 +35,12 @@ export class Entity {
 		components.forEach(component => {
 			if(validate(component)) {
 				this.components.delete(component);
+			} else if(typeof component === "function" && component.prototype?.constructor === component) {
+				for(let [ , comp ] of this.components) {
+					if(comp instanceof component) {
+						this.components.delete(comp.id);
+					}
+				}
 			} else {
 				this.components.delete(component.id);
 			}
@@ -38,7 +59,7 @@ export class Entity {
 		if(validate(component)) {
 			return this.components.get(component);
 		} else if(typeof component === "function" && component.prototype?.constructor === component) {
-			for(let [ id, comp ] of this.components) {
+			for(let [ , comp ] of this.components) {
 				if(comp instanceof component) {
 					return comp;
 				}

@@ -5,9 +5,10 @@ import GameLoop from "./GameLoop";
 export class Game {
 	constructor ({ fps = 60 } = {}) {
 		this.id = uuid();
-		this.worlds = new Map();
-		this.gameLoop = new GameLoop(this.update.bind(this), this.render.bind(this), fps);
 
+		this.worlds = new Map();
+
+		this.loop = new GameLoop(this.update.bind(this), this.render.bind(this), fps);
 		this.pixi = new PIXI.Application({
 			width: window.innerWidth,
 			height: window.innerHeight,
@@ -15,23 +16,41 @@ export class Game {
 		});
 	}
 
+	get currentWorld() {
+		return this.worlds.get("current");
+	}
+
 	addWorld(world) {
 		this.worlds.set(world.id, world);
+
+		if(!this.worlds.has("current")) {
+			this.worlds.set("current", world);
+		}
 
 		return this;
 	}
 
 	removeWorld(world) {
 		this.worlds.delete(world.id);
+
+		if(this.worlds.get("current") === world) {
+			this.worlds.delete("current");
+		}
+
 		return this;
 	}
 
 	start() {
-		this.gameLoop.start();
+		this.loop.start();
+
+		if(!this.pixi.view.parentNode) {
+			document.body.appendChild(this.pixi.view);
+		}
 	}
 
 	stop() {
-		this.gameLoop.stop();
+		this.loop.stop();
+
 		if(this.pixi.view.parentNode) {
 			this.pixi.view.parentNode.removeChild(this.pixi.view);
 		}
@@ -39,16 +58,16 @@ export class Game {
 	}
 
 	update(dt) {
-		this.worlds.forEach(world => world?.update({
+		this.currentWorld?.update({
 			game: this,
 			dt: dt / 1000,
-		}));
+		});
 	}
 
 	render() {
-		this.worlds.forEach(world => world?.render({
+		this.currentWorld?.render({
 			game: this,
-		}));
+		});
 	}
 }
 

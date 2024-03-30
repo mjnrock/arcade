@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from "react";
-import Bubble from "../bubbles/Bubble";
+import Bubble from "../Bubble";
 
 export const useGameLogic = ({
 	qty = 50,

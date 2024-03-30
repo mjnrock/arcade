@@ -1,59 +1,52 @@
-import { v4 as uuid, validate } from "uuid";
+import { v4 as uuid } from "uuid";
+
+import EntityManager from "./entities/EntityManager";
 import BubbleComponent from "./components/Bubble";
 
 export class World {
 	constructor ({ game, id, entities = [] } = {}) {
 		this.id = id ?? uuid();
-
 		this.game = game;
-		this.entities = new Map();
+		this.entityManager = new EntityManager();
 
-		entities.forEach(entity => this.addEntity(entity));
+		for(const entity of entities) {
+			this.addEntity(entity);
+		}
 	}
 
-	addEntity(entity) {
-		this.entities.set(entity.id, entity);
+	addEntity(...entities) {
+		for(const entity of entities) {
+			this.entityManager.add(entity);
 
-		const bubble = entity.getComponent(BubbleComponent);
-		if(bubble) {
-			this.game.pixi.stage.addChild(bubble.graphics);
+			const bubble = entity.getComponent(BubbleComponent);
+			if(bubble) {
+				this.game.pixi.stage.addChild(bubble.graphics);
+			}
 		}
 
 		return this;
 	}
-	removeEntity(entity) {
-		this.entities.delete(entity.id);
+
+	removeEntity(...entities) {
+		for(const entity of entities) {
+			this.entityManager.remove(entity);
+
+			const bubble = entity.getComponent(BubbleComponent);
+			if(bubble) {
+				this.game.pixi.stage.removeChild(bubble.graphics);
+			}
+		}
 
 		return this;
 	}
 
-	hasEntity(entity) {
-		if(validate(entity)) {
-			return this.entities.has(entity);
-		}
-
-		return this.entities.has(entity.id);
-	}
-	getEntity(entity) {
-		let result = false;
-
-		if(validate(entity)) {
-			result = this.entities.get(entity);
-		} else {
-			result = this.entities.get(entity.id);
-		}
-
-		return result;
-	}
-
-	update({ dt } = {}) {
-		this.entities.forEach(entity => entity?.update({ dt }));
-
+	update(...args) {
+		this.entityManager.update(...args);
 		return this;
 	}
-	render({ g } = {}) {
-		this.entities.forEach(entity => entity?.render({ g }));
 
+	render(...args) {
+		this.entityManager.render(...args);
 		return this;
 	}
 };
