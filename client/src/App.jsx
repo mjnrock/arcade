@@ -1,4 +1,4 @@
-import BubbleJSX from "./lib/Bubble";
+import BubbleJSX from "./apps/bubbles/ui/Bubble";
 
 export const App = () => {
 	return (
