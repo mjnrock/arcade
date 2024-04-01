@@ -48,7 +48,8 @@
 		],
 		"rules": {
 			"import/no-anonymous-default-export": "off",
-			"react-hooks/exhaustive-deps": "off"
+			"react-hooks/exhaustive-deps": "off",
+			"no-unused-vars": "off"
 		}
 	},
 	"browserslist": {

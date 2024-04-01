@@ -4,8 +4,8 @@ import World from "./World";
 import BubbleComponent from "./components/Bubble";
 import BubbleEntity from "./entities/Bubble";
 
-export const main = async ({ viewport } = {}) => {
-	const game = new BubbleGame();
+export const main = async ({ viewport, config = {}, start = false } = {}) => {
+	const game = new BubbleGame(config);
 	const world = new World({
 		game,
 		entities: BubbleEntity.Factory(100, () => ({
@@ -23,10 +23,13 @@ export const main = async ({ viewport } = {}) => {
 	});
 
 	game.addWorld(world);
-	game.start();
 
 	if(viewport) {
 		viewport.appendChild(game.pixi.view);
+	}
+
+	if(start) {
+		game.start();
 	}
 
 	return {

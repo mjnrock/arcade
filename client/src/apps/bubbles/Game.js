@@ -3,7 +3,7 @@ import { v4 as uuid } from "uuid";
 import GameLoop from "./GameLoop";
 
 export class Game {
-	constructor ({ fps = 60 } = {}) {
+	constructor ({ fps = 60, ...pixi } = {}) {
 		this.id = uuid();
 
 		this.worlds = new Map();
@@ -13,6 +13,7 @@ export class Game {
 			width: window.innerWidth,
 			height: window.innerHeight,
 			backgroundColor: 0x1099bb,
+			...pixi,
 		});
 	}
 

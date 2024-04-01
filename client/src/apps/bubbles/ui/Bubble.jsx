@@ -1,22 +1,18 @@
-import React, { useEffect, useRef } from "react";
-
-import main from "../main";
+import React, { useRef } from "react";
+import { useGame } from "./useGame";
 
 export const Bubble = () => {
 	const pixiContainer = useRef(null);
+	const instance = useGame(pixiContainer, {
+		start: true,
+		config: {
+			fps: 60,
+			width: window.innerWidth,
+			height: window.innerHeight,
+		},
+	});
 
-	useEffect(() => {
-		const { game } = main({
-			viewport: pixiContainer.current,
-		})
-
-		return () => {
-			game.stop();
-		};
-	}, []);
-
-
-	return <div ref={ pixiContainer } style={ { width: "100%", height: "100%" } }></div>;
+	return <div ref={ pixiContainer } style={ { width: "100%", height: "100%", overflow: "hidden" } }></div>;
 };
 
 export default Bubble;
