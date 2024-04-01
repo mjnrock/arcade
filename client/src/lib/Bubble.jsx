@@ -13,17 +13,17 @@ export const Bubble = () => {
 		const game = new BubbleGame();
 		const world = new World({
 			game,
-			entities: Array(100).fill().map(() => new BubbleEntity({
+			entities: BubbleEntity.Factory(100, () => ({
 				components: [
-					[ BubbleComponent, {
+					new BubbleComponent({
 						x: Math.random() * window.innerWidth,
 						y: Math.random() * window.innerHeight,
 						vx: (Math.random() - 0.5) * 200,
 						vy: (Math.random() - 0.5) * 200,
 						r: Math.random() * 20 + 5,
 						color: `#${ Math.floor(Math.random() * 16777215).toString(16).padStart(6, "0") }`,
-					} ],
-				]
+					}),
+				],
 			})),
 		});
 

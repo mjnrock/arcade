@@ -36,13 +36,7 @@ export class EntityManager {
 	}
 
 	update(...args) {
-		this.entities.forEach(entity => {
-			if(entity.isDead) {
-				this.remove(entity);
-			} else {
-				entity?.update(...args);
-			}
-		});
+		this.entities.forEach(entity => entity?.update(...args));
 	}
 
 	render(...args) {

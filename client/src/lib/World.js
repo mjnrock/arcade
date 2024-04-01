@@ -42,6 +42,13 @@ export class World {
 
 	update(...args) {
 		this.entityManager.update(...args);
+
+		for(const entity of this.entityManager) {
+			if(entity.isDead) {
+				this.removeEntity(entity);
+			}
+		}
+
 		return this;
 	}
 

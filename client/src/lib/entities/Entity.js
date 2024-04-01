@@ -19,11 +19,10 @@ export class Entity {
 
 	addComponent(...components) {
 		components.forEach(component => {
-			if(Array.isArray(component) && component.length === 2) {
-				const [ Clazz, argsObj ] = component;
-				const instance = new Clazz(typeof argsObj === "function" ? argsObj() : argsObj);
+			if(typeof component === "function") {
+				const newComponent = component();
 
-				this.components.set(instance.id, instance);
+				this.components.set(newComponent.id, newComponent);
 			} else {
 				this.components.set(component.id, component);
 			}
@@ -81,8 +80,18 @@ export class Entity {
 		return this;
 	}
 
-	static Factory(...args) {
-		return new this(...args);
+	static Factory(qty = 1, ...args) {
+		if(qty === 1) {
+			return new this(...args);
+		}
+
+		return Array(qty).fill().map(() => {
+			if(typeof args[ 0 ] === "function") {
+				return new this(args[ 0 ]());
+			}
+
+			return new this(...args);
+		});
 	}
 };
 
