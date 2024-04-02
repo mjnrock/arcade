@@ -18,10 +18,7 @@ export const useGame = (containerRef, mainArgs = {}) => {
 			game.input.keyboard.bindEvents(false, {
 				keydown: [
 					event => {
-						// if not a function key, prevent default
-						// if(event.key.length > 1) return;
-
-						event.preventDefault();
+						if([ 116, 122, 123 ].includes(event.keyCode)) return;
 
 						const bubbles = BubbleEntity.Factory(1, () => ({
 							meta: {
