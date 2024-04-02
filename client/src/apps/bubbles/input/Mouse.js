@@ -72,9 +72,7 @@ export class Mouse {
 	}
 
 	handleContextMenu(event) {
-		if(this.mask & MouseButtons.RIGHT) {
-			event.preventDefault();
-		}
+		event.preventDefault();
 	}
 
 	isButtonDown(button) {
