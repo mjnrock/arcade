@@ -3,7 +3,7 @@ import dgram from "dgram";
 export class UDPServer {
 	constructor ({ port } = {}) {
 		this.server = dgram.createSocket("udp4");
-		this.messageQueue = [];
+		this.queue = [];
 		this.port = port;
 
 		this.server.on("error", (err) => this.onError(err));
@@ -19,10 +19,10 @@ export class UDPServer {
 	onMessage(msg, rinfo) {
 		console.log(`Server got: ${ msg } from ${ rinfo.address }:${ rinfo.port }`);
 		// Add message to queue
-		this.messageQueue.push(msg.toString());
+		this.queue.push(msg.toString());
 		// Start processing messages if not already started
-		if(this.messageQueue.length === 1) {
-			this.processMessage();
+		if(this.queue.length === 1) {
+			this.process();
 		}
 	}
 
@@ -31,19 +31,19 @@ export class UDPServer {
 		console.log(`Server listening ${ address.address }:${ address.port }`);
 	}
 
-	async processMessage() {
-		if(this.messageQueue.length === 0) {
+	async process() {
+		if(this.queue.length === 0) {
 			return;
 		}
 
-		const message = this.messageQueue.shift();
+		const message = this.queue.shift();
 		console.log(`Processing message: ${ message }`);
 
 		// Simulate asynchronous message processing
 		await new Promise(resolve => setTimeout(resolve, 1000));
 
 		// Process the next message
-		this.processMessage();
+		this.process();
 	}
 
 	start() {

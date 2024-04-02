@@ -6,8 +6,5 @@
 	"license": "MIT",
 	"scripts": {
 		"start": "node apps/udp/main.js"
-	},
-	"dependencies": {
-		"dgram": "^1.0.1"
 	}
 }

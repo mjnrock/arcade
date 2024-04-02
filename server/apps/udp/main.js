@@ -7,9 +7,9 @@ server.start();
 const client = new UDPClient({ host: "localhost", port: 41234 });
 
 function sendMessages() {
-	client.sendMessage("Hello, UDP server!");
-	client.sendMessage("Another message");
-	client.sendMessage("Final message");
+	client.send("Hello, UDP server!");
+	client.send("Another message");
+	client.send("Final message");
 
 	setTimeout(() => {
 		client.close();
