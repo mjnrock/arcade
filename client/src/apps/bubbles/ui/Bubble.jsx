@@ -3,7 +3,7 @@ import { useGame } from "./useGame";
 
 export const Bubble = () => {
 	const pixiContainer = useRef(null);
-	const instance = useGame(pixiContainer, {
+	const { game } = useGame(pixiContainer, {
 		start: true,
 		config: {
 			fps: 60,

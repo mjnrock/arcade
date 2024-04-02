@@ -22,7 +22,9 @@ export const useGame = (containerRef, mainArgs = {}) => {
 		};
 	}, [ containerRef ]);
 
-	return gameInstance;
+	return {
+		game: gameInstance.current,
+	};
 };
 
 export const Bubble = () => {
