@@ -11,25 +11,34 @@ const ButtonMaskMap = {
 };
 
 export class Mouse {
-	constructor ({ game, map, target = window }) {
+	constructor ({ game, events = {}, target = window }) {
 		this.game = game;
-		this.map = map;
+		this.events = events;
 		this.mask = 0;
 		this.target = target;
 
-		this.bindEvents();
+		this.bindEvents(true);
 	}
 
-	bindEvents() {
-		/* .mask facilitation logic */
-		this.target.addEventListener("mousedown", this.handleMouseDown.bind(this));
-		this.target.addEventListener("mouseup", this.handleMouseUp.bind(this));
-		this.target.addEventListener("contextmenu", this.handleContextMenu.bind(this));
+	bindEvents(bindAll = false, map = {}) {
+		if(bindAll) {
+			/* .mask facilitation logic */
+			this.target.addEventListener("mousedown", this.handleMouseDown.bind(this));
+			this.target.addEventListener("mouseup", this.handleMouseUp.bind(this));
+			this.target.addEventListener("contextmenu", this.handleContextMenu.bind(this));
+		}
 
-		Object.entries(this.map).forEach(([ eventName, handlers ]) => {
+		if(Object.keys(map).length) {
+			this.events = {
+				...this.events,
+				...map,
+			};
+		}
+
+		Object.entries(this.events).forEach(([ eventName, handlers ]) => {
 			const normalizedHandlers = Array.isArray(handlers) ? handlers : [ handlers ];
 			normalizedHandlers.forEach(handler => {
-				this.target.addEventListener(eventName, handler.bind(this));
+				this.target.addEventListener(eventName, handler);
 			});
 		});
 	}
@@ -40,10 +49,10 @@ export class Mouse {
 		this.target.removeEventListener("mouseup", this.handleMouseUp.bind(this));
 		this.target.removeEventListener("contextmenu", this.handleContextMenu.bind(this));
 
-		Object.entries(this.map).forEach(([ eventName, handlers ]) => {
+		Object.entries(this.events).forEach(([ eventName, handlers ]) => {
 			const normalizedHandlers = Array.isArray(handlers) ? handlers : [ handlers ];
 			normalizedHandlers.forEach(handler => {
-				this.target.removeEventListener(eventName, handler.bind(this));
+				this.target.removeEventListener(eventName, handler);
 			});
 		});
 	}

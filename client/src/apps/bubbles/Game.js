@@ -2,9 +2,26 @@ import * as PIXI from "pixi.js";
 import { v4 as uuid } from "uuid";
 import GameLoop from "./GameLoop";
 
+import KeyboardInput from "./input/Keyboard";
+import MouseInput from "./input/Mouse";
+
+import BubbleEntity from "./entities/Bubble";
+import BubbleComponent from "./components/Bubble";
+
 export class Game {
 	constructor ({ fps = 60, ...pixi } = {}) {
 		this.id = uuid();
+
+		this.input = {
+			keyboard: new KeyboardInput({
+				target: window,
+				game: this,
+			}),
+			mouse: new MouseInput({
+				target: window,
+				game: this,
+			}),
+		};
 
 		this.worlds = new Map();
 
@@ -56,6 +73,9 @@ export class Game {
 			this.pixi.view.parentNode.removeChild(this.pixi.view);
 		}
 		this.pixi.destroy(true, { children: true, texture: true, baseTexture: true });
+
+		this.input.keyboard.detachListeners();
+		this.input.mouse.detachListeners();
 	}
 
 	update(dt) {

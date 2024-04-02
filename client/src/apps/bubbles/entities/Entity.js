@@ -81,7 +81,7 @@ export class Entity {
 	}
 
 	static Factory(qty = 1, ...args) {
-		if(qty === 1) {
+		if(qty === false) {
 			return new this(...args);
 		}
 
