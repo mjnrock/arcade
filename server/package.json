@@ -1,9 +1,13 @@
 {
+	"type": "module",
 	"name": "bubbles",
 	"version": "0.1.0",
 	"main": "main.js",
 	"license": "MIT",
 	"scripts": {
-		"start": "node main.js"
+		"start": "node apps/udp/main.js"
+	},
+	"dependencies": {
+		"dgram": "^1.0.1"
 	}
 }
