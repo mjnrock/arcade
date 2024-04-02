@@ -15,22 +15,52 @@ export const useGame = (containerRef, mainArgs = {}) => {
 				viewport: containerRef.current,
 			});
 
-			game.input.mouse.bindEvents(false, {
-				mousemove: [
+			game.input.keyboard.bindEvents(false, {
+				keydown: [
 					event => {
-						if(event.buttons !== 1) return;
+						// if not a function key, prevent default
+						// if(event.key.length > 1) return;
+
+						event.preventDefault();
 
 						const bubbles = BubbleEntity.Factory(1, () => ({
 							meta: {
-								ttl: 1000 * (Math.random() * 1 + 1),
+								ttl: 1000 * (Math.random() * 5 + 3),
+							},
+							components: [
+								new BubbleComponent({
+									x: Math.random() * window.innerWidth,
+									y: Math.random() * window.innerHeight,
+									vx: (Math.random() - 0.5) * 75,
+									vy: (Math.random() - 0.5) * 75,
+									r: Math.random() * 50 + 5,
+									color: `#${ Math.floor(Math.random() * 16777215).toString(16).padStart(6, "0") }`,
+								}),
+							],
+						}));
+
+						gameInstance.current.currentWorld?.addEntity(...bubbles);
+					},
+				],
+			});
+			game.input.mouse.bindEvents(false, {
+				mousemove: [
+					event => {
+						event.preventDefault();
+
+						if(!event.buttons) return;
+
+						const bubbles = BubbleEntity.Factory(1, () => ({
+							meta: {
+								ttl: 1000 * (Math.random() * 3 + 3),
 							},
 							components: [
 								new BubbleComponent({
 									x: event.clientX,
 									y: event.clientY,
-									vx: (Math.random() - 0.5) * 200,
-									vy: (Math.random() - 0.5) * 200,
-									r: Math.random() * 30 + 5,
+									vx: (Math.random() - 0.5) * 100,
+									vy: (Math.random() - 0.5) * 100,
+									r: Math.random() * 15 + 5,
 									color: `#${ Math.floor(Math.random() * 16777215).toString(16).padStart(6, "0") }`,
 								}),
 							],
