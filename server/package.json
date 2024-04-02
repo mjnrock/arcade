@@ -6,9 +6,10 @@
 	"license": "MIT",
 	"scripts": {
 		"start": "node apps/udp/main.js",
-		"test": "node apps/udp/DuplexUDP.test.js"
+		"test": "node apps/ws/WebSocket.test.js"
 	},
 	"dependencies": {
-		"uuid": "^9.0.1"
+		"uuid": "^9.0.1",
+		"ws": "^8.16.0"
 	}
 }
