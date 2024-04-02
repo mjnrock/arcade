@@ -1,20 +1,31 @@
+import { v4 as uuid } from "uuid";
 import dgram from "dgram";
 
 export class UDPClient {
 	constructor ({ host, port } = {}) {
-		this.host = host;
-		this.port = port;
+		this.id = uuid();
 		this.client = dgram.createSocket("udp4");
+
+		this.config = {
+			host,
+			port,
+		};
 	}
 
 	send(message) {
-		const messageBuffer = Buffer.from(message);
-		this.client.send(messageBuffer, 0, messageBuffer.length, this.port, this.host, (err) => {
+		let messageBuffer;
+		if(typeof message === "object") {
+			messageBuffer = Buffer.from(JSON.stringify(message));
+		} else {
+			messageBuffer = message;
+		}
+
+		this.client.send(messageBuffer, 0, messageBuffer.length, this.config.port, this.config.host, (err) => {
 			if(err) {
 				console.error(`Failed to send message: ${ err }`);
 				this.client.close();
 			} else {
-				console.log(`Message sent: "${ message }"`);
+				console.log(`Message sent: "${ messageBuffer.toString() }"`);
 			}
 		});
 	}
@@ -22,6 +33,6 @@ export class UDPClient {
 	close() {
 		this.client.close();
 	}
-};
+}
 
 export default UDPClient;

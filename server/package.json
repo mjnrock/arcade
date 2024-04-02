@@ -5,6 +5,10 @@
 	"main": "main.js",
 	"license": "MIT",
 	"scripts": {
-		"start": "node apps/udp/main.js"
+		"start": "node apps/udp/main.js",
+		"test": "node apps/udp/DuplexUDP.test.js"
+	},
+	"dependencies": {
+		"uuid": "^9.0.1"
 	}
 }
