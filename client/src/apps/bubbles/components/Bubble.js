@@ -1,22 +1,21 @@
-import { v4 as uuid } from "uuid";
+import Component from "./Component";
 import { Graphics } from "pixi.js";
 
-export class Bubble {
-	constructor ({ x, y, vx, vy, r, color } = {}) {
-		this.id = uuid();
+export class Bubble extends Component {
+	constructor ({ id, x, y, vx, vy, r, color } = {}) {
+		super({ id });
 
 		this.x = x;
 		this.y = y;
 		this.vx = vx;
 		this.vy = vy;
-		this.r = r;
+
 		this.color = color;
 
 		this.graphics = new Graphics();
-
-		this.meta = {
-			ts: Date.now(),
-			ttl: 1000 * (Math.random() * 5 + 5),
+		this.model = {
+			type: "circle",
+			r: r,
 		};
 	}
 
@@ -28,9 +27,11 @@ export class Bubble {
 	render({ g = this.graphics } = {}) {
 		g.clear();
 		g.beginFill(this.color, 1);
-		g.drawCircle(this.x, this.y, this.r);
+		g.drawCircle(this.x, this.y, this.model.r);
 		g.endFill();
+
+		return g;
 	}
-}
+};
 
 export default Bubble;
