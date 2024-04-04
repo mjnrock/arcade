@@ -5,7 +5,7 @@
 	"main": "main.js",
 	"license": "MIT",
 	"scripts": {
-		"start": "node apps/udp/main.js",
+		"start": "node apps/message/message.test.js",
 		"test": "node apps/ws/WebSocket.test.js"
 	},
 	"dependencies": {
