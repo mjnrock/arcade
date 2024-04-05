@@ -15,31 +15,31 @@ export const useGame = (containerRef, mainArgs = {}) => {
 				viewport: containerRef.current,
 			});
 
-			game.input.keyboard.bindEvents(false, {
-				keydown: [
-					event => {
-						if([ 116, 122, 123 ].includes(event.keyCode)) return;
+			// game.input.keyboard.bindEvents(false, {
+			// 	keydown: [
+			// 		event => {
+			// 			if([ 116, 122, 123 ].includes(event.keyCode)) return;
 
-						const bubbles = BubbleEntity.Factory(1, () => ({
-							meta: {
-								ttl: 1000 * (Math.random() * 5 + 3),
-							},
-							components: [
-								new BubbleComponent({
-									x: Math.random() * window.innerWidth,
-									y: Math.random() * window.innerHeight,
-									vx: (Math.random() - 0.5) * 75,
-									vy: (Math.random() - 0.5) * 75,
-									r: Math.random() * 50 + 5,
-									color: `#${ Math.floor(Math.random() * 16777215).toString(16).padStart(6, "0") }`,
-								}),
-							],
-						}));
+			// 			const bubbles = BubbleEntity.Factory(1, () => ({
+			// 				meta: {
+			// 					ttl: 1000 * (Math.random() * 5 + 3),
+			// 				},
+			// 				components: [
+			// 					new BubbleComponent({
+			// 						x: Math.random() * window.innerWidth,
+			// 						y: Math.random() * window.innerHeight,
+			// 						vx: (Math.random() - 0.5) * 75,
+			// 						vy: (Math.random() - 0.5) * 75,
+			// 						r: Math.random() * 50 + 5,
+			// 						color: `#${ Math.floor(Math.random() * 16777215).toString(16).padStart(6, "0") }`,
+			// 					}),
+			// 				],
+			// 			}));
 
-						gameInstance.current.currentWorld?.addEntity(...bubbles);
-					},
-				],
-			});
+			// 			gameInstance.current.currentWorld?.addEntity(...bubbles);
+			// 		},
+			// 	],
+			// });
 			game.input.mouse.bindEvents(false, {
 				mousemove: [
 					event => {

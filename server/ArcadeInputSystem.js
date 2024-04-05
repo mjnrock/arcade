@@ -6,13 +6,13 @@ export class ArcadeInputSystem extends System {
 		super({ game });
 
 		this.game.input.arcade.addListener(({ state }) => {
-			this.button({ data: state });
+			this.input({ data: state });
 		})
 	}
 
-	button({ data, message } = {}) {
+	input({ data, message } = {}) {
 		this.sendToNetwork(Message.Message({
-			type: [ "ArcadeInputSystem", "button" ],
+			type: [ "ArcadeInputSystem", "input" ],
 			data,
 		}));
 	}
