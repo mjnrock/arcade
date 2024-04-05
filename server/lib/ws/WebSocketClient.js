@@ -1,7 +1,7 @@
 import WebSocket from "ws";
 import { v4 as uuid } from "uuid";
 
-class WebSocketClient {
+export class WebSocketClient {
 	constructor ({ url, config = {}, router } = {}) {
 		this.id = uuid();
 		this.config = { url, ...config };
@@ -24,6 +24,6 @@ class WebSocketClient {
 			});
 		}
 	}
-}
+};
 
 export default WebSocketClient;

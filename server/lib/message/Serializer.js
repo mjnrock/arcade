@@ -1,5 +1,5 @@
-import Message from "./Message.js";
-import Envelope from "./Envelope.js";
+import { Message } from "./Message.js";
+import { Envelope } from "./Envelope.js";
 
 /* A system-wide unique identifier for this resource */
 export const ResourceName = `arcade.server.apps.message.Serializer`;

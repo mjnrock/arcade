@@ -16,14 +16,14 @@ export class System {
 		const [ to, type ] = message.type;
 
 		if(typeof this[ type ] === "function") {
-			return this[ type ](data);
+			return this[ type ]({ data, message });
 		}
 	}
 
 	send(message) {
 		this.router.route(message);
 	}
-	sendToServer(message) {
+	sendToNetwork(message) {
 		this.router.send(message);
 	}
 };

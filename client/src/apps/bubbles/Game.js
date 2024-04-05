@@ -9,11 +9,36 @@ import MouseInput from "./input/Mouse";
 import BubbleEntity from "./entities/Bubble";
 import BubbleComponent from "./components/Bubble";
 
+import ArcadeInputSystem from "./systems/ArcadeInputSystem";
+
+import Router from "./lib/message/Router";
+import WebSocketBrowserClient from "./lib/ws/WebSocketBrowserClient";
+import Message from "./lib/message/Message";
+
 export class Game {
 	constructor ({ fps = 60, ...pixi } = {}) {
 		this.id = uuid();
 
-		this.systems = {};
+		this.router = new Router({
+			game: this,
+			network: null,
+		});
+		this.router.network = new WebSocketBrowserClient({
+			url: "ws://localhost:8080",
+			router: this.router.receive.bind(this.router),
+		});
+		this.systems = {
+			ArcadeInputSystem: new ArcadeInputSystem({ game: this }),
+		};
+
+		setTimeout(() => {
+			this.router.send(Message.Message({
+				type: [ "TestSystem", "test" ],
+				data: {
+					now: Date.now(),
+				},
+			}));
+		}, 1000);
 
 		this.input = {
 			keyboard: new KeyboardInput({

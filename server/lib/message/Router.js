@@ -1,5 +1,6 @@
 import { v4 as uuid } from "uuid";
 import { Envelope } from "./Envelope.js";
+import { Serializer } from "./Serializer.js";
 
 export class Router {
 	constructor ({ game, network } = {}) {
@@ -16,23 +17,29 @@ export class Router {
 	}
 
 	route(message) {
-		for(const name in this.systems) {
-			const system = this.systems[ name ];
-			const [ to ] = message.type;
+		try {
+			for(const name in this.systems) {
+				const system = this.systems[ name ];
+				const [ to ] = message.type;
 
-			if(name === to || system.id === to) {
-				return system.receive(message);
+				if(name === to || system.id === to) {
+					return system.receive(message);
+				}
 			}
+		} catch(e) {
+			console.log("Invalid message sent to router");
+			console.log(message);
+			console.log(e);
 		}
 	}
 
 	send(message) {
 		const envelope = Envelope({ message });
 
-		this.network.send(envelope);
+		this.network.send(Serializer.Envelope.serialize(envelope));
 	}
 	receive(envelope) {
-		const { message } = envelope;
+		const { message } = Serializer.Envelope.deserialize(envelope);
 
 		this.route(message);
 	}

@@ -1,4 +1,4 @@
-import WebSocket, { WebSocketServer as WSS } from "ws";
+import { WebSocketServer as WSS } from "ws";
 import { v4 as uuid } from "uuid";
 
 export class WebSocketServer {
@@ -15,12 +15,25 @@ export class WebSocketServer {
 
 		this.wss.on("connection", (ws) => {
 			this.clients.add(ws);
-			ws.on("message", (msg) => this.router(msg));
+			ws.on("message", (msg) => {
+				try {
+					const data = JSON.parse(msg);
+					this.router(data);
+				} catch(error) {
+					console.error("Error parsing JSON message:", error);
+					// this.router(msg);	// Send the original message to the router
+				}
+			});
 			ws.on("close", () => this.clients.delete(ws));
 		});
 	}
 
 	broadcast(message) {
+		for(const client of this.clients) {
+			client.send(message);
+		}
+	}
+	send(message) {
 		for(const client of this.clients) {
 			client.send(message);
 		}
