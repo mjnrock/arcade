@@ -26,7 +26,7 @@ export const isMessage = (message) => {
 	return (
 		typeof message === "object" &&
 		typeof message.id === "string" &&
-		typeof message.type === "string" &&
+		(typeof message.type === "string" || Array.isArray(message.type)) &&
 		typeof message.data === "object" &&
 		typeof message.meta === "object" &&
 		typeof message.ts === "number"

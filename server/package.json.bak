@@ -5,8 +5,8 @@
 	"main": "main.js",
 	"license": "MIT",
 	"scripts": {
-		"start": "node lib/hid/main.test.js",
-		"test": "node lib/ws/WebSocket.test.js"
+		"start": "node apps/hid/main.test.js",
+		"test": "node apps/ws/WebSocket.test.js"
 	},
 	"dependencies": {
 		"node-hid": "^3.0.0",

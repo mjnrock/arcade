@@ -4,6 +4,7 @@ import GameLoop from "./GameLoop";
 
 import KeyboardInput from "./input/Keyboard";
 import MouseInput from "./input/Mouse";
+// import Arcade from "./input/Arcade";
 
 import BubbleEntity from "./entities/Bubble";
 import BubbleComponent from "./components/Bubble";
@@ -11,6 +12,8 @@ import BubbleComponent from "./components/Bubble";
 export class Game {
 	constructor ({ fps = 60, ...pixi } = {}) {
 		this.id = uuid();
+
+		this.systems = {};
 
 		this.input = {
 			keyboard: new KeyboardInput({
@@ -21,6 +24,7 @@ export class Game {
 				target: window,
 				game: this,
 			}),
+			// arcade: new Arcade({ vid: 121, pid: 6 }),	// HID device -- you need to sniff the device first to get the vendorId and productId (e.g. node-hid)
 		};
 
 		this.worlds = new Map();
