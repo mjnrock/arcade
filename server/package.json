@@ -5,10 +5,11 @@
 	"main": "main.js",
 	"license": "MIT",
 	"scripts": {
-		"start": "node apps/message/message.test.js",
+		"start": "node apps/hid/main.js",
 		"test": "node apps/ws/WebSocket.test.js"
 	},
 	"dependencies": {
+		"node-hid": "^3.0.0",
 		"uuid": "^9.0.1",
 		"ws": "^8.16.0"
 	}

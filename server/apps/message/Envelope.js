@@ -52,4 +52,9 @@ export const isEnvelope = (envelope, { enforceMessage = true } = {}) => {
 	);
 };
 
-export default Envelope;
+export default {
+	ResourceName,
+	EnumEnvelopeType,
+	Envelope,
+	isEnvelope,
+};

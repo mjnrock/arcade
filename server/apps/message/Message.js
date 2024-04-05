@@ -33,4 +33,8 @@ export const isMessage = (message) => {
 	);
 };
 
-export default Message;
+export default {
+	ResourceName,
+	Message,
+	isMessage,
+};

@@ -1,6 +1,9 @@
 import Message from "./Message.js";
 import Envelope from "./Envelope.js";
 
+/* A system-wide unique identifier for this resource */
+export const ResourceName = `arcade.server.apps.message.Serializer`;
+
 export const Serializer = {
 	Message: {
 		serialize: (message) => JSON.stringify(message),
@@ -12,4 +15,7 @@ export const Serializer = {
 	},
 };
 
-export default Serializer;
+export default {
+	ResourceName,
+	Serializer,
+};
