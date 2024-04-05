@@ -27,15 +27,6 @@ export class Game {
 			ArcadeInputSystem: new ArcadeInputSystem({ game: this }),
 		};
 
-		setTimeout(() => {
-			this.router.send(Message.Message({
-				type: [ "TestSystem", "test" ],
-				data: {
-					now: Date.now(),
-				},
-			}));
-		}, 1000);
-
 		this.input = {
 			keyboard: new KeyboardInput({
 				target: window,
@@ -55,6 +46,11 @@ export class Game {
 			height: window.innerHeight,
 			backgroundColor: 0x1099bb,
 			...pixi,
+		});
+
+		// DEBUG - Client Only
+		window.addEventListener("resize", () => {
+			this.pixi.renderer.resize(window.innerWidth, window.innerHeight);
 		});
 	}
 
