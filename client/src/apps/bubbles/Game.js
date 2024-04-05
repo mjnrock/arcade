@@ -61,9 +61,14 @@ export class Game {
 
 		this.pixi.stage.addChild(this.player.input.crosshairGraphic);
 
-		window.addEventListener("resize", () => {
-			this.pixi.renderer.resize(window.innerWidth, window.innerHeight);
-		});
+		const fn = e => {
+			if(this.pixi?.renderer?.resize) {
+				this.pixi.renderer.resize(window.innerWidth, window.innerHeight);
+			} else {
+				window.removeEventListener("resize", fn);
+			}
+		};
+		window.addEventListener("resize", fn);
 	}
 
 	get currentWorld() {
