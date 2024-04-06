@@ -8,10 +8,7 @@ export const useGame = ({ ...args } = {}) => {
 	useEffect(() => {
 		const startGame = async () => {
 			if(!containerRef.current) return;
-			const { game } = await main({
-				...args,
-				viewport: containerRef.current,
-			});
+			const { game } = await main({ ...args });
 
 			gameInstance.current = game;
 		};
