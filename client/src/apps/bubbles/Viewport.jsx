@@ -1,6 +1,6 @@
-import { useGame } from "./useGame";
+import { useGame } from "../core/react/hooks/useGame";
 
-export const Bubble = () => {
+export const Viewport = () => {
 	const { game, viewport } = useGame({
 		start: true,
 		config: {
@@ -21,4 +21,4 @@ export const Bubble = () => {
 	)
 };
 
-export default Bubble;
+export default Viewport;

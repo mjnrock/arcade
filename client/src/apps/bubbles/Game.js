@@ -2,7 +2,7 @@ import * as PIXI from "pixi.js";
 
 import Game from "../core/Game";
 
-export class BubbleGame extends Game {
+export class Bubbles extends Game {
 	constructor ({ ...args } = {}) {
 		super({ ...args });
 
@@ -37,4 +37,4 @@ export class BubbleGame extends Game {
 	}
 };
 
-export default BubbleGame;
+export default Bubbles;

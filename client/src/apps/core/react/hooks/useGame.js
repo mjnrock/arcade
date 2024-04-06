@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import main from "../main";
+import main from "../../../bubbles/main";
 
 export const useGame = ({ ...args } = {}) => {
 	const gameInstance = useRef(null);

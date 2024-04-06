@@ -1,6 +1,6 @@
 import World from "../core/World";
 
-import BubbleGame from "./BubbleGame";
+import BubbleGame from "./Game";
 import BubbleComponent from "./components/Bubble";
 import BubbleEntity from "./entities/Bubble";
 
