@@ -1,7 +1,7 @@
 import { v4 as uuid } from "uuid";
 
 import EntityManager from "./entities/EntityManager";
-import BubbleComponent from "./components/Bubble";
+import BubbleComponent from "../bubbles/components/Bubble";
 
 export class World {
 	constructor ({ game, id, entities = [] } = {}) {

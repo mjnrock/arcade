@@ -1,4 +1,4 @@
-import Component from "./Component";
+import Component from "../../core/components/Component";
 import { Graphics } from "pixi.js";
 
 export class Bubble extends Component {

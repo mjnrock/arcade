@@ -1,11 +1,11 @@
-import BubbleGame from "./Game";
-import World from "./World";
+import Game from "../core/Game";
+import World from "../core/World";
 
 import BubbleComponent from "./components/Bubble";
 import BubbleEntity from "./entities/Bubble";
 
 export const main = async ({ viewport, config = {}, start = false } = {}) => {
-	const game = new BubbleGame(config);
+	const game = new Game(config);
 	const world = new World({
 		game,
 		entities: BubbleEntity.Factory(100, () => ({

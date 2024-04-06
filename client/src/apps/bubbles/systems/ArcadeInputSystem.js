@@ -1,4 +1,4 @@
-import System from "../lib/message/System";
+import System from "../../core/lib/message/System";
 import BubbleEntity from "../entities/Bubble";
 import BubbleComponent from "../components/Bubble";
 

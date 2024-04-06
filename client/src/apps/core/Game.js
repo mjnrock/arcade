@@ -5,16 +5,16 @@ import GameLoop from "./GameLoop";
 import KeyboardInput from "./input/Keyboard";
 import MouseInput from "./input/Mouse";
 
-import BubbleEntity from "./entities/Bubble";
-import BubbleComponent from "./components/Bubble";
+import BubbleEntity from "../bubbles/entities/Bubble";
+import BubbleComponent from "../bubbles/components/Bubble";
 
-import ArcadeInputSystem from "./systems/ArcadeInputSystem";
+import ArcadeInputSystem from "../bubbles/systems/ArcadeInputSystem";
 
 import Router from "./lib/message/Router";
 import WebSocketBrowserClient from "./lib/ws/WebSocketBrowserClient";
 
 export class Game {
-	constructor ({ fps = 60, ...pixi } = {}) {
+	constructor ({ fps = 60, ...args } = {}) {
 		this.id = uuid();
 
 		this.player = {
@@ -24,39 +24,50 @@ export class Game {
 				x: ~~(window.innerWidth / 2),
 				y: ~~(window.innerHeight / 2),
 			},
+			...(args.player ?? {}),
 		};
 
 		this.router = new Router({
 			game: this,
 			network: null,
+			...(args.router ?? {}),
 		});
 		this.router.network = new WebSocketBrowserClient({
 			url: "ws://localhost:8080",
 			router: this.router.receive.bind(this.router),
+			...(args.network ?? {}),
 		});
 		this.systems = {
 			ArcadeInputSystem: new ArcadeInputSystem({ game: this }),
+			...(args.systems ?? {}),
 		};
 
 		this.input = {
 			keyboard: new KeyboardInput({
 				target: window,
 				game: this,
+				...(args.input?.keyboard ?? {})
 			}),
 			mouse: new MouseInput({
 				target: window,
 				game: this,
+				...(args.input?.mouse ?? {}),
 			}),
 		};
 
 		this.worlds = new Map();
 
-		this.loop = new GameLoop(this.update.bind(this), this.render.bind(this), fps);
+		this.loop = new GameLoop({
+			onTick: this.update.bind(this),
+			onDraw: this.render.bind(this),
+			fps,
+			...(args.loop ?? {}),
+		});
 		this.pixi = new PIXI.Application({
 			width: window.innerWidth,
 			height: window.innerHeight,
 			backgroundColor: 0x1099bb,
-			...pixi,
+			...(args.pixi ?? {}),
 		});
 
 		this.pixi.stage.addChild(this.player.input.crosshairGraphic);
