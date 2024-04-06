@@ -4,7 +4,7 @@ import World from "../core/World";
 import BubbleComponent from "./components/Bubble";
 import BubbleEntity from "./entities/Bubble";
 
-export const main = async ({ viewport, config = {}, start = false } = {}) => {
+export const main = async ({ config = {}, start = false } = {}) => {
 	const game = new Game(config);
 	const world = new World({
 		game,
@@ -23,10 +23,6 @@ export const main = async ({ viewport, config = {}, start = false } = {}) => {
 	});
 
 	game.addWorld(world);
-
-	if(viewport) {
-		viewport.appendChild(game.pixi.view);
-	}
 
 	if(start) {
 		game.start();

@@ -14,7 +14,7 @@ import Router from "./lib/message/Router";
 import WebSocketBrowserClient from "./lib/ws/WebSocketBrowserClient";
 
 export class Game {
-	constructor ({ fps = 60, ...args } = {}) {
+	constructor ({ ...args } = {}) {
 		this.id = uuid();
 
 		this.player = {
@@ -60,7 +60,7 @@ export class Game {
 		this.loop = new GameLoop({
 			onTick: this.update.bind(this),
 			onDraw: this.render.bind(this),
-			fps,
+			fps: 60,
 			...(args.loop ?? {}),
 		});
 		this.pixi = new PIXI.Application({
