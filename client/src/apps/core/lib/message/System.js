@@ -6,6 +6,9 @@ export class System {
 		this.game = game;
 	}
 
+	update(dt) { }
+	render() { }
+
 	/* Centralized access to the game's router for easy refactoring */
 	get router() {
 		return this.game.router;

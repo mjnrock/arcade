@@ -1,4 +1,4 @@
-import Entity from "./Entity";
+import Entity from "../../core/entities/Entity";
 
 export class Bubble extends Entity {
 	constructor ({ id, meta = {}, components = [] } = {}) {

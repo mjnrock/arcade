@@ -1,11 +1,11 @@
 import { v4 as uuid } from 'uuid';
 
 export class GameLoop {
-	constructor (updateCallback, renderCallback, fps = 60) {
+	constructor ({ onTick, onDraw, fps = 60 } = {}) {
 		this.id = uuid();
 
-		this.updateCallback = updateCallback;
-		this.renderCallback = renderCallback;
+		this.onTick = onTick;
+		this.onDraw = onDraw;
 		this.fps = fps;
 		this.updateInterval = 1000 / fps;
 		this.accumulatedTime = 0;
@@ -28,11 +28,11 @@ export class GameLoop {
 		this.accumulatedTime += deltaTime;
 
 		while(this.accumulatedTime >= this.updateInterval) {
-			this.updateCallback(this.updateInterval);
+			this.onTick(this.updateInterval);
 			this.accumulatedTime -= this.updateInterval;
 		}
 
-		this.renderCallback();
+		this.onDraw();
 		this.animationFrameRequest = requestAnimationFrame(this.loop.bind(this));
 	}
 };

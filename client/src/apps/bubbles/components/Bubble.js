@@ -1,5 +1,5 @@
-import Component from "./Component";
 import { Graphics } from "pixi.js";
+import Component from "../../core/components/Component";
 
 export class Bubble extends Component {
 	constructor ({ id, x, y, vx, vy, r, color } = {}) {
