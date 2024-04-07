@@ -2,9 +2,13 @@ import * as PIXI from "pixi.js";
 
 import Game from "../core/Game";
 
+import EntitySystem from "./systems/EntitySystem";
+
 export class Bubbles extends Game {
 	constructor ({ ...args } = {}) {
 		super({ ...args });
+
+		this.systems.EntitySystem = new EntitySystem({ game: this });
 
 		this.player = {
 			input: {
