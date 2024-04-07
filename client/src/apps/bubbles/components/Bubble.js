@@ -2,7 +2,7 @@ import { Graphics } from "pixi.js";
 import Component from "../../core/components/Component";
 
 export class Bubble extends Component {
-	constructor ({ id, x, y, vx, vy, r, color } = {}) {
+	constructor({ id, x, y, vx, vy, r, color } = {}) {
 		super({ id });
 
 		this.x = x;
@@ -10,7 +10,7 @@ export class Bubble extends Component {
 		this.vx = vx;
 		this.vy = vy;
 
-		this.color = color;
+		this.color = color; // Ensure this is a numeric color value for PIXI
 
 		this.graphics = new Graphics();
 		this.model = {
@@ -26,12 +26,13 @@ export class Bubble extends Component {
 
 	render({ g = this.graphics } = {}) {
 		g.clear();
-		g.beginFill(this.color, 1);
+		g.lineStyle(1, this.color, 0.5);
+		g.beginFill(this.color, 0.3);
 		g.drawCircle(this.x, this.y, this.model.r);
 		g.endFill();
 
 		return g;
 	}
-};
+}
 
 export default Bubble;
