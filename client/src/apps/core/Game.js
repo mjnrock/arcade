@@ -67,6 +67,27 @@ export class Game {
 		window.addEventListener("resize", fn);
 	}
 
+	addSystem(systemClass, args = {}) {
+		this.systems[ systemClass ] = new systemClass({ game: this, ...args });
+		return this;
+	}
+	addSystems(systems = []) {
+		for(const [ system, args = {} ] of systems) {
+			this.addSystem(system, args);
+		}
+		return this;
+	}
+	removeSystem(systemClass) {
+		delete this.systems[ systemClass ];
+		return this;
+	}
+	removeSystems(systems = []) {
+		for(const system of systems) {
+			this.removeSystem(system);
+		}
+		return this;
+	}
+
 	get currentWorld() {
 		return this.worlds.get("current");
 	}
@@ -80,7 +101,6 @@ export class Game {
 
 		return this;
 	}
-
 	removeWorld(world) {
 		this.worlds.delete(world.id);
 

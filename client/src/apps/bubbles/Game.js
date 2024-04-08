@@ -8,7 +8,9 @@ export class Bubbles extends Game {
 	constructor ({ ...args } = {}) {
 		super({ ...args });
 
-		this.systems.EntitySystem = new EntitySystem({ game: this });
+		this.addSystems([
+			[ EntitySystem, {} ],
+		]);
 
 		this.player = {
 			input: {
