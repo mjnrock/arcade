@@ -57,9 +57,15 @@ export class Entity {
 	getComponent(component) {
 		if(validate(component)) {
 			return this.components.get(component);
-		} else if(typeof component === "function" && component.prototype?.constructor === component) {
+		} else if(typeof component === "function" ) {
 			for(let [ , comp ] of this.components) {
 				if(comp instanceof component) {
+					return comp;
+				}
+			}
+		} else if(typeof component === "string") {
+			for(let [ , comp ] of this.components) {
+				if(comp.prototype?.constructor === component || comp.constructor?.name === component) {
 					return comp;
 				}
 			}
