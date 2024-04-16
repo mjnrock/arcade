@@ -8,7 +8,9 @@ import MouseInput from "./input/Mouse";
 import ArcadeInputSystem from "../bubbles/systems/ArcadeInputSystem";
 
 import Router from "./lib/message/Router";
+import System from "./lib/message/System";
 import WebSocketBrowserClient from "./lib/ws/WebSocketBrowserClient";
+
 
 export class Game {
 	constructor ({ ...args } = {}) {
@@ -68,23 +70,35 @@ export class Game {
 	}
 
 	addSystem(systemClass, args = {}) {
-		this.systems[ systemClass ] = new systemClass({ game: this, ...args });
+		if(systemClass instanceof System) {
+			this.systems[ systemClass.constructor ] = systemClass;
+		} else {
+			this.systems[ systemClass ] = new systemClass({ game: this, ...args });
+		}
+
 		return this;
 	}
 	addSystems(systems = []) {
 		for(const [ system, args = {} ] of systems) {
 			this.addSystem(system, args);
 		}
+
 		return this;
 	}
 	removeSystem(systemClass) {
-		delete this.systems[ systemClass ];
+		if(systemClass instanceof System) {
+			delete this.systems[ systemClass.constructor ];
+		} else {
+			delete this.systems[ systemClass ];
+		}
+
 		return this;
 	}
 	removeSystems(systems = []) {
 		for(const system of systems) {
 			this.removeSystem(system);
 		}
+
 		return this;
 	}
 

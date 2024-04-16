@@ -8,7 +8,7 @@ export class EntitySystem extends System {
 	update({ game, dt } = {}) {
 		for (const entity of game.currentWorld?.entityManager) {
 			if (entity.isDead) {
-				// Generate a random number between 1 and 3 for the audio file selection
+				/* Generate a random number between 1 and 3 for the audio file selection */
 				const randomNum = Math.floor(Math.random() * 3) + 1;
 				/* Relative path will resolve to /public/...` without further modification */
 				const filePath = `./assets/audio/pop${randomNum}.mp3`;

@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from "react";
+
 import main from "../../../bubbles/main";
 
 export const useGame = ({ ...args } = {}) => {
@@ -30,12 +31,4 @@ export const useGame = ({ ...args } = {}) => {
 	};
 };
 
-export const Bubble = () => {
-	const pixiContainer = useRef(null);
-
-	useGame(pixiContainer);
-
-	return <div ref={ pixiContainer } style={ { width: "100%", height: "100%" } }></div>;
-};
-
-export default Bubble;
+export default useGame;
