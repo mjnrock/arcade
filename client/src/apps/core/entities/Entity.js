@@ -1,5 +1,7 @@
 import { v4 as uuid, validate } from "uuid";
 
+import Physics from "../components/Physics";
+
 export class Entity {
 	constructor ({ id, meta = {}, components = [] } = {}) {
 		this.id = id ?? uuid();
@@ -57,7 +59,7 @@ export class Entity {
 	getComponent(component) {
 		if(validate(component)) {
 			return this.components.get(component);
-		} else if(typeof component === "function" ) {
+		} else if(typeof component === "function") {
 			for(let [ , comp ] of this.components) {
 				if(comp instanceof component) {
 					return comp;

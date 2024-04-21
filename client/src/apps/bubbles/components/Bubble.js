@@ -1,27 +1,10 @@
-import { Graphics } from "pixi.js";
-import Component from "../../core/components/Component";
+import PhysicsComponent from "../../core/components/Physics";
 
-export class Bubble extends Component {
-	constructor({ id, x, y, vx, vy, r, color } = {}) {
-		super({ id });
-
-		this.x = x;
-		this.y = y;
-		this.vx = vx;
-		this.vy = vy;
+export class Bubble extends PhysicsComponent {
+	constructor ({ id, x, y, vx, vy, r, color  } = {}) {
+		super({ id, x, y, vx, vy, r });
 
 		this.color = color; // Ensure this is a numeric color value for PIXI
-
-		this.graphics = new Graphics();
-		this.model = {
-			type: "circle",
-			r: r,
-		};
-	}
-
-	update({ dt, vx = this.vx, vy = this.vy } = {}) {
-		this.x += vx * dt;
-		this.y += vy * dt;
 	}
 
 	render({ g = this.graphics } = {}) {

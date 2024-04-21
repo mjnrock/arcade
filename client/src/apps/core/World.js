@@ -1,7 +1,7 @@
 import { v4 as uuid } from "uuid";
 
 import EntityManager from "./entities/EntityManager";
-import BubbleComponent from "../bubbles/components/Bubble";
+import PhysicsComponent from "./components/Physics";
 
 export class World {
 	constructor ({ game, id, entities = [] } = {}) {
@@ -18,9 +18,13 @@ export class World {
 		for(const entity of entities) {
 			this.entityManager.add(entity);
 
-			const bubble = entity.getComponent(BubbleComponent);
-			if(bubble) {
-				this.game.pixi.stage.addChild(bubble.graphics);
+			/* Because we pass the class, this will ultimately perform an "instanceof" check
+			* to determine if the entity has a PhysicsComponent.  Accordingly, if has more
+			* than one (1), it will use the first one found.
+			*/
+			const physics = entity.getComponent(PhysicsComponent);
+			if(physics) {
+				this.game.pixi.stage.addChild(physics.graphics);
 			}
 		}
 
@@ -31,9 +35,9 @@ export class World {
 		for(const entity of entities) {
 			this.entityManager.remove(entity);
 
-			const bubble = entity.getComponent(BubbleComponent);
-			if(bubble) {
-				this.game.pixi.stage.removeChild(bubble.graphics);
+			const physics = entity.getComponent(PhysicsComponent);
+			if(physics) {
+				this.game.pixi.stage.removeChild(physics.graphics);
 			}
 		}
 
