@@ -7,11 +7,6 @@ export class Animus extends Component {
 
 		this.graphics = new Graphics();
 	}
-	// update({ dt } = {}) { }
-
-	// render({ g = this.graphics } = {}) {
-	// 	return g;
-	// }
 }
 
 export default Animus;

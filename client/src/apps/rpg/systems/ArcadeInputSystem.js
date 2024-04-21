@@ -1,4 +1,5 @@
 import CoreArcadeInputSystem from "../../core/systems/ArcadeInputSystem";
+
 import PhysicsComponent from "../../core/components/Physics";
 
 export class ArcadeInputSystem extends CoreArcadeInputSystem {
@@ -14,31 +15,19 @@ export class ArcadeInputSystem extends CoreArcadeInputSystem {
 			const speed = playerPhysics.speed * dtSeconds;
 
 			if(game.player.input.mask?.joystick?.UP) {
-				playerPhysics.setVelocity({
-					vy: speed * -1,
-				});
+				playerPhysics.vy = speed * -1;
 			} else if(game.player.input.mask?.joystick?.DOWN) {
-				playerPhysics.setVelocity({
-					vy: speed,
-				});
+				playerPhysics.vy = speed;
 			} else {
-				playerPhysics.setVelocity({
-					vy: 0,
-				});
+				playerPhysics.vy = 0;
 			}
 
 			if(game.player.input.mask?.joystick?.LEFT) {
-				playerPhysics.setVelocity({
-					vx: speed * -1,
-				});
+				playerPhysics.vx = speed * -1;
 			} else if(game.player.input.mask?.joystick?.RIGHT) {
-				playerPhysics.setVelocity({
-					vx: speed,
-				});
+				playerPhysics.vx = speed;
 			} else {
-				playerPhysics.setVelocity({
-					vx: 0,
-				});
+				playerPhysics.vx = 0;
 			}
 		}
 
