@@ -1,13 +1,13 @@
 import { v4 as uuid, validate } from "uuid";
 
-import Physics from "../components/Physics";
-
 export class Entity {
 	constructor ({ id, meta = {}, components = [] } = {}) {
 		this.id = id ?? uuid();
 		this.meta = {
+			/* Time created */
 			ts: Date.now(),
-			ttl: 1000 * (Math.random() * 5 + 5),
+			/* Time to live, adjust as needed */
+			ttl: Infinity,
 			...meta,
 		};
 		this.components = new Map();

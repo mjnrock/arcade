@@ -15,23 +15,46 @@ export class Physics extends Component {
 
 	setPosition({ x, y, isAdd = false } = {}) {
 		if(isAdd) {
-			this.x += x;
-			this.y += y;
+			if(!isNaN(x)) {
+				this.x += x;
+			}
+			if(!isNaN(y)) {
+				this.y += y;
+			}
 		} else {
-			this.x = x;
-			this.y = y;
+			if(!isNaN(x)) {
+				this.x = x;
+			}
+			if(!isNaN(y)) {
+				this.y = y;
+			}
 		}
 
 		return this;
 	}
 	setVelocity({ vx, vy, isAdd = false } = {}) {
 		if(isAdd) {
-			this.vx += vx;
-			this.vy += vy;
+			if(!isNaN(vx)) {
+				this.vx += vx;
+			}
+			if(!isNaN(vy)) {
+				this.vy += vy;
+			}
 		} else {
-			this.vx = vx;
-			this.vy = vy;
+			if(!isNaN(vx)) {
+				this.vx = vx;
+			}
+			if(!isNaN(vy)) {
+				this.vy = vy;
+			}
 		}
+
+		return this;
+	}
+
+	applyVelocity({ dt } = {}) {
+		this.x += this.vx * dt;
+		this.y += this.vy * dt;
 
 		return this;
 	}

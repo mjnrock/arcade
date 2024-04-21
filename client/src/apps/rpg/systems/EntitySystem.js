@@ -6,19 +6,14 @@ export class EntitySystem extends CoreEntitySystem {
 		super({ game });
 	}
 
-	update({ game, dt } = {}) {
-		for(const entity of game.currentWorld.entityManager) {
-			const physics = entity.getComponent(PlayerComponent);
-			if(physics) {
-				physics.setPosition({
-					x: game.player.input.x,
-					y: game.player.input.y,
-				});
-			}
-		}
+	// update({ game, dt } = {}) {
+	// 	for(const entity of game.currentWorld.entityManager) {
+	// 		const physics = entity.getComponent(PlayerComponent);
+	// 		if(physics) {}
+	// 	}
 
-		return this;
-	}
+	// 	return this;
+	// }
 	// render({ game, dt } = {}) {}
 }
 

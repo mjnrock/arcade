@@ -1,39 +1,47 @@
 import CoreArcadeInputSystem from "../../core/systems/ArcadeInputSystem";
+import PlayerComponent from "../components/Player";
 
 export class ArcadeInputSystem extends CoreArcadeInputSystem {
 	constructor ({ game } = {}) {
 		super({ game });
 	}
+
 	update({ game, dt } = {}) {
-		const step = game.player.input.speed;
-		if(game.player.input.mask?.joystick?.UP) {
-			game.player.input.y -= step;
-		}
-		if(game.player.input.mask?.joystick?.DOWN) {
-			game.player.input.y += step;
-		}
-		if(game.player.input.mask?.joystick?.LEFT) {
-			game.player.input.x -= step;
-		}
-		if(game.player.input.mask?.joystick?.RIGHT) {
-			game.player.input.x += step;
+		const dtSeconds = dt / 1000;
+		const playerPhysics = game.player.entity.getComponent(PlayerComponent);
+
+		if(playerPhysics) {
+			const speed = playerPhysics.speed * dtSeconds;
+
+			if(game.player.input.mask?.joystick?.UP) {
+				playerPhysics.setVelocity({
+					vy: speed * -1,
+				});
+			} else if(game.player.input.mask?.joystick?.DOWN) {
+				playerPhysics.setVelocity({
+					vy: speed,
+				});
+			} else {
+				playerPhysics.setVelocity({
+					vy: 0,
+				});
+			}
+
+			if(game.player.input.mask?.joystick?.LEFT) {
+				playerPhysics.setVelocity({
+					vx: speed * -1,
+				});
+			} else if(game.player.input.mask?.joystick?.RIGHT) {
+				playerPhysics.setVelocity({
+					vx: speed,
+				});
+			} else {
+				playerPhysics.setVelocity({
+					vx: 0,
+				});
+			}
 		}
 
-		if(game.player.input.x < 0) {
-			game.player.input.x = 0;
-		} else if(game.player.input.x > window.innerWidth) {
-			game.player.input.x = window.innerWidth;
-		}
-
-		if(game.player.input.y < 0) {
-			game.player.input.y = 0;
-		} else if(game.player.input.y > window.innerHeight) {
-			game.player.input.y = window.innerHeight;
-		}
-
-		const { buttons } = game.player.input.mask ?? {}
-		const { K1, K2, K3, K4, K11, K12 } = buttons ?? {};
-		const cursor = game.player.input;
 	}
 };
 

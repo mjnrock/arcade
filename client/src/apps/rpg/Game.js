@@ -6,6 +6,7 @@ import ArcadeInputSystem from "./systems/ArcadeInputSystem";
 import EntitySystem from "./systems/EntitySystem";
 
 import Player from "./entities/Player";
+import PlayerComponent from "./components/Player";
 
 export class RPG extends Game {
 	constructor ({ ...args } = {}) {
@@ -17,7 +18,20 @@ export class RPG extends Game {
 		]);
 
 		this.player = {
-			entity: new Player(),
+			entity: new Player({
+				components: [
+					new PlayerComponent({
+						x: 0.5 * window.innerWidth,
+						y: 0.5 * window.innerHeight,
+						vx: (Math.random() - 0.5) * 200,
+						vy: (Math.random() - 0.5) * 200,
+						model: {
+							r: Math.random() * 20 + 5,
+						},
+						color: `#000`,
+					}),
+				],
+			}),
 			input: {
 				mask: {},
 				x: ~~(window.innerWidth / 2),
