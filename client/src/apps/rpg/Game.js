@@ -1,9 +1,10 @@
-import * as PIXI from "pixi.js";
-
 import Game from "../core/Game";
 
 import ArcadeInputSystem from "./systems/ArcadeInputSystem";
 import EntitySystem from "./systems/EntitySystem";
+
+import PhysicsComponent from "../core/components/Physics";
+import AnimusComponent from "../core/components/Animus";
 
 import Player from "./entities/Player";
 import PlayerComponent from "./components/Player";
@@ -20,15 +21,28 @@ export class RPG extends Game {
 		this.player = {
 			entity: new Player({
 				components: [
-					new PlayerComponent({
-						x: 0.5 * window.innerWidth,
-						y: 0.5 * window.innerHeight,
+					PhysicsComponent.Factory({
+						x: Math.random() * window.innerWidth,
+						y: Math.random() * window.innerHeight,
 						vx: (Math.random() - 0.5) * 200,
 						vy: (Math.random() - 0.5) * 200,
 						model: {
 							r: Math.random() * 20 + 5,
 						},
-						color: `#000`,
+					}),
+					AnimusComponent.Factory({
+						color: `#${ Math.floor(Math.random() * 16777215).toString(16).padStart(6, "0") }`,
+						render({ entity, g = this.graphics } = {}) {
+							const { x, y, model } = entity.getComponent(PhysicsComponent);
+
+							g.clear();
+							g.lineStyle(1, this.color, 0.5);
+							g.beginFill(this.color, 0.3);
+							g.drawCircle(x, y, model.r);
+							g.endFill();
+
+							return g;
+						},
 					}),
 				],
 			}),

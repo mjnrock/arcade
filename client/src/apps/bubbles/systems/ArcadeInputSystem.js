@@ -1,7 +1,8 @@
 import CoreArcadeInputSystem from "../../core/systems/ArcadeInputSystem";
+import PhysicsComponent from "../../core/components/Physics";
 
-import BubbleComponent from "../components/Bubble";
 import BubbleEntity from "../entities/Bubble";
+import BubbleAnimusComponent from "../components/BubbleAnimus";
 
 export class ArcadeInputSystem extends CoreArcadeInputSystem {
 	constructor ({ game } = {}) {
@@ -54,16 +55,18 @@ export class ArcadeInputSystem extends CoreArcadeInputSystem {
 					ttl: 1000 * (Math.random() * 2 + 1),
 				},
 				components: [
-					new BubbleComponent({
+					PhysicsComponent.Factory({
 						x: cursor.x,
 						y: cursor.y,
 						vx: (Math.random() - 0.5) * 50,
 						vy: (Math.random() - 0.5) * 50,
+
 						model: {
+							type: "circle",
 							r: Math.random() * 10 + 5,
 						},
-						color: `#ff${ Math.floor(Math.random() * 256).toString(16).padStart(2, "0") }${ Math.floor(Math.random() * 256).toString(16).padStart(2, "0") }`,
 					}),
+					BubbleAnimusComponent.Factory({}),
 				],
 			}));
 
@@ -75,17 +78,18 @@ export class ArcadeInputSystem extends CoreArcadeInputSystem {
 					ttl: 1000 * (Math.random() * 3),
 				},
 				components: [
-					new BubbleComponent({
+					PhysicsComponent.Factory({
 						x: Math.random() * window.innerWidth,
 						y: Math.random() * window.innerHeight,
 						vx: (Math.random() - 0.5) * 75,
 						vy: (Math.random() - 0.5) * 75,
+
 						model: {
+							type: "circle",
 							r: Math.random() * 50 + 5,
 						},
-						// color: `#${ Math.floor(Math.random() * 16777215).toString(16).padStart(6, "0") }`,
-						color: `#${ Math.floor(Math.random() * 256).toString(16).padStart(2, "0") }${ Math.floor(Math.random() * 256).toString(16).padStart(2, "0") }ff`,
 					}),
+					BubbleAnimusComponent.Factory({}),
 				],
 			}));
 

@@ -78,13 +78,13 @@ export class Entity {
 		return false;
 	}
 
-	update(...args) {
-		this.components.forEach(component => component?.update(...args));
+	update({ ...args } = {}) {
+		this.components.forEach(component => component?.update({ entity: this, ...args }));
 		return this;
 	}
 
-	render(...args) {
-		this.components.forEach(component => component?.render(...args));
+	render({ ...args } = {}) {
+		this.components.forEach(component => component?.render({ entity: this, ...args }));
 		return this;
 	}
 

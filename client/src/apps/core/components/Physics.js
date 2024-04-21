@@ -1,4 +1,3 @@
-import { Graphics } from "pixi.js";
 import Component from "./Component";
 
 export class Physics extends Component {
@@ -9,8 +8,6 @@ export class Physics extends Component {
 		this.y = y;
 		this.vx = vx;
 		this.vy = vy;
-
-		this.graphics = new Graphics();
 	}
 
 	setPosition({ x, y, isAdd = false } = {}) {
@@ -61,10 +58,6 @@ export class Physics extends Component {
 
 	update({ dt } = {}) {
 		this.applyVelocity({ dt });
-	}
-
-	render({ g = this.graphics } = {}) {
-		return g;
 	}
 }
 
