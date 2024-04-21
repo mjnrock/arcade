@@ -54,20 +54,18 @@ export class ArcadeInputSystem extends CoreArcadeInputSystem {
 				meta: {
 					ttl: 1000 * (Math.random() * 2 + 1),
 				},
-				components: [
-					PhysicsComponent.Factory({
-						x: cursor.x,
-						y: cursor.y,
-						vx: (Math.random() - 0.5) * 50,
-						vy: (Math.random() - 0.5) * 50,
+				physics: {
+					x: cursor.x,
+					y: cursor.y,
+					vx: (Math.random() - 0.5) * 50,
+					vy: (Math.random() - 0.5) * 50,
 
-						model: {
-							type: "circle",
-							r: Math.random() * 10 + 5,
-						},
-					}),
-					BubbleAnimusComponent.Factory({}),
-				],
+					model: {
+						type: "circle",
+						r: Math.random() * 10 + 5,
+					},
+				},
+				animus: {},
 			}));
 
 			game.currentWorld?.addEntity(...bubbles);
@@ -77,20 +75,18 @@ export class ArcadeInputSystem extends CoreArcadeInputSystem {
 				meta: {
 					ttl: 1000 * (Math.random() * 3),
 				},
-				components: [
-					PhysicsComponent.Factory({
-						x: Math.random() * window.innerWidth,
-						y: Math.random() * window.innerHeight,
-						vx: (Math.random() - 0.5) * 75,
-						vy: (Math.random() - 0.5) * 75,
+				physics: {
+					x: Math.random() * window.innerWidth,
+					y: Math.random() * window.innerHeight,
+					vx: (Math.random() - 0.5) * 75,
+					vy: (Math.random() - 0.5) * 75,
 
-						model: {
-							type: "circle",
-							r: Math.random() * 50 + 5,
-						},
-					}),
-					BubbleAnimusComponent.Factory({}),
-				],
+					model: {
+						type: "circle",
+						r: Math.random() * 50 + 5,
+					},
+				},
+				animus: {},
 			}));
 
 			game.currentWorld?.addEntity(...bubbles);

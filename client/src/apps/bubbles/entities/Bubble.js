@@ -1,8 +1,14 @@
-import Entity from "../../core/entities/Entity";
+import LivingEntity from "../../core/entities/LivingEntity";
 
-export class Bubble extends Entity {
-	constructor ({ id, meta = {}, components = [] } = {}) {
-		super({ id, meta, components });
+import BubbleAnimus from "../components/BubbleAnimus";
+
+export class Bubble extends LivingEntity {
+	constructor ({ physics = {}, animus = {}, ...props } = {}) {
+		super({
+			...props,
+			physics,
+			animus: [ BubbleAnimus, animus ],
+		});
 	}
 };
 
