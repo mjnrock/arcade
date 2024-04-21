@@ -1,5 +1,5 @@
 import CoreArcadeInputSystem from "../../core/systems/ArcadeInputSystem";
-import PlayerComponent from "../components/Player";
+import PhysicsComponent from "../../core/components/Physics";
 
 export class ArcadeInputSystem extends CoreArcadeInputSystem {
 	constructor ({ game } = {}) {
@@ -8,8 +8,8 @@ export class ArcadeInputSystem extends CoreArcadeInputSystem {
 
 	update({ game, dt } = {}) {
 		const dtSeconds = dt * 1000;
-		
-		const playerPhysics = game.player.entity.getComponent(PlayerComponent);
+
+		const playerPhysics = game.player.entity.getComponent(PhysicsComponent);
 		if(playerPhysics) {
 			const speed = playerPhysics.speed * dtSeconds;
 

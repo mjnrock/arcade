@@ -1,5 +1,4 @@
 import CoreEntitySystem from "../../core/systems/EntitySystem";
-import PlayerComponent from "../components/Player";
 
 export class EntitySystem extends CoreEntitySystem {
 	constructor ({ game } = {}) {

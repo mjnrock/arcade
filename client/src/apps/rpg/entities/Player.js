@@ -1,8 +1,14 @@
-import Entity from "../../core/entities/Entity";
+import LivingEntity from "../../core/entities/LivingEntity";
 
-export class Player extends Entity {
-	constructor ({ id, meta = {}, components = [] } = {}) {
-		super({ id, meta, components });
+import PlayerAnimus from "../components/PlayerAnimus";
+
+export class Player extends LivingEntity {
+	constructor ({ physics = {}, animus = {}, ...props } = {}) {
+		super({
+			...props,
+			physics,
+			animus: [ PlayerAnimus, animus ],
+		});
 	}
 };
 

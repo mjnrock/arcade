@@ -3,11 +3,7 @@ import Game from "../core/Game";
 import ArcadeInputSystem from "./systems/ArcadeInputSystem";
 import EntitySystem from "./systems/EntitySystem";
 
-import PhysicsComponent from "../core/components/Physics";
-import AnimusComponent from "../core/components/Animus";
-
 import Player from "./entities/Player";
-import PlayerComponent from "./components/Player";
 
 export class RPG extends Game {
 	constructor ({ ...args } = {}) {
@@ -20,31 +16,17 @@ export class RPG extends Game {
 
 		this.player = {
 			entity: new Player({
-				components: [
-					PhysicsComponent.Factory({
-						x: Math.random() * window.innerWidth,
-						y: Math.random() * window.innerHeight,
-						vx: (Math.random() - 0.5) * 200,
-						vy: (Math.random() - 0.5) * 200,
-						model: {
-							r: Math.random() * 20 + 5,
-						},
-					}),
-					AnimusComponent.Factory({
-						color: `#${ Math.floor(Math.random() * 16777215).toString(16).padStart(6, "0") }`,
-						render({ entity, g = this.graphics } = {}) {
-							const { x, y, model } = entity.getComponent(PhysicsComponent);
+				physics: {
+					x: Math.random() * window.innerWidth,
+					y: Math.random() * window.innerHeight,
+					speed: 5,
 
-							g.clear();
-							g.lineStyle(1, this.color, 0.5);
-							g.beginFill(this.color, 0.3);
-							g.drawCircle(x, y, model.r);
-							g.endFill();
-
-							return g;
-						},
-					}),
-				],
+					model: {
+						type: "circle",
+						r: Math.random() * 20 + 5,
+					},
+				},
+				animus: {},
 			}),
 			input: {
 				mask: {},
