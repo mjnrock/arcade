@@ -59,7 +59,9 @@ export class ArcadeInputSystem extends CoreArcadeInputSystem {
 						y: cursor.y,
 						vx: (Math.random() - 0.5) * 50,
 						vy: (Math.random() - 0.5) * 50,
-						r: Math.random() * 10 + 5,
+						model: {
+							r: Math.random() * 10 + 5,
+						},
 						color: `#ff${ Math.floor(Math.random() * 256).toString(16).padStart(2, "0") }${ Math.floor(Math.random() * 256).toString(16).padStart(2, "0") }`,
 					}),
 				],
@@ -78,7 +80,9 @@ export class ArcadeInputSystem extends CoreArcadeInputSystem {
 						y: Math.random() * window.innerHeight,
 						vx: (Math.random() - 0.5) * 75,
 						vy: (Math.random() - 0.5) * 75,
-						r: Math.random() * 50 + 5,
+						model: {
+							r: Math.random() * 50 + 5,
+						},
 						// color: `#${ Math.floor(Math.random() * 16777215).toString(16).padStart(6, "0") }`,
 						color: `#${ Math.floor(Math.random() * 256).toString(16).padStart(2, "0") }${ Math.floor(Math.random() * 256).toString(16).padStart(2, "0") }ff`,
 					}),
