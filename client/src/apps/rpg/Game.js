@@ -27,12 +27,12 @@ export class RPG extends Game {
 	}
 
 
-	update(args = {}) {
-		super.update(args);
+	update(...args) {
+		super.update(...args);
 	}
 
-	render() {
-		super.render();
+	render(...args) {
+		super.render(...args);
 
 		this.player.input.crosshairGraphic.clear();
 		this.player.input.crosshairGraphic.lineStyle(2, 0x000000, 1);

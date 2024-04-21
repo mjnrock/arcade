@@ -6,8 +6,8 @@ export class System {
 		this.game = game;
 	}
 
-	update(dt) { }
-	render() { }
+	update({ game, dt } = {}) {}
+	render({ game, dt } = {}) {}
 
 	/* Centralized access to the game's router for easy refactoring */
 	get router() {

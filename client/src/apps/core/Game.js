@@ -158,10 +158,18 @@ export class Game {
 		this.currentWorld?.update(args);
 	}
 
-	render() {
-		this.currentWorld?.render({
+	render(dt, ip) {
+		const args = {
 			game: this,
-		});
+			dt: dt / 1000,
+			ip,
+		};
+
+		for(const system of Object.values(this.systems)) {
+			system.render(args);
+		}
+
+		this.currentWorld?.render(args);
 	}
 }
 

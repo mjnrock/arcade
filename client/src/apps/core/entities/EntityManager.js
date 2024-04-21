@@ -13,6 +13,10 @@ export class EntityManager {
 		return this.entities.values();
 	}
 
+	get size() {
+		return this.entities.size;
+	}
+
 	add(...entities) {
 		entities.forEach(entity => this.entities.set(entity.id, entity));
 

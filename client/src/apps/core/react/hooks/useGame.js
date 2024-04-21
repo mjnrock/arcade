@@ -1,6 +1,7 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 export const useGame = (main, { ...args } = {}) => {
+	const [ forceRender, setForceRender ] = useState(0);
 	const gameInstance = useRef(null);
 	const containerRef = useRef(null);
 
@@ -17,6 +18,8 @@ export const useGame = (main, { ...args } = {}) => {
 		if(gameInstance.current && gameInstance.appendChild) {
 			gameInstance.current?.appendChild(gameInstance.current?.pixi?.view);
 		}
+
+		setForceRender(forceRender + 1);
 
 		return () => {
 			gameInstance.current?.stop();
