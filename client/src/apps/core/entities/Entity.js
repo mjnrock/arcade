@@ -10,6 +10,7 @@ export class Entity {
 			ttl: Infinity,
 			...meta,
 		};
+
 		this.components = new Map();
 
 		this.addComponent(...components);
@@ -24,9 +25,9 @@ export class Entity {
 			if(typeof component === "function") {
 				const newComponent = component();
 
-				this.components.set(newComponent.id, newComponent);
+				this.components.set(newComponent.type ?? newComponent.id, newComponent);
 			} else {
-				this.components.set(component.id, component);
+				this.components.set(component.type ?? component.id, component);
 			}
 		});
 		return this;
@@ -34,7 +35,7 @@ export class Entity {
 
 	removeComponent(...components) {
 		components.forEach(component => {
-			if(validate(component)) {
+			if(typeof component === "string") {
 				this.components.delete(component);
 			} else if(typeof component === "function" && component.prototype?.constructor === component) {
 				for(let [ , comp ] of this.components) {
@@ -57,17 +58,11 @@ export class Entity {
 	}
 
 	getComponent(component) {
-		if(validate(component)) {
+		if(typeof component === "string") {
 			return this.components.get(component);
 		} else if(typeof component === "function") {
 			for(let [ , comp ] of this.components) {
 				if(comp instanceof component) {
-					return comp;
-				}
-			}
-		} else if(typeof component === "string") {
-			for(let [ , comp ] of this.components) {
-				if(comp.prototype?.constructor === component || comp.constructor?.name === component) {
 					return comp;
 				}
 			}

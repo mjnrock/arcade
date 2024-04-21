@@ -1,6 +1,6 @@
 import CoreArcadeInputSystem from "../../core/systems/ArcadeInputSystem";
 
-import PhysicsComponent from "../../core/components/Physics";
+import { EnumComponentType } from "../../core/components/EnumComponentType";
 
 export class ArcadeInputSystem extends CoreArcadeInputSystem {
 	constructor ({ game } = {}) {
@@ -10,7 +10,7 @@ export class ArcadeInputSystem extends CoreArcadeInputSystem {
 	update({ game, dt } = {}) {
 		const dtSeconds = dt * 1000;
 
-		const playerPhysics = game.player.entity.getComponent(PhysicsComponent);
+		const playerPhysics = game.player.entity.getComponent(EnumComponentType.Physics);
 		if(playerPhysics) {
 			const speed = playerPhysics.speed * dtSeconds;
 

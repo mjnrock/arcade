@@ -1,8 +1,11 @@
 import Component from "./Component";
+import { EnumComponentType } from "./EnumComponentType";
 
 export class Physics extends Component {
-	constructor ({ id, x, y, vx, vy, ...props } = {}) {
-		super({ id, ...props });
+	static Type = EnumComponentType.Physics;
+
+	constructor ({ x, y, vx, vy, ...props } = {}) {
+		super({ ...props });
 
 		this.x = x;
 		this.y = y;

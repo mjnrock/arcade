@@ -1,3 +1,4 @@
+import { EnumComponentType } from "../core/components/EnumComponentType";
 import World from "../core/World";
 
 import RPGGame from "./Game";
@@ -13,7 +14,10 @@ export const main = async ({ config = {}, start = false } = {}) => {
 
 	game.addWorld(world);
 
-	console.log(game)
+	// console.log(game)
+	// console.log(game.player)
+	// console.log(EnumComponentType.Physics)
+	// console.log(game.player.entity.getComponent(EnumComponentType.Physics))
 
 	if(start) {
 		game.start();

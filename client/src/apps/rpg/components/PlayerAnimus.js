@@ -1,6 +1,5 @@
-import PhysicsComponent from "../../core/components/Physics";
-
 import Animus from "../../core/components/Animus";
+import { EnumComponentType } from "../../core/components/EnumComponentType";
 
 export class PlayerAnimus extends Animus {
 	constructor ({ color, ...props } = {}) {
@@ -10,7 +9,7 @@ export class PlayerAnimus extends Animus {
 	}
 
 	render({ entity, g = this.graphics } = {}) {
-		const { x, y, model } = entity.getComponent(PhysicsComponent);
+		const { x, y, model } = entity.getComponent(EnumComponentType.Physics);
 
 		g.clear();
 		g.lineStyle(1, this.color, 0.5);

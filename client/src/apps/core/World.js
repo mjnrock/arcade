@@ -1,17 +1,17 @@
 import { v4 as uuid } from "uuid";
 
 import EntityManager from "./entities/EntityManager";
-import AnimusComponent from "./components/Animus";
+import { EnumComponentType } from "./components/EnumComponentType";
 
 export const ClientSide = {
 	mountAnimusComponent({ game, entity } = {}) {
-		const animus = entity.getComponent(AnimusComponent);
+		const animus = entity.getComponent(EnumComponentType.Animus);
 		if(animus) {
 			game.pixi.stage.addChild(animus.graphics);
 		}
 	},
 	unmountAnimusComponent({ game, entity } = {}) {
-		const animus = entity.getComponent(AnimusComponent);
+		const animus = entity.getComponent(EnumComponentType.Animus);
 		if(animus) {
 			game.pixi.stage.removeChild(animus.graphics);
 		}

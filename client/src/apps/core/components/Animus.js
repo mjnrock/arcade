@@ -1,11 +1,16 @@
 import { Graphics } from "pixi.js";
+
 import Component from "./Component";
+import { EnumComponentType } from "./EnumComponentType";
+
 
 export class Animus extends Component {
-	constructor ({ id, g, ...props } = {}) {
-		super({ id, ...props });
+	static Type = EnumComponentType.Animus;
 
-		this.graphics = new Graphics();
+	constructor ({ g, ...props } = {}) {
+		super({ ...props });
+
+		this.graphics = g ?? new Graphics();
 	}
 }
 
