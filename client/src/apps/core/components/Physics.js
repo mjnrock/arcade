@@ -13,6 +13,29 @@ export class Physics extends Component {
 		this.graphics = new Graphics();
 	}
 
+	setPosition({ x, y, isAdd = false } = {}) {
+		if(isAdd) {
+			this.x += x;
+			this.y += y;
+		} else {
+			this.x = x;
+			this.y = y;
+		}
+
+		return this;
+	}
+	setVelocity({ vx, vy, isAdd = false } = {}) {
+		if(isAdd) {
+			this.vx += vx;
+			this.vy += vy;
+		} else {
+			this.vx = vx;
+			this.vy = vy;
+		}
+
+		return this;
+	}
+
 	update({ dt } = {}) {
 		this.x += this.vx * dt;
 		this.y += this.vy * dt;

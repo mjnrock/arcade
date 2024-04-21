@@ -1,6 +1,6 @@
 import PhysicsComponent from "../../core/components/Physics";
 
-export class Bubble extends PhysicsComponent {
+export class Player extends PhysicsComponent {
 	constructor ({ id, x, y, vx, vy, model = {}, color } = {}) {
 		super({ id, x, y, vx, vy });
 
@@ -24,4 +24,4 @@ export class Bubble extends PhysicsComponent {
 	}
 }
 
-export default Bubble;
+export default Player;

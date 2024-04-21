@@ -1,16 +1,16 @@
 import World from "../core/World";
 
 import RPGGame from "./Game";
-import BubbleComponent from "./components/Bubble";
+import PlayerComponent from "./components/Player";
 import PlayerEntity from "./entities/Player";
 
 export const main = async ({ config = {}, start = false } = {}) => {
 	const game = new RPGGame(config);
 	const world = new World({
 		game,
-		entities: PlayerEntity.Factory(100, () => ({
+		entities: PlayerEntity.Factory(1, () => ({
 			components: [
-				new BubbleComponent({
+				new PlayerComponent({
 					x: Math.random() * window.innerWidth,
 					y: Math.random() * window.innerHeight,
 					vx: (Math.random() - 0.5) * 200,

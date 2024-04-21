@@ -5,6 +5,8 @@ import Game from "../core/Game";
 import ArcadeInputSystem from "./systems/ArcadeInputSystem";
 import EntitySystem from "./systems/EntitySystem";
 
+import Player from "./entities/Player";
+
 export class RPG extends Game {
 	constructor ({ ...args } = {}) {
 		super({ ...args });
@@ -15,8 +17,8 @@ export class RPG extends Game {
 		]);
 
 		this.player = {
+			entity: new Player(),
 			input: {
-				crosshairGraphic: new PIXI.Graphics(),
 				mask: {},
 				x: ~~(window.innerWidth / 2),
 				y: ~~(window.innerHeight / 2),
@@ -24,8 +26,6 @@ export class RPG extends Game {
 			},
 			...(args.player ?? {}),
 		};
-
-		this.pixi.stage.addChild(this.player.input.crosshairGraphic);
 	}
 
 
@@ -35,13 +35,6 @@ export class RPG extends Game {
 
 	render(...args) {
 		super.render(...args);
-
-		this.player.input.crosshairGraphic.clear();
-		this.player.input.crosshairGraphic.lineStyle(2, 0x000000, 1);
-		this.player.input.crosshairGraphic.moveTo(this.player.input.x - 10, this.player.input.y);
-		this.player.input.crosshairGraphic.lineTo(this.player.input.x + 10, this.player.input.y);
-		this.player.input.crosshairGraphic.moveTo(this.player.input.x, this.player.input.y - 10);
-		this.player.input.crosshairGraphic.lineTo(this.player.input.x, this.player.input.y + 10);
 	}
 };
 
