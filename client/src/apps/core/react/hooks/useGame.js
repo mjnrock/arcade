@@ -1,8 +1,6 @@
 import React, { useEffect, useRef } from "react";
 
-import main from "../../../bubbles/main";
-
-export const useGame = ({ ...args } = {}) => {
+export const useGame = (main, { ...args } = {}) => {
 	const gameInstance = useRef(null);
 	const containerRef = useRef(null);
 

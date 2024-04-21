@@ -1,26 +1,20 @@
-import System from "../../core/lib/message/System";
+import CoreArcadeInputSystem from "../../core/systems/ArcadeInputSystem";
 
 import BubbleComponent from "../components/Bubble";
 import BubbleEntity from "../entities/Bubble";
 
-export class ArcadeInputSystem extends System {
+export class ArcadeInputSystem extends CoreArcadeInputSystem {
 	constructor ({ game } = {}) {
 		super({ game });
 	}
 
 	input({ data, message } = {}) {
-		const { buttons, joystick } = data;
-		const { K1, K2, K3, K4, K11, K12, SE, ST } = buttons;
-		const { UP, DOWN, LEFT, RIGHT } = joystick;
-
-		const cursor = this.game.player.input;
+		const { ST } = super.input({ data, message });
 
 		if(ST) {
 			this.game.player.input.x = ~~(Math.random() * window.innerWidth);
 			this.game.player.input.y = ~~(Math.random() * window.innerHeight);
 		}
-
-		this.game.player.input.mask = data;
 	}
 
 	update({ game, dt } = {}) {
