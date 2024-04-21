@@ -1,10 +1,12 @@
 import { v4 as uuid } from "uuid";
 
 export class Component {
-	static Id = uuid();
+	constructor ({ id, ...props } = {}) {
+		this.id = id ?? uuid();
 
-	constructor ({ id } = {}) {
-		this.id = id ?? Component.Id;
+		for(const key in props) {
+			this[ key ] = props[ key ];
+		}
 	}
 
 	update(...args) { }
