@@ -4,8 +4,7 @@ export class Bubble extends PhysicsComponent {
 	constructor ({ id, x, y, vx, vy, model = {}, color } = {}) {
 		super({ id, x, y, vx, vy });
 
-		this.color = color; // Ensure this is a numeric color value for PIXI
-
+		this.color = color;
 		this.model = {
 			type: "circle",
 			r: 10,

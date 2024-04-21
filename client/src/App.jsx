@@ -1,5 +1,5 @@
-// import ModuleJSX from "./apps/bubbles/Viewport";
-import ModuleJSX from "./apps/rpg/Viewport";
+import ModuleJSX from "./apps/bubbles/Viewport";
+// import ModuleJSX from "./apps/rpg/Viewport";
 
 export const App = () => {
 	return (

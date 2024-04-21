@@ -2,13 +2,17 @@ import { Graphics } from "pixi.js";
 import Component from "./Component";
 
 export class Physics extends Component {
-	constructor ({ id, x, y, vx, vy } = {}) {
+	constructor ({ id, x, y, vx, vy, ...props } = {}) {
 		super({ id });
 
 		this.x = x;
 		this.y = y;
 		this.vx = vx;
 		this.vy = vy;
+
+		for(const key in props) {
+			this[ key ] = props[ key ];
+		}
 
 		this.graphics = new Graphics();
 	}
@@ -60,8 +64,7 @@ export class Physics extends Component {
 	}
 
 	update({ dt } = {}) {
-		this.x += this.vx * dt;
-		this.y += this.vy * dt;
+		this.applyVelocity({ dt });
 	}
 
 	render({ g = this.graphics } = {}) {
