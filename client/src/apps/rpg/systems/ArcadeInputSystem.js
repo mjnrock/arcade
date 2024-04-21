@@ -7,9 +7,9 @@ export class ArcadeInputSystem extends CoreArcadeInputSystem {
 	}
 
 	update({ game, dt } = {}) {
-		const dtSeconds = dt / 1000;
+		const dtSeconds = dt * 1000;
+		
 		const playerPhysics = game.player.entity.getComponent(PlayerComponent);
-
 		if(playerPhysics) {
 			const speed = playerPhysics.speed * dtSeconds;
 
