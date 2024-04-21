@@ -1,6 +1,6 @@
-import System from "../../core/lib/message/System";
+import CoreEntitySystem from "../../core/systems/EntitySystem";
 
-export class EntitySystem extends System {
+export class EntitySystem extends CoreEntitySystem {
 	constructor({ game } = {}) {
 		super({ game });
 	}

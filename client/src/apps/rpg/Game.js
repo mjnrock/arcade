@@ -2,12 +2,14 @@ import * as PIXI from "pixi.js";
 
 import Game from "../core/Game";
 
+import ArcadeInputSystem from "./systems/ArcadeInputSystem";
 import EntitySystem from "./systems/EntitySystem";
 
 export class RPG extends Game {
 	constructor ({ ...args } = {}) {
 		super({ ...args });
 
+		this.systems.ArcadeInputSystem = new ArcadeInputSystem({ game: this });
 		this.addSystems([
 			[ EntitySystem, {} ],
 		]);

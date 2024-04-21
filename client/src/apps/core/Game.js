@@ -5,7 +5,7 @@ import GameLoop from "./GameLoop";
 import KeyboardInput from "./input/Keyboard";
 import MouseInput from "./input/Mouse";
 
-import ArcadeInputSystem from "../bubbles/systems/ArcadeInputSystem";
+import ArcadeInputSystem from "./systems/ArcadeInputSystem";
 
 import Router from "./lib/message/Router";
 import System from "./lib/message/System";
