@@ -6,10 +6,11 @@ export const main = async ({ config = {}, start = false } = {}) => {
 	const world = new World({
 		game,
 		entities: [
-			game.player.entity,
+			// game.player.entity,
 		],
 	});
 
+	world.addEntity(game.player.entity);
 	game.addWorld(world);
 
 	console.log(game)

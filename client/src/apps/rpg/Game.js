@@ -25,7 +25,7 @@ export class RPG extends Game {
 
 					model: {
 						type: "circle",
-						r: Math.random() * 20 + 5,
+						r: 16,
 					},
 				},
 				animus: {
