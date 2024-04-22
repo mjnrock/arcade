@@ -15,15 +15,6 @@ export class InputSystem extends CoreSystem {
 		if(compPlayerPhysics) {
 			/* Map controller inputs into player physics state */
 			const normalizedSpeed = compPlayerPhysics.speed * dtSeconds;
-			if(game.input.arcade?.joystick?.UP || game.input.keyboard?.hasFlag("UP")) {
-				compPlayerPhysics.vy = normalizedSpeed * -1;
-				compPlayerPhysics.facing = 0;
-			} else if(game.input.arcade?.joystick?.DOWN || game.input.keyboard?.hasFlag("DOWN")) {
-				compPlayerPhysics.vy = normalizedSpeed;
-				compPlayerPhysics.facing = 180;
-			} else {
-				compPlayerPhysics.vy = 0;
-			}
 			if(game.input.arcade?.joystick?.LEFT || game.input.keyboard?.hasFlag("LEFT")) {
 				compPlayerPhysics.vx = normalizedSpeed * -1;
 				compPlayerPhysics.facing = 270;
@@ -33,6 +24,15 @@ export class InputSystem extends CoreSystem {
 			} else {
 				compPlayerPhysics.vx = 0;
 			}
+			if(game.input.arcade?.joystick?.UP || game.input.keyboard?.hasFlag("UP")) {
+				compPlayerPhysics.vy = normalizedSpeed * -1;
+				compPlayerPhysics.facing = 0;
+			} else if(game.input.arcade?.joystick?.DOWN || game.input.keyboard?.hasFlag("DOWN")) {
+				compPlayerPhysics.vy = normalizedSpeed;
+				compPlayerPhysics.facing = 180;
+			} else {
+				compPlayerPhysics.vy = 0;
+			}
 
 			/* Simulate automatic firing */
 			if(game.input.arcade?.buttons?.K1 || game.input.keyboard.has("Space")) {
@@ -40,14 +40,14 @@ export class InputSystem extends CoreSystem {
 					vy = 0,
 					projSpeed = 250;
 
-				if(compPlayerPhysics.facing === 0) {
-					vy = projSpeed * -1;
-				} else if(compPlayerPhysics.facing === 90) {
-					vx = projSpeed;
-				} else if(compPlayerPhysics.facing === 180) {
+				if(compPlayerPhysics.facing === 180) {
 					vy = projSpeed;
 				} else if(compPlayerPhysics.facing === 270) {
 					vx = projSpeed * -1;
+				} else if(compPlayerPhysics.facing === 0) {
+					vy = projSpeed * -1;
+				} else if(compPlayerPhysics.facing === 90) {
+					vx = projSpeed;
 				}
 
 				const entProjectile = LivingEntity.Spawn({
