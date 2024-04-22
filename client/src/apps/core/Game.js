@@ -73,7 +73,12 @@ export class Game {
 		window.addEventListener("resize", fn);
 	}
 
-	addSystem(systemClass, args = {}) {
+	/**
+	 * If @systemClass is an instance of System, it will be mounted as-is.
+	 * Otherwise, it will be instantiated with @args and mounted.
+	 * In either case, the name of the constructor will be used as the key.
+	 */
+	mountSystem(systemClass, args = {}) {
 		if(systemClass instanceof System) {
 			this.systems[ systemClass.constructor ] = systemClass;
 		} else {
@@ -82,14 +87,22 @@ export class Game {
 
 		return this;
 	}
-	addSystems(systems = []) {
-		for(const [ system, args = {} ] of systems) {
-			this.addSystem(system, args);
+	mountSystems(...systems) {
+		for(let entry of systems) {
+			if(entry instanceof System) {
+				this.mountSystem(entry);
+				continue;
+			} else if(!Array.isArray(entry)) {
+				entry = [ entry ];
+			}
+
+			const [ system, args ] = entry;
+			this.mountSystem(system, args);
 		}
 
 		return this;
 	}
-	removeSystem(systemClass) {
+	unmountSystem(systemClass) {
 		if(systemClass instanceof System) {
 			delete this.systems[ systemClass.constructor ];
 		} else {
@@ -98,9 +111,9 @@ export class Game {
 
 		return this;
 	}
-	removeSystems(systems = []) {
+	unmountSystems(systems = []) {
 		for(const system of systems) {
-			this.removeSystem(system);
+			this.unmountSystem(system);
 		}
 
 		return this;

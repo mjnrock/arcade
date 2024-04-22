@@ -7,12 +7,14 @@ import LivingEntity from "./entities/LivingEntity";
 
 export class RPG extends Game {
 	constructor ({ ...args } = {}) {
-		super({ ...args });
+		super({
+			...args,
+		});
 
-		this.systems.InputSystem = new InputSystem({ game: this });
-		this.addSystems([
-			[ EntitySystem, {} ],
-		]);
+		this.mountSystems(
+			InputSystem,
+			EntitySystem,
+		);
 
 		this.player = {
 			entity: LivingEntity.Spawn({
@@ -26,7 +28,9 @@ export class RPG extends Game {
 						r: Math.random() * 20 + 5,
 					},
 				},
-				animus: {},
+				animus: {
+					color: "#0F0"
+				},
 			}),
 			input: {
 				mask: {},

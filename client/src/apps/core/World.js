@@ -29,6 +29,13 @@ export class World {
 		}
 	}
 
+	/**
+	 * Convenience method to get all entities in the World as an Array.
+	 */
+	get entities() {
+		return Array.from(this.entityManager.entities.values());
+	}
+
 	addEntity(...entities) {
 		for(const entity of entities) {
 			this.entityManager.add(entity);

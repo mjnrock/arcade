@@ -29,6 +29,10 @@ export class System {
 	sendToNetwork(message) {
 		this.router.send(message);
 	}
+
+	static Spawn({ game, ...args } = {}) {
+		return new this({ game, ...args });
+	}
 };
 
 export default System;

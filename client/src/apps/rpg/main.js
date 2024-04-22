@@ -1,6 +1,5 @@
-import World from "../core/World";
-
 import RPGGame from "./Game";
+import World from "./worlds/World";
 
 export const main = async ({ config = {}, start = false } = {}) => {
 	const game = new RPGGame(config);
@@ -12,6 +11,9 @@ export const main = async ({ config = {}, start = false } = {}) => {
 	});
 
 	game.addWorld(world);
+
+	console.log(game)
+	console.log(world)
 
 	// console.log(game)
 	// console.log(game.player)
