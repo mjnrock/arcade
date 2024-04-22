@@ -20,16 +20,16 @@ export class ArcadeInputSystem extends CoreArcadeInputSystem {
 
 	update({ game, dt } = {}) {
 		const step = game.player.input.speed;
-		if(game.player.input.mask?.joystick?.UP) {
+		if(game.input.arcade?.joystick?.UP) {
 			game.player.input.y -= step;
 		}
-		if(game.player.input.mask?.joystick?.DOWN) {
+		if(game.input.arcade?.joystick?.DOWN) {
 			game.player.input.y += step;
 		}
-		if(game.player.input.mask?.joystick?.LEFT) {
+		if(game.input.arcade?.joystick?.LEFT) {
 			game.player.input.x -= step;
 		}
-		if(game.player.input.mask?.joystick?.RIGHT) {
+		if(game.input.arcade?.joystick?.RIGHT) {
 			game.player.input.x += step;
 		}
 
@@ -45,7 +45,7 @@ export class ArcadeInputSystem extends CoreArcadeInputSystem {
 			game.player.input.y = window.innerHeight;
 		}
 
-		const { buttons } = game.player.input.mask ?? {}
+		const { buttons } = game.input.arcade ?? {}
 		const { K1, K2, K3, K4, K11, K12 } = buttons ?? {};
 		const cursor = game.player.input;
 		if(K1 || K2 || K3) {
