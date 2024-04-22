@@ -1,6 +1,6 @@
 import CoreArcadeInputSystem from "../../core/systems/ArcadeInputSystem";
 
-import { EnumComponentType } from "../../core/components/EnumComponentType";
+import { EnumComponentType } from "../components/EnumComponentType";
 
 export class ArcadeInputSystem extends CoreArcadeInputSystem {
 	constructor ({ game } = {}) {

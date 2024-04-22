@@ -3,7 +3,7 @@ import Game from "../core/Game";
 import ArcadeInputSystem from "./systems/ArcadeInputSystem";
 import EntitySystem from "./systems/EntitySystem";
 
-import Player from "./entities/Player";
+import LivingEntity from "./entities/LivingEntity";
 
 export class RPG extends Game {
 	constructor ({ ...args } = {}) {
@@ -15,7 +15,7 @@ export class RPG extends Game {
 		]);
 
 		this.player = {
-			entity: new Player({
+			entity: new LivingEntity({
 				physics: {
 					x: Math.random() * window.innerWidth,
 					y: Math.random() * window.innerHeight,

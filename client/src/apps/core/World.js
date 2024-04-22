@@ -4,13 +4,13 @@ import EntityManager from "./entities/EntityManager";
 import { EnumComponentType } from "./components/EnumComponentType";
 
 export const ClientSide = {
-	mountAnimusComponent({ game, entity } = {}) {
+	attachEntityGraphics({ game, entity } = {}) {
 		const animus = entity.getComponent(EnumComponentType.Animus);
 		if(animus) {
 			game.pixi.stage.addChild(animus.graphics);
 		}
 	},
-	unmountAnimusComponent({ game, entity } = {}) {
+	detachEntityGraphics({ game, entity } = {}) {
 		const animus = entity.getComponent(EnumComponentType.Animus);
 		if(animus) {
 			game.pixi.stage.removeChild(animus.graphics);
@@ -37,7 +37,7 @@ export class World {
 			* to determine if the entity has a PhysicsComponent.  Accordingly, if has more
 			* than one (1), it will use the first one found.
 			*/
-			ClientSide.mountAnimusComponent({
+			ClientSide.attachEntityGraphics({
 				game: this.game,
 				entity,
 			});
@@ -50,7 +50,7 @@ export class World {
 		for(const entity of entities) {
 			this.entityManager.remove(entity);
 
-			ClientSide.unmountAnimusComponent({
+			ClientSide.detachEntityGraphics({
 				game: this.game,
 				entity,
 			});

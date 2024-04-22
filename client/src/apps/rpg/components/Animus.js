@@ -1,7 +1,7 @@
-import Animus from "../../core/components/Animus";
-import { EnumComponentType } from "../../core/components/EnumComponentType";
+import CoreAnimus from "../../core/components/Animus";
+import { EnumComponentType } from "./EnumComponentType";
 
-export class PlayerAnimus extends Animus {
+export class Animus extends CoreAnimus {
 	constructor ({ color, ...props } = {}) {
 		super({ ...props });
 
@@ -21,4 +21,4 @@ export class PlayerAnimus extends Animus {
 	}
 }
 
-export default PlayerAnimus;
+export default Animus;
