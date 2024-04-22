@@ -24,9 +24,7 @@ export class World {
 		this.game = game;
 		this.entityManager = new EntityManager();
 
-		for(const entity of entities) {
-			this.addEntity(entity);
-		}
+		this.addEntity(...entities);
 	}
 
 	/**
