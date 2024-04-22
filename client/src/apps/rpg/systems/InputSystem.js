@@ -15,19 +15,19 @@ export class InputSystem extends CoreSystem {
 		if(compPlayerPhysics) {
 			/* Map controller inputs into player physics state */
 			const normalizedSpeed = compPlayerPhysics.speed * dtSeconds;
-			if(game.player.input.mask?.joystick?.UP || game.input.keyboard?.hasFlag("UP")) {
+			if(game.input.arcade?.joystick?.UP || game.input.keyboard?.hasFlag("UP")) {
 				compPlayerPhysics.vy = normalizedSpeed * -1;
 				compPlayerPhysics.facing = 0;
-			} else if(game.player.input.mask?.joystick?.DOWN || game.input.keyboard?.hasFlag("DOWN")) {
+			} else if(game.input.arcade?.joystick?.DOWN || game.input.keyboard?.hasFlag("DOWN")) {
 				compPlayerPhysics.vy = normalizedSpeed;
 				compPlayerPhysics.facing = 180;
 			} else {
 				compPlayerPhysics.vy = 0;
 			}
-			if(game.player.input.mask?.joystick?.LEFT || game.input.keyboard?.hasFlag("LEFT")) {
+			if(game.input.arcade?.joystick?.LEFT || game.input.keyboard?.hasFlag("LEFT")) {
 				compPlayerPhysics.vx = normalizedSpeed * -1;
 				compPlayerPhysics.facing = 270;
-			} else if(game.player.input.mask?.joystick?.RIGHT || game.input.keyboard?.hasFlag("RIGHT")) {
+			} else if(game.input.arcade?.joystick?.RIGHT || game.input.keyboard?.hasFlag("RIGHT")) {
 				compPlayerPhysics.vx = normalizedSpeed;
 				compPlayerPhysics.facing = 90;
 			} else {
@@ -35,7 +35,7 @@ export class InputSystem extends CoreSystem {
 			}
 
 			/* Simulate automatic firing */
-			if(game.input.keyboard.has("Space")) {
+			if(game.input.arcade?.buttons?.K1 || game.input.keyboard.has("Space")) {
 				let vx = 0,
 					vy = 0,
 					projSpeed = 250;

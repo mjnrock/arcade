@@ -23,7 +23,8 @@ export class ArcadeInputSystem extends System {
 		// const { K1, K2, K3, K4, K11, K12, SE, ST } = buttons;
 		// const { UP, DOWN, LEFT, RIGHT } = joystick;
 
-		this.game.player.input.mask = data;
+		/* Pump the server state directly into the client state */
+		this.game.input.arcade = data;
 
 		const { buttons, joystick } = data;
 		return {

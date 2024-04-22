@@ -32,6 +32,10 @@ export class Game {
 		};
 
 		this.input = {
+			arcade: {
+				joystick: {},
+				buttons: {},
+			},
 			keyboard: new KeyboardInput({
 				target: window,
 				game: this,
