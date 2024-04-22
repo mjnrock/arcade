@@ -14,7 +14,11 @@ export class Animus extends CoreAnimus {
 		g.clear();
 		g.lineStyle(1, this.color, 0.5);
 		g.beginFill(this.color, 0.3);
-		g.drawCircle(~~x, ~~y, ~~model.r);
+		if(model.type === "circle") {
+			g.drawCircle(~~x, ~~y, ~~model.r);
+		} else if(model.type === "rect") {
+			g.drawRect(~~x, ~~y, ~~model.w, ~~model.h);
+		}
 		g.endFill();
 
 		return g;
