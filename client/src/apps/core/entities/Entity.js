@@ -96,6 +96,9 @@ export class Entity {
 			return new this(...args);
 		});
 	}
+	static Spawn(...args) {
+		return new this(...args);
+	}
 };
 
 export default Entity;

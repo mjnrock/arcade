@@ -11,27 +11,27 @@ export class InputSystem extends CoreSystem {
 	update({ game, dt } = {}) {
 		const dtSeconds = dt * 1000;
 
-		const playerPhysics = game.player.entity.getComponent(EnumComponentType.Physics);
-		if(playerPhysics) {
+		const compPlayerPhysics = game.player.entity.getComponent(EnumComponentType.Physics);
+		if(compPlayerPhysics) {
 			/* Map controller inputs into player physics state */
-			const normalizedSpeed = playerPhysics.speed * dtSeconds;
+			const normalizedSpeed = compPlayerPhysics.speed * dtSeconds;
 			if(game.player.input.mask?.joystick?.UP || game.input.keyboard?.hasFlag("UP")) {
-				playerPhysics.vy = normalizedSpeed * -1;
-				playerPhysics.facing = 0;
+				compPlayerPhysics.vy = normalizedSpeed * -1;
+				compPlayerPhysics.facing = 0;
 			} else if(game.player.input.mask?.joystick?.DOWN || game.input.keyboard?.hasFlag("DOWN")) {
-				playerPhysics.vy = normalizedSpeed;
-				playerPhysics.facing = 180;
+				compPlayerPhysics.vy = normalizedSpeed;
+				compPlayerPhysics.facing = 180;
 			} else {
-				playerPhysics.vy = 0;
+				compPlayerPhysics.vy = 0;
 			}
 			if(game.player.input.mask?.joystick?.LEFT || game.input.keyboard?.hasFlag("LEFT")) {
-				playerPhysics.vx = normalizedSpeed * -1;
-				playerPhysics.facing = 270;
+				compPlayerPhysics.vx = normalizedSpeed * -1;
+				compPlayerPhysics.facing = 270;
 			} else if(game.player.input.mask?.joystick?.RIGHT || game.input.keyboard?.hasFlag("RIGHT")) {
-				playerPhysics.vx = normalizedSpeed;
-				playerPhysics.facing = 90;
+				compPlayerPhysics.vx = normalizedSpeed;
+				compPlayerPhysics.facing = 90;
 			} else {
-				playerPhysics.vx = 0;
+				compPlayerPhysics.vx = 0;
 			}
 
 			/* Simulate automatic firing */
@@ -40,24 +40,24 @@ export class InputSystem extends CoreSystem {
 					vy = 0,
 					projSpeed = 250;
 
-				if(playerPhysics.facing === 0) {
+				if(compPlayerPhysics.facing === 0) {
 					vy = projSpeed * -1;
-				} else if(playerPhysics.facing === 90) {
+				} else if(compPlayerPhysics.facing === 90) {
 					vx = projSpeed;
-				} else if(playerPhysics.facing === 180) {
+				} else if(compPlayerPhysics.facing === 180) {
 					vy = projSpeed;
-				} else if(playerPhysics.facing === 270) {
+				} else if(compPlayerPhysics.facing === 270) {
 					vx = projSpeed * -1;
 				}
 
-				const projectile = new LivingEntity({
+				const entProjectile = LivingEntity.Spawn({
 					meta: {
 						ttl: 750,
 					},
 					physics: {
-						x: playerPhysics.x,
-						y: playerPhysics.y,
-						facing: playerPhysics.facing,
+						x: compPlayerPhysics.x,
+						y: compPlayerPhysics.y,
+						facing: compPlayerPhysics.facing,
 						vx,
 						vy,
 
@@ -71,7 +71,7 @@ export class InputSystem extends CoreSystem {
 					},
 				});
 
-				game.currentWorld.addEntity(projectile);
+				game.currentWorld.addEntity(entProjectile);
 			}
 		}
 	}

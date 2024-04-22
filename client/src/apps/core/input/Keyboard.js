@@ -90,8 +90,6 @@ export class Keyboard {
 		}
 
 		this.state[ event.code ] = false;
-
-		console.log(event.code)
 	}
 
 	has(keyCode) {

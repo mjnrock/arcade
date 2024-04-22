@@ -15,10 +15,10 @@ export class RPG extends Game {
 		]);
 
 		this.player = {
-			entity: new LivingEntity({
+			entity: LivingEntity.Spawn({
 				physics: {
-					x: Math.random() * window.innerWidth,
-					y: Math.random() * window.innerHeight,
+					x: 0.5 * window.innerWidth,
+					y: 0.5 * window.innerHeight,
 					speed: 5,
 
 					model: {
