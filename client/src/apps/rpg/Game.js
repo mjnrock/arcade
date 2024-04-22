@@ -29,7 +29,7 @@ export class RPG extends Game {
 					},
 				},
 				animus: {
-					color: "#0F0",
+					color: "#000",
 				},
 			}),
 			input: {
