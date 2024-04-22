@@ -13,27 +13,24 @@ export class World extends CoreWorld {
 		this.terrain = terrain ?? [];
 
 		/* generate a width by height matrix of terrain, evenly randomized between green and blue */
-		let tw = (this.terrain?.[ 0 ]?.length || 1) / this.width,
-			th = (this.terrain?.length || 1) / this.height;
-
-		console.log(tw, th);
-
+		let tw = (this.terrain?.[ 0 ]?.length || 1) / this.width * window.innerWidth,
+			th = (this.terrain?.length || 1) / this.height * window.innerHeight;
 		for(let x = 0; x < this.width; x++) {
 			this.terrain[ x ] = [];
 			for(let y = 0; y < this.height; y++) {
-				this.terrain[ x ][ y ] = Math.random() > 0.5 ? "#00F" : "#0F0";
+				this.terrain[ x ][ y ] = Math.random() > 0.5 ? "#007BA7 " : "#4CBB17 ";
 
 				this.addEntity(LivingEntity.Spawn({
 					physics: {
-						x: x * tw * window.innerWidth,
-						y: y * th * window.innerHeight,
+						x: x * tw,
+						y: y * th,
 						vx: 0,
 						vy: 0,
 
 						model: {
 							type: "rect",
-							w: tw * window.innerWidth,
-							h: th * window.innerHeight,
+							w: tw,
+							h: th,
 						},
 					},
 					animus: {

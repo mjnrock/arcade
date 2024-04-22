@@ -59,7 +59,7 @@ export class Game {
 		this.pixi = new PIXI.Application({
 			width: window.innerWidth,
 			height: window.innerHeight,
-			backgroundColor: 0x1099bb,
+			backgroundColor: "#fff",
 			...(args.pixi ?? {}),
 		});
 

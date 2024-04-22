@@ -12,8 +12,8 @@ export class Animus extends CoreAnimus {
 		const { x, y, model } = entity.getComponent(EnumComponentType.Physics);
 
 		g.clear();
-		g.lineStyle(1, this.color, 0.5);
-		g.beginFill(this.color, 0.3);
+		g.lineStyle(1, this.color);
+		g.beginFill(this.color);
 		if(model.type === "circle") {
 			g.drawCircle(~~x, ~~y, ~~model.r);
 		} else if(model.type === "rect") {
