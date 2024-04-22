@@ -7,10 +7,18 @@ export class Physics extends Component {
 	constructor ({ x, y, vx, vy, ...props } = {}) {
 		super({ ...props });
 
+		this.facing = 0;
+
 		this.x = x;
 		this.y = y;
 		this.vx = vx;
 		this.vy = vy;
+	}
+
+	setFacing({ facing = 0 } = {}) {
+		this.facing = facing;
+
+		return this;
 	}
 
 	setPosition({ x, y, isAdd = false } = {}) {

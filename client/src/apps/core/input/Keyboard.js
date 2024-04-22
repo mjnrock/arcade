@@ -36,17 +36,13 @@ export class Keyboard {
 		this.events = events;
 		this.mask = 0;
 		this.target = target;
+		this.state = {};
 
 		this.bindEvents(true);
 	}
 
-	hasFlag(flag) {
-		return (this.mask & MaskKeys[ flag ]) === MaskKeys[ flag ];
-	}
-
 	bindEvents(bindAll = false, map = {}) {
 		if(bindAll) {
-			/* .mask facilitation logic */
 			this.target.addEventListener("keydown", this.handleKeyDown.bind(this));
 			this.target.addEventListener("keyup", this.handleKeyUp.bind(this));
 		}
@@ -67,7 +63,6 @@ export class Keyboard {
 	}
 
 	detachListeners() {
-		/* .mask facilitation logic */
 		this.target.removeEventListener("keydown", this.handleKeyDown.bind(this));
 		this.target.removeEventListener("keyup", this.handleKeyUp.bind(this));
 
@@ -84,6 +79,8 @@ export class Keyboard {
 		if(maskKey) {
 			this.mask |= maskKey;
 		}
+
+		this.state[ event.code ] = true;
 	}
 
 	handleKeyUp(event) {
@@ -91,9 +88,16 @@ export class Keyboard {
 		if(maskKey) {
 			this.mask &= ~maskKey;
 		}
+
+		this.state[ event.code ] = false;
+
+		console.log(event.code)
 	}
 
-	isKeyDown(key) {
+	has(keyCode) {
+		return !!this.state[ keyCode ];
+	}
+	hasFlag(key) {
 		return (this.mask & MaskKeys[ key ]) !== 0;
 	}
 };
