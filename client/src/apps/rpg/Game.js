@@ -1,6 +1,6 @@
 import Game from "../core/Game";
 
-import ArcadeInputSystem from "./systems/ArcadeInputSystem";
+import InputSystem from "./systems/InputSystem";
 import EntitySystem from "./systems/EntitySystem";
 
 import LivingEntity from "./entities/LivingEntity";
@@ -9,7 +9,7 @@ export class RPG extends Game {
 	constructor ({ ...args } = {}) {
 		super({ ...args });
 
-		this.systems.ArcadeInputSystem = new ArcadeInputSystem({ game: this });
+		this.systems.InputSystem = new InputSystem({ game: this });
 		this.addSystems([
 			[ EntitySystem, {} ],
 		]);
@@ -36,15 +36,6 @@ export class RPG extends Game {
 			},
 			...(args.player ?? {}),
 		};
-	}
-
-
-	update(...args) {
-		super.update(...args);
-	}
-
-	render(...args) {
-		super.render(...args);
 	}
 };
 

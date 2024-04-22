@@ -40,6 +40,10 @@ export class Keyboard {
 		this.bindEvents(true);
 	}
 
+	hasFlag(flag) {
+		return (this.mask & MaskKeys[ flag ]) === MaskKeys[ flag ];
+	}
+
 	bindEvents(bindAll = false, map = {}) {
 		if(bindAll) {
 			/* .mask facilitation logic */

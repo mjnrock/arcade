@@ -1,4 +1,3 @@
-import { EnumComponentType } from "../core/components/EnumComponentType";
 import World from "../core/World";
 
 import RPGGame from "./Game";
@@ -7,10 +6,10 @@ export const main = async ({ config = {}, start = false } = {}) => {
 	const game = new RPGGame(config);
 	const world = new World({
 		game,
-		entities: [],
+		entities: [
+			game.player.entity,
+		],
 	});
-
-	world.addEntity(game.player.entity);
 
 	game.addWorld(world);
 

@@ -33,10 +33,7 @@ export class World {
 		for(const entity of entities) {
 			this.entityManager.add(entity);
 
-			/* Because we pass the class, this will ultimately perform an "instanceof" check
-			* to determine if the entity has a PhysicsComponent.  Accordingly, if has more
-			* than one (1), it will use the first one found.
-			*/
+			/* Attach the PIXI Graphics to the Game's stage */
 			ClientSide.attachEntityGraphics({
 				game: this.game,
 				entity,
@@ -50,6 +47,7 @@ export class World {
 		for(const entity of entities) {
 			this.entityManager.remove(entity);
 
+			/* Detach the PIXI Graphics from the Game's stage */
 			ClientSide.detachEntityGraphics({
 				game: this.game,
 				entity,
@@ -59,8 +57,8 @@ export class World {
 		return this;
 	}
 
-	update(...args) {
-		this.entityManager.update(...args);
+	update({ game, dt } = {}) {
+		this.entityManager.update({ game, dt });
 
 		for(const entity of this.entityManager) {
 			if(entity.isDead) {
@@ -71,8 +69,9 @@ export class World {
 		return this;
 	}
 
-	render(...args) {
-		this.entityManager.render(...args);
+	render({ game, dt } = {}) {
+		this.entityManager.render({ game, dt });
+
 		return this;
 	}
 };
