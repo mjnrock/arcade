@@ -10,10 +10,9 @@ export const main = async ({ config = {}, start = false } = {}) => {
 		atlas: demoCaveMap,
 		entities: [
 			game.player.entity
-		]
+		],
 	});
 
-	// world.addEntity(game.player.entity);
 	game.addWorld(world);
 
 	console.log(game)
