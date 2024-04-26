@@ -19,10 +19,14 @@ export class World extends CoreWorld {
 		let ty = ~~y;
 		let tx = ~~x;
 
-		const tile = this.atlas.map.tiles[ ty ][ tx ];
-		const terrain = this.atlas.terrain.terrains[ tile.data ];
+		try {
+			const tile = this.atlas.map.tiles[ ty ][ tx ];
+			const terrain = this.atlas.terrain.terrains[ tile.data ];
 
-		return terrain;
+			return terrain;
+		} catch(e) {
+			return false;
+		}
 	};
 
 	loadFromAtlas(atlas) {
@@ -35,6 +39,7 @@ export class World extends CoreWorld {
 		tw *= zoom;
 		th *= zoom;
 
+		console.log(this.atlas)
 		for(const col of this.atlas.map.tiles) {
 			for(const tile of col) {
 				const { x, y, data } = tile;
@@ -70,19 +75,22 @@ export class World extends CoreWorld {
 				const { x, y } = playerPhysics;
 
 				const terrain = this.getTerrainAt(x, y);
-				const { type } = terrain;
+				if(!terrain) return;
 
-				if(type === "VOID") {
-					game.player.entity.getComponent(EnumComponentType.Animus).graphics.tint = 0x0000ff;
-
-					const dampeningFactor = 0.25; // Dampening factor to reduce velocity
-					playerPhysics.vx *= dampeningFactor;
-					playerPhysics.vy *= dampeningFactor;
-				} else {
-					game.player.entity.getComponent(EnumComponentType.Animus).graphics.tint = 0xffffff;
-				}
+				const inverseCost = 1 / terrain.cost;
+				playerPhysics.vx *= inverseCost;
+				playerPhysics.vy *= inverseCost;
 
 				playerPhysics.applyVelocity({ dt });
+
+				const { x: x2, y: y2 } = playerPhysics;
+				const nextTerrain = this.getTerrainAt(x2, y2);
+				if(nextTerrain && (nextTerrain.type === "VOID" || nextTerrain.cost === null || nextTerrain.cost === Infinity)) {
+					playerPhysics.vx = 0;
+					playerPhysics.vy = 0;
+
+					playerPhysics.setPosition({ x, y });
+				}
 			}
 
 			entity.update({ game, dt });
@@ -102,7 +110,7 @@ export class World extends CoreWorld {
 		this.refreshViewport({ game, dt });
 
 		const { viewport } = game.config.world;
-		
+
 		const playerPhysics = game.player.entity.getComponent(EnumComponentType.Physics);
 		viewport.x = playerPhysics.x * game.config.world.tileWidth;
 		viewport.y = playerPhysics.y * game.config.world.tileHeight;
@@ -119,7 +127,6 @@ export class World extends CoreWorld {
 			if(entity === game.player.entity) {
 				g.x = viewport.width / 2;
 				g.y = viewport.height / 2;
-				if(Math.random() < 0.01) console.log(viewport)
 			} else {
 				/* offset all other entities so that player is center screen */
 				g.x = px - viewport.x + viewport.width / 2;

@@ -1,11 +1,11 @@
-import Game from "../core/Game";
+import CoreGame from "../core/Game";
 
 import InputSystem from "./systems/InputSystem";
 import EntitySystem from "./systems/EntitySystem";
 
 import LivingEntity from "./entities/LivingEntity";
 
-export class RPG extends Game {
+export class RPG extends CoreGame {
 	constructor ({ ...args } = {}) {
 		super({
 			...args,

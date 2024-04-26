@@ -59,7 +59,9 @@ export class Game {
 		this.pixi = new PIXI.Application({
 			width: window.innerWidth,
 			height: window.innerHeight,
-			backgroundColor: "#fff",
+			// backgroundColor: "#fff",
+			backgroundColor: "#000",
+			transparent: true,
 			antialias: true,
 			...(args.pixi ?? {}),
 		});
