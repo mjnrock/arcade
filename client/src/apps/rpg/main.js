@@ -28,6 +28,9 @@ export const main = async ({ config = {}, start = false } = {}) => {
 						return true;
 					}
 
+					// const terrain = game.currentWorld.getTerrainAt(x, y);
+					// const { type } = terrain;
+
 					return true;
 				} else {
 					animus.graphics.visible = false;

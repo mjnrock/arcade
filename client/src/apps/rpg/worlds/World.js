@@ -15,7 +15,10 @@ export class World extends CoreWorld {
 	}
 
 	getTerrainAt(x, y) {
-		const tile = this.atlas.map.tiles[ y ][ x ];
+		let ty = ~~y;
+		let tx = ~~x;
+
+		const tile = this.atlas.map.tiles[ ty ][ tx ];
 		const terrain = this.atlas.terrain.terrains[ tile.data ];
 
 		return terrain;
