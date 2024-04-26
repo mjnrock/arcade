@@ -16,20 +16,31 @@ export class RPG extends Game {
 			EntitySystem,
 		);
 
+		this.config = {
+			world: {
+				width: 800,
+				height: 600,
+				tileWidth: 32,
+				tileHeight: 32,
+				/* IDEA: Incorporate zooming into the game to simulate differently sized models viz. the world tiles */
+				zoom: 1.0,
+			},
+		};
+
 		this.player = {
 			entity: LivingEntity.Spawn({
 				physics: {
-					x: 0.5 * window.innerWidth,
-					y: 0.5 * window.innerHeight,
-					speed: 5,
+					x: 3,
+					y: 12,
+					speed: 0.18,
 
 					model: {
 						type: "circle",
-						r: 16,
+						r: 0.5,
 					},
 				},
 				animus: {
-					color: "#000",
+					color: "#3AF",
 				},
 			}),
 			input: {
@@ -40,6 +51,8 @@ export class RPG extends Game {
 			},
 			...(args.player ?? {}),
 		};
+
+		console.log(this.player)
 	}
 };
 

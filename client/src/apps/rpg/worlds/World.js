@@ -1,6 +1,7 @@
 import CoreWorld from "../../core/World";
 
 import LivingEntity from "../entities/LivingEntity";
+import { TerrainEntity } from "../entities/TerrainEntity";
 
 export class World extends CoreWorld {
 	constructor ({ atlas, entities, ...args } = {}) {
@@ -23,7 +24,14 @@ export class World extends CoreWorld {
 	};
 
 	loadFromAtlas(atlas) {
+		console.log(atlas);
+
 		this.atlas = atlas;
+
+		// let { tw: atlasTw, th: atlasTh } = this.atlas.map;
+		let { tileWidth: tw, tileHeight: th, zoom } = this.game.config.world;
+		tw *= zoom;
+		th *= zoom;
 
 		for(const col of this.atlas.map.tiles) {
 			for(const tile of col) {
@@ -32,22 +40,12 @@ export class World extends CoreWorld {
 
 				const { texture: color } = terrain;
 
-				this.addEntity(LivingEntity.Spawn({
-					physics: {
-						x: x * 32,
-						y: y * 32,
-						vx: 0,
-						vy: 0,
-
-						model: {
-							type: "rect",
-							w: 32,
-							h: 32,
-						},
-					},
-					animus: {
-						color,
-					},
+				this.addEntity(TerrainEntity.Spawn({
+					x,
+					y,
+					tw,
+					th,
+					color,
 				}));
 			}
 		}
@@ -55,8 +53,8 @@ export class World extends CoreWorld {
 		return this;
 	};
 
-	async loadFromAtlasFile(filepath) {
-		const atlas = await fetch(filepath).then(response => response.json());
+	async loadFromAtlasFile(uri) {
+		const atlas = await fetch(uri).then(response => response.json());
 
 		this.loadFromAtlas(atlas);
 

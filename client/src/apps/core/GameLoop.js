@@ -32,7 +32,7 @@ export class GameLoop {
 			this.accumulatedTime -= this.updateInterval;
 		}
 
-		this.onDraw(deltaTime, this.accumulatedTime / this.updateInterval);	// Pass the accumulated time ratio to the draw function
+		this.onDraw(deltaTime, this.accumulatedTime / this.updateInterval);	// Pass the accumulated time ratio to the draw , this.gamefunction
 		this.animationFrameRequest = requestAnimationFrame(this.loop.bind(this));
 	}
 };

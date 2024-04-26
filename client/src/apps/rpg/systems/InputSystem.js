@@ -38,7 +38,7 @@ export class InputSystem extends CoreSystem {
 			if(game.input.arcade?.buttons?.K1 || game.input.keyboard.has("Space")) {
 				let vx = 0,
 					vy = 0,
-					projSpeed = 250;
+					projSpeed = 12.5;
 
 				if(compPlayerPhysics.facing === 180) {
 					vy = projSpeed;
@@ -52,7 +52,7 @@ export class InputSystem extends CoreSystem {
 
 				const entProjectile = LivingEntity.Spawn({
 					meta: {
-						ttl: 750,
+						ttl: 1500,
 					},
 					physics: {
 						x: compPlayerPhysics.x,
@@ -63,11 +63,11 @@ export class InputSystem extends CoreSystem {
 
 						model: {
 							type: "circle",
-							r: 5,
+							r: Math.random() > 0.2 ? 0.25 : 0.5,
 						},
 					},
 					animus: {
-						color: 0x000,
+						color: "#AAA",
 					},
 				});
 
