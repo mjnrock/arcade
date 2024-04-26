@@ -31,7 +31,7 @@ export class RPG extends Game {
 			entity: LivingEntity.Spawn({
 				physics: {
 					x: 3,
-					y: 12,
+					y: 3,
 					speed: 0.18,
 
 					model: {

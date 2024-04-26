@@ -19,12 +19,17 @@ export const ClientSide = {
 };
 
 export class World {
-	constructor ({ game, id, entities = [] } = {}) {
+	constructor ({ game, id, entities = [], culler } = {}) {
 		this.id = id ?? uuid();
 		this.game = game;
 		this.entityManager = new EntityManager();
 
 		this.addEntity(...entities);
+
+		/* This will apply to every update and render cycle, only applying said methods to the resulting entities */
+		if(culler) {
+			this.entityManager.cull = culler.bind(this.entityManager);
+		}
 	}
 
 	/**

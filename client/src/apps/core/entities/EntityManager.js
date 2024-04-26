@@ -39,12 +39,30 @@ export class EntityManager {
 		return this.entities.get(entityId);
 	}
 
+	cull(...args) {
+		return Array.from(this.entities.values());
+	}
+
+	filter(predicate) {
+		return Array.from(this.entities.values()).filter(predicate ?? (() => true));
+	}
+	map(predicate) {
+		return Array.from(this.entities.values()).map(predicate);
+	}
+	reduce(predicate, initialValue) {
+		return Array.from(this.entities.values()).reduce(predicate, initialValue);
+	}
+
 	update(...args) {
-		this.entities.forEach(entity => entity?.update(...args));
+		const entities = this.cull.call(this, ...args);
+
+		entities.forEach(entity => entity?.update(...args));
 	}
 
 	render(...args) {
-		this.entities.forEach(entity => entity?.render(...args));
+		const entities = this.cull.call(this, ...args);
+
+		entities.forEach(entity => entity?.render(...args));
 	}
 };
 

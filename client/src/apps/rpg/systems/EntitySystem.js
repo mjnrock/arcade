@@ -8,6 +8,8 @@ export class EntitySystem extends CoreEntitySystem {
 	}
 
 	update({ game, dt } = {}) {
+	}
+	render({ game, dt } = {}) {
 		const { tileWidth: tw, tileHeight: th, zoom } = game.config.world;
 		const twz = tw * zoom;
 		const thz = th * zoom;

@@ -34,6 +34,19 @@ export class InputSystem extends CoreSystem {
 				compPlayerPhysics.vy = 0;
 			}
 
+			// calculate diagonal facings, if any
+			if(compPlayerPhysics.vx && compPlayerPhysics.vy) {
+				if(compPlayerPhysics.vx < 0 && compPlayerPhysics.vy < 0) {
+					compPlayerPhysics.facing = 135;
+				} else if(compPlayerPhysics.vx < 0 && compPlayerPhysics.vy > 0) {
+					compPlayerPhysics.facing = 225;
+				} else if(compPlayerPhysics.vx > 0 && compPlayerPhysics.vy < 0) {
+					compPlayerPhysics.facing = 45;
+				} else if(compPlayerPhysics.vx > 0 && compPlayerPhysics.vy > 0) {
+					compPlayerPhysics.facing = 315;
+				}
+			}
+
 			/* Simulate automatic firing */
 			if(game.input.arcade?.buttons?.K1 || game.input.keyboard.has("Space")) {
 				let vx = 0,
@@ -48,6 +61,19 @@ export class InputSystem extends CoreSystem {
 					vy = projSpeed * -1;
 				} else if(compPlayerPhysics.facing === 90) {
 					vx = projSpeed;
+				} else if(compPlayerPhysics.facing === 225) {
+					vx = projSpeed * -1;
+					vy = projSpeed;
+				} else if(compPlayerPhysics.facing === 315) {
+					vx = projSpeed;
+					vy = projSpeed;
+				} else if(compPlayerPhysics.facing === 135) {
+					vx = projSpeed * -1;
+					vy = projSpeed * -1;
+				} else if(compPlayerPhysics.facing === 45) {
+					console.log(123)
+					vx = projSpeed;
+					vy = projSpeed * -1;
 				}
 
 				const entProjectile = LivingEntity.Spawn({
@@ -63,11 +89,11 @@ export class InputSystem extends CoreSystem {
 
 						model: {
 							type: "circle",
-							r: Math.random() > 0.2 ? 0.25 : 0.5,
+							r: Math.random() > 0.33 ? 0.25 : 0.5,
 						},
 					},
 					animus: {
-						color: "#AAA",
+						color: "rgba(64, 64, 228, 0.25)",
 					},
 				});
 

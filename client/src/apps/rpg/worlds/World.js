@@ -1,6 +1,4 @@
 import CoreWorld from "../../core/World";
-
-import LivingEntity from "../entities/LivingEntity";
 import { TerrainEntity } from "../entities/TerrainEntity";
 
 export class World extends CoreWorld {
