@@ -18,6 +18,12 @@ export class RPG extends Game {
 
 		this.config = {
 			world: {
+				viewport: {
+					x: 0,
+					y: 0,
+					width: window.innerWidth,
+					height: window.innerHeight,
+				},
 				width: 800,
 				height: 600,
 				tileWidth: 32,
@@ -53,6 +59,11 @@ export class RPG extends Game {
 		};
 
 		console.log(this.player)
+	}
+
+	resize() {
+		this.pixi.resize(window.innerWidth, window.innerHeight);
+		this.currentWorld?.refreshViewport();
 	}
 };
 

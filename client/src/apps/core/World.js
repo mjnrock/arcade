@@ -1,4 +1,5 @@
 import { v4 as uuid } from "uuid";
+import * as PIXI from "pixi.js";
 
 import EntityManager from "./entities/EntityManager";
 import { EnumComponentType } from "./components/EnumComponentType";
@@ -7,29 +8,30 @@ export const ClientSide = {
 	attachEntityGraphics({ game, entity } = {}) {
 		const animus = entity.getComponent(EnumComponentType.Animus);
 		if(animus) {
-			game.pixi.stage.addChild(animus.graphics);
+			game.currentWorld.graphics.addChild(animus.graphics);
 		}
 	},
 	detachEntityGraphics({ game, entity } = {}) {
 		const animus = entity.getComponent(EnumComponentType.Animus);
 		if(animus) {
-			game.pixi.stage.removeChild(animus.graphics);
+			game.currentWorld.graphics.removeChild(animus.graphics);
 		}
 	},
 };
 
 export class World {
-	constructor ({ game, id, entities = [], culler } = {}) {
+	constructor ({ game, id, entities = [] } = {}) {
 		this.id = id ?? uuid();
 		this.game = game;
 		this.entityManager = new EntityManager();
 
-		this.addEntity(...entities);
+		game.addWorld(this);
 
-		/* This will apply to every update and render cycle, only applying said methods to the resulting entities */
-		if(culler) {
-			this.entityManager.cull = culler.bind(this.entityManager);
-		}
+		this.graphics = new PIXI.Container();
+		this.refreshViewport({ game });
+		this.game.pixi.stage.addChild(this.graphics);
+
+		this.addEntity(...entities);
 	}
 
 	/**
@@ -68,8 +70,6 @@ export class World {
 	}
 
 	update({ game, dt } = {}) {
-		this.entityManager.update({ game, dt });
-
 		for(const entity of this.entityManager) {
 			if(entity.isDead) {
 				this.removeEntity(entity);
@@ -79,10 +79,13 @@ export class World {
 		return this;
 	}
 
-	render({ game, dt } = {}) {
-		this.entityManager.render({ game, dt });
+	refreshViewport({ game, dt } = {}) {
+		if(!game?.config) return;
 
-		return this;
+		game.config.world.viewport.x = 0;
+		game.config.world.viewport.y = 0;
+		game.config.world.viewport.width = window.innerWidth;
+		game.config.world.viewport.height = window.innerHeight;
 	}
 };
 

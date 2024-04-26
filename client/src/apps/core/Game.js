@@ -60,17 +60,18 @@ export class Game {
 			width: window.innerWidth,
 			height: window.innerHeight,
 			backgroundColor: "#fff",
+			antialias: true,
 			...(args.pixi ?? {}),
 		});
 
-		const fn = e => {
-			if(this.pixi?.renderer?.resize) {
-				this.pixi.renderer.resize(window.innerWidth, window.innerHeight);
-			} else {
-				window.removeEventListener("resize", fn);
-			}
-		};
-		window.addEventListener("resize", fn);
+		console.log(this.pixi.stage.x, this.pixi.stage.y, this.pixi.stage.width, this.pixi.stage.height)
+
+		window.addEventListener("resize", this.resize.bind(this));
+	}
+
+	resize() {
+		this.pixi.resize(window.innerWidth, window.innerHeight);
+		this.currentWorld?.refreshViewport();
 	}
 
 	/**

@@ -39,10 +39,6 @@ export class EntityManager {
 		return this.entities.get(entityId);
 	}
 
-	cull(...args) {
-		return Array.from(this.entities.values());
-	}
-
 	filter(predicate) {
 		return Array.from(this.entities.values()).filter(predicate ?? (() => true));
 	}
@@ -53,16 +49,18 @@ export class EntityManager {
 		return Array.from(this.entities.values()).reduce(predicate, initialValue);
 	}
 
-	update(...args) {
-		const entities = this.cull.call(this, ...args);
-
-		entities.forEach(entity => entity?.update(...args));
+	/* Logic on whether or not an entity should receive an update should be short-circuited in the `fn` */
+	update(fn, { game, dt, ...args } = {}) {
+		for(const entity of this) {
+			fn({ entity, entities: this, game, dt, ...args });
+		}
 	}
 
-	render(...args) {
-		const entities = this.cull.call(this, ...args);
-
-		entities.forEach(entity => entity?.render(...args));
+	/* Logic on whether or not an entity should receive a render should be short-circuited in the `fn` */
+	render(fn, { game, dt, ...args } = {}) {
+		for(const entity of this) {
+			fn({ entity, entities: this, game, dt, ...args });
+		}
 	}
 };
 

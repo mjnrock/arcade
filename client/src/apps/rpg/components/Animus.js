@@ -9,21 +9,18 @@ export class Animus extends CoreAnimus {
 	}
 
 	render({ game, entity, g = this.graphics } = {}) {
-		let { x: px, y: py, model } = entity.getComponent(EnumComponentType.Physics);
-		const { tileWidth: tw, tileHeight: th, zoom } = game.config.world;
-
-		px *= tw * zoom;
-		py *= th * zoom;
-
-		let radius = model.r * tw * zoom;
+		const { model } = entity.getComponent(EnumComponentType.Physics);
+		const { tileWidth: scaleFactor, zoom } = game.config.world;
+		/* model.r is unitary, so we must scale it */
+		const radius = model.r * zoom * scaleFactor;
 
 		g.clear();
 		g.lineStyle(1, this.color);
 		g.beginFill(this.color);
 		if(model.type === "circle") {
-			g.drawCircle(~~px, ~~py, ~~radius);
+			g.drawCircle(0, 0, ~~radius);
 		} else if(model.type === "rect") {
-			g.drawRect(~~px, ~~py, ~~model.w, ~~model.h);
+			g.drawRect(0, 0, ~~model.w, ~~model.h);
 		}
 		g.endFill();
 

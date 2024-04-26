@@ -66,10 +66,6 @@ export class Physics extends Component {
 
 		return this;
 	}
-
-	update({ dt } = {}) {
-		this.applyVelocity({ dt });
-	}
 }
 
 export default Physics;
