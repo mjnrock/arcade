@@ -22,6 +22,8 @@ export class TerrainEntity extends LivingEntity {
 				...(props.animus ?? {}),
 			},
 		});
+
+		console.log(this)
 	}
 };
 

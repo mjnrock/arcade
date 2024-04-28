@@ -71,7 +71,6 @@ export class InputSystem extends CoreSystem {
 					vx = projSpeed * -1;
 					vy = projSpeed * -1;
 				} else if(compPlayerPhysics.facing === 45) {
-					console.log(123)
 					vx = projSpeed;
 					vy = projSpeed * -1;
 				}
