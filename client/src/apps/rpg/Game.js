@@ -4,6 +4,7 @@ import InputSystem from "./systems/InputSystem";
 import EntitySystem from "./systems/EntitySystem";
 
 import LivingEntity from "./entities/LivingEntity";
+import { PlayerEntity } from "./entities/PlayerEntity";
 
 export class RPG extends CoreGame {
 	constructor ({ ...args } = {}) {
@@ -34,7 +35,7 @@ export class RPG extends CoreGame {
 		};
 
 		this.player = {
-			entity: LivingEntity.Spawn({
+			entity: PlayerEntity.Spawn({
 				physics: {
 					x: 3,
 					y: 3,
