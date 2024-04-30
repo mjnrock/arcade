@@ -95,6 +95,7 @@ export const ClientSide = {
 		};
 	},
 };
+export const ServerSide = {};
 
 export class Game {
 	static IsServer = false;

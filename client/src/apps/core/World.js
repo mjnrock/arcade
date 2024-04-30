@@ -3,6 +3,7 @@ import * as PIXI from "pixi.js";
 
 import EntityManager from "./entities/EntityManager";
 import { EnumComponentType } from "./components/EnumComponentType";
+import { Actionable } from "./lib/Actionable";
 
 export const ClientSide = {
 	initializeGraphics(world) {
@@ -24,13 +25,15 @@ export const ClientSide = {
 	},
 };
 
-export class World {
+export class World extends Actionable {
 	static IsServer = false;
 	static get IsClient() {
 		return !this.IsServer;
 	}
 
-	constructor ({ game, id, entities = [] } = {}) {
+	constructor ({ game, id, entities = [], ...actionables } = {}) {
+		super({ ...actionables });
+
 		this.id = id ?? uuid();
 		this.game = game;
 		this.entityManager = new EntityManager();
@@ -80,6 +83,8 @@ export class World {
 	}
 
 	update({ game, dt } = {}) {
+		this.process({ game, dt });
+
 		for(const entity of this.entityManager) {
 			if(entity.isDead) {
 				this.removeEntity(entity);
@@ -96,6 +101,8 @@ export class World {
 		game.config.world.viewport.y = 0;
 		game.config.world.viewport.width = window.innerWidth;
 		game.config.world.viewport.height = window.innerHeight;
+
+		return this;
 	}
 };
 

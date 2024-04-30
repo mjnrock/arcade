@@ -71,6 +71,8 @@ export class World extends CoreWorld {
 	}
 
 	update({ game, dt } = {}) {
+		super.update({ game, dt });
+
 		this.entityManager.update(({ entity }) => {
 			if(entity === game.player.entity) {
 				const playerPhysics = entity.getComponent(EnumComponentType.Physics);
