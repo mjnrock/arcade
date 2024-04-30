@@ -19,8 +19,8 @@ export class EntitySystem extends CoreEntitySystem {
 				const physics = entity.getComponent(EnumComponentType.Physics);
 				const animus = entity.getComponent(EnumComponentType.Animus);
 
-				animus.x = physics.x / twz;
-				animus.y = physics.y / thz;
+				animus.x = ~~(physics.x / twz);
+				animus.y = ~~(physics.y / thz);
 			}
 		}
 

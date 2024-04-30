@@ -112,8 +112,8 @@ export class World extends CoreWorld {
 		const { viewport } = game.config.world;
 
 		const playerPhysics = game.player.entity.getComponent(EnumComponentType.Physics);
-		viewport.x = playerPhysics.x * game.config.world.tileWidth;
-		viewport.y = playerPhysics.y * game.config.world.tileHeight;
+		viewport.x = ~~(playerPhysics.x * game.config.world.tileWidth);
+		viewport.y = ~~(playerPhysics.y * game.config.world.tileHeight);
 
 		this.entityManager.render(({ entity }) => {
 			const g = entity.getComponent(EnumComponentType.Animus).graphics;
@@ -125,12 +125,12 @@ export class World extends CoreWorld {
 			let py = ty * th;
 
 			if(entity === game.player.entity) {
-				g.x = viewport.width / 2;
-				g.y = viewport.height / 2;
+				g.x = ~~(viewport.width / 2);
+				g.y = ~~(viewport.height / 2);
 			} else {
 				/* offset all other entities so that player is center screen */
-				g.x = px - viewport.x + viewport.width / 2;
-				g.y = py - viewport.y + viewport.height / 2;
+				g.x = ~~(px - viewport.x + viewport.width / 2);
+				g.y = ~~(py - viewport.y + viewport.height / 2);
 			}
 
 			entity.render({ game, dt });

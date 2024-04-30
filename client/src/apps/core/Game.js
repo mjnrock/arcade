@@ -11,52 +11,34 @@ import Router from "./lib/message/Router";
 import System from "./lib/message/System";
 import WebSocketBrowserClient from "./lib/ws/WebSocketBrowserClient";
 
-
-export class Game {
-	constructor ({ ...args } = {}) {
-		this.id = uuid();
-
-		this.router = new Router({
-			game: this,
+export const CommonSide = {
+	initializeNetworking({ game, args }) {
+		game.router = new Router({
+			game: game,
 			network: null,
 			...(args.router ?? {}),
 		});
-		this.router.network = new WebSocketBrowserClient({
+		game.router.network = new WebSocketBrowserClient({
 			url: "ws://localhost:8080",
-			router: this.router.receive.bind(this.router),
+			router: game.router.receive.bind(game.router),
 			...(args.network ?? {}),
 		});
-		this.systems = {
-			ArcadeInputSystem: new ArcadeInputSystem({ game: this }),
-			...(args.systems ?? {}),
-		};
-
-		this.input = {
-			arcade: {
-				joystick: {},
-				buttons: {},
-			},
-			keyboard: new KeyboardInput({
-				target: window,
-				game: this,
-				...(args.input?.keyboard ?? {})
-			}),
-			mouse: new MouseInput({
-				target: window,
-				game: this,
-				...(args.input?.mouse ?? {}),
-			}),
-		};
-
-		this.worlds = new Map();
-
-		this.loop = new GameLoop({
-			onTick: this.update.bind(this),
-			onDraw: this.render.bind(this),
+	},
+	initializeGameLoop({ game, args }) {
+		game.loop = new GameLoop({
+			onTick: game.update.bind(game),
+			onDraw: game.render.bind(game),
 			fps: 60,
 			...(args.loop ?? {}),
 		});
-		this.pixi = new PIXI.Application({
+	},
+	initializeWorlds({ game, args }) {
+		game.worlds = new Map();
+	},
+};
+export const ClientSide = {
+	initializeGraphics({ game, args }) {
+		game.pixi = new PIXI.Application({
 			width: window.innerWidth,
 			height: window.innerHeight,
 			// backgroundColor: "#fff",
@@ -66,9 +48,52 @@ export class Game {
 			...(args.pixi ?? {}),
 		});
 
-		console.log(this.pixi.stage.x, this.pixi.stage.y, this.pixi.stage.width, this.pixi.stage.height)
+		console.log(game.pixi.stage.x, game.pixi.stage.y, game.pixi.stage.width, game.pixi.stage.height)
 
-		window.addEventListener("resize", this.resize.bind(this));
+		window.addEventListener("resize", game.resize.bind(game));
+	},
+	initializeControls({ game, args }) {
+		game.input = {
+			arcade: {
+				joystick: {},
+				buttons: {},
+			},
+			keyboard: new KeyboardInput({
+				target: window,
+				game: game,
+				...(args.input?.keyboard ?? {})
+			}),
+			mouse: new MouseInput({
+				target: window,
+				game: game,
+				...(args.input?.mouse ?? {}),
+			}),
+		};
+
+		game.systems = {
+			ArcadeInputSystem: new ArcadeInputSystem({ game: game }),
+			...(args.systems ?? {}),
+		};
+	},
+};
+
+export class Game {
+	static IsServer = false;
+	static get IsClient() {
+		return !Game.IsServer;
+	}
+
+	constructor ({ ...args } = {}) {
+		this.id = uuid();
+
+		CommonSide.initializeNetworking({ game: this, args });
+		CommonSide.initializeGameLoop({ game: this, args });
+		CommonSide.initializeWorlds({ game: this, args });
+
+		if(Game.IsClient) {
+			ClientSide.initializeGraphics({ game: this, args });
+			ClientSide.initializeControls({ game: this, args });
+		}
 	}
 
 	resize() {

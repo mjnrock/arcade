@@ -5,6 +5,11 @@ import EntityManager from "./entities/EntityManager";
 import { EnumComponentType } from "./components/EnumComponentType";
 
 export const ClientSide = {
+	initializeGraphics(world) {
+		world.graphics = new PIXI.Container();
+		world.refreshViewport({ game: world.game });
+		world.game.pixi.stage.addChild(world.graphics);
+	},
 	attachEntityGraphics({ game, entity } = {}) {
 		const animus = entity.getComponent(EnumComponentType.Animus);
 		if(animus) {
@@ -26,12 +31,9 @@ export class World {
 		this.entityManager = new EntityManager();
 
 		game.addWorld(this);
-
-		this.graphics = new PIXI.Container();
-		this.refreshViewport({ game });
-		this.game.pixi.stage.addChild(this.graphics);
-
 		this.addEntity(...entities);
+
+		ClientSide.initializeGraphics(this);
 	}
 
 	/**
