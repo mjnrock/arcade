@@ -41,12 +41,33 @@ export const ClientSide = {
 		game.pixi = new PIXI.Application({
 			width: window.innerWidth,
 			height: window.innerHeight,
-			// backgroundColor: "#fff",
 			backgroundColor: "#000",
 			transparent: true,
 			antialias: true,
+			powerPreference: "high-performance",
+
 			...(args.pixi ?? {}),
 		});
+
+		game.pixi.ticker.add(game.render.bind(game));
+
+		/* FPS Counter, as needed */
+		// let fpsText = new PIXI.Text('FPS: 0', { fontFamily: 'Arial', fontSize: 24, fill: 0xffffff });
+		// game.pixi.stage.addChild(fpsText);
+
+		// let lastTime = Date.now();
+		// let frameCount = 0;
+
+		// game.pixi.ticker.add((delta) => {
+		// 	frameCount++;
+		// 	let currentTime = Date.now();
+		// 	let elapsed = currentTime - lastTime;
+		// 	if(elapsed >= 1000) { // every second
+		// 		fpsText.text = 'FPS: ' + frameCount;
+		// 		frameCount = 0;
+		// 		lastTime = currentTime;
+		// 	}
+		// });
 
 		window.addEventListener("resize", game.resize.bind(game));
 	},

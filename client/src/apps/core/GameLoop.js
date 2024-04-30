@@ -1,11 +1,10 @@
 import { v4 as uuid } from 'uuid';
 
 export class GameLoop {
-	constructor ({ onTick, onDraw, fps = 60 } = {}) {
+	constructor ({ onTick, fps = 60 } = {}) {
 		this.id = uuid();
 
 		this.onTick = onTick;
-		this.onDraw = onDraw;
 		this.fps = fps;
 		this.updateInterval = 1000 / fps;
 		this.accumulatedTime = 0;
@@ -36,8 +35,6 @@ export class GameLoop {
 			this.ticks++;
 		}
 
-		this.onDraw(deltaTime, this.accumulatedTime / this.updateInterval);	// Pass the accumulated time ratio to the draw , this.gamefunction
-		this.draws++;
 		this.animationFrameRequest = requestAnimationFrame(this.loop.bind(this));
 	}
 };
