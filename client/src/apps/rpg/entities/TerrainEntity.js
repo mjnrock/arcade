@@ -1,30 +1,13 @@
-import LivingEntity from "./LivingEntity";
+import CoreTerrainEntity from "../../core/entities/TerrainEntity.js";
+import Animus from "../components/Animus.js";
 
-export class TerrainEntity extends LivingEntity {
-	constructor ({ x, y, tw, th, color, ...props } = {}) {
+export class TerrainEntity extends CoreTerrainEntity {
+	constructor ({ animus, ...props } = {}) {
 		super({
 			...props,
-			physics: {
-				x,
-				y,
-				vx: 0,
-				vy: 0,
-
-				model: {
-					type: "rect",
-					w: tw,
-					h: th,
-				},
-				...(props.physics ?? {}),
-			},
-			animus: {
-				color,
-				...(props.animus ?? {}),
-			},
+			animus: [ Animus, (animus ?? {}) ],
 		});
-
-		console.log(this)
 	}
 };
 
-export default LivingEntity;
+export default TerrainEntity;

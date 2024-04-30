@@ -58,8 +58,6 @@ export class RPG extends CoreGame {
 			},
 			...(args.player ?? {}),
 		};
-
-		console.log(this.player)
 	}
 
 	resize() {

@@ -30,16 +30,12 @@ export class World extends CoreWorld {
 	};
 
 	loadFromAtlas(atlas) {
-		console.log(atlas);
-
 		this.atlas = atlas;
 
-		// let { tw: atlasTw, th: atlasTh } = this.atlas.map;
 		let { tileWidth: tw, tileHeight: th, zoom } = this.game.config.world;
 		tw *= zoom;
 		th *= zoom;
 
-		console.log(this.atlas)
 		for(const col of this.atlas.map.tiles) {
 			for(const tile of col) {
 				const { x, y, data } = tile;
@@ -48,11 +44,17 @@ export class World extends CoreWorld {
 				const { texture: color } = terrain;
 
 				this.addEntity(TerrainEntity.Spawn({
-					x,
-					y,
-					tw,
-					th,
-					color,
+					physics: {
+						x,
+						y,
+						model: {
+							w: tw,
+							h: th,
+						},
+					},
+					animus: {
+						color,
+					},
 				}));
 			}
 		}

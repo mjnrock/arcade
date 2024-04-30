@@ -25,15 +25,23 @@ export const ClientSide = {
 };
 
 export class World {
+	static IsServer = false;
+	static get IsClient() {
+		return !this.IsServer;
+	}
+
 	constructor ({ game, id, entities = [] } = {}) {
 		this.id = id ?? uuid();
 		this.game = game;
 		this.entityManager = new EntityManager();
 
 		game.addWorld(this);
-		this.addEntity(...entities);
 
-		ClientSide.initializeGraphics(this);
+		if(World.IsClient) {
+			ClientSide.initializeGraphics(this);
+		}
+
+		this.addEntity(...entities);
 	}
 
 	/**

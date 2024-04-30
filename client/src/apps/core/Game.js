@@ -48,8 +48,6 @@ export const ClientSide = {
 			...(args.pixi ?? {}),
 		});
 
-		console.log(game.pixi.stage.x, game.pixi.stage.y, game.pixi.stage.width, game.pixi.stage.height)
-
 		window.addEventListener("resize", game.resize.bind(game));
 	},
 	initializeControls({ game, args }) {
@@ -80,7 +78,7 @@ export const ClientSide = {
 export class Game {
 	static IsServer = false;
 	static get IsClient() {
-		return !Game.IsServer;
+		return !this.IsServer;
 	}
 
 	constructor ({ ...args } = {}) {
@@ -91,8 +89,8 @@ export class Game {
 		CommonSide.initializeWorlds({ game: this, args });
 
 		if(Game.IsClient) {
-			ClientSide.initializeGraphics({ game: this, args });
 			ClientSide.initializeControls({ game: this, args });
+			ClientSide.initializeGraphics({ game: this, args });
 		}
 	}
 
