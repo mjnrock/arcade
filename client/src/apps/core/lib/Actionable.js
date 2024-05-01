@@ -1,6 +1,11 @@
 /**
- * Importantly, any "action" will be bound to the instance of the class that it is added to.
- * Accordingly, actions are de-facto extensions of the class, 
+ * Actions are extension methods that can be used
+ * when you need to either queue the execution of
+ * said action, or when you need to emit side effects.
+ * Accordingly, Actionable is a class that allows you
+ * to quickly setup this functionality.  The action
+ * system does not use the queue by default; it is
+ * meant to be used, as needed, by the developer.
  */
 export class Actionable {
 	constructor ({ actions = {}, effects = [] } = {}) {

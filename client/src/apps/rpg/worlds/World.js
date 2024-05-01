@@ -2,6 +2,7 @@ import AtlasWorld from "../../core/AtlasWorld";
 import EnumComponentType from "../components/EnumComponentType";
 import { TerrainEntity } from "../entities/TerrainEntity";
 
+/* .dispatch/.run Actions will be called with the World instance as the context */
 export const Actions = {
 	moveToNearestTerrain(entity) {
 		const physics = entity.getComponent(EnumComponentType.Physics);
@@ -93,23 +94,20 @@ export class World extends AtlasWorld {
 		);
 
 		this.entityManager.render(({ entity }) => {
-			let { x: tx, y: ty, model } = entity.getComponent(EnumComponentType.Physics);
-
 			const g = entity.getComponent(EnumComponentType.Animus).graphics;
-			const { tileWidth: tw, tileHeight: th, zoom } = game.config.world;
-
-			// const { x: px, y: py } = playerPhysics;
-			// const dx = Math.abs(tx - px);
-			// const dy = Math.abs(ty - py);
-
-			// if(dx <= 5 || dy <= 5) {
-			// 	g.visible = true;
-			// } else {
-			// 	g.visible = false;
-			// }
+			const { x: tx, y: ty } = entity.getComponent(EnumComponentType.Physics);
+			const dx = Math.abs(tx - x);
+			const dy = Math.abs(ty - y);
+			const sight = 2;
 
 			g.x = tx * tw;
 			g.y = ty * th;
+			
+			if(dx < sight && dy < sight) {
+				g.visible = true;
+			} else {
+				g.visible = false;
+			}
 
 			entity.render({ game, dt });
 		}, { game, dt });
