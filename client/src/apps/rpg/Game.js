@@ -3,7 +3,6 @@ import CoreGame from "../core/Game";
 import InputSystem from "./systems/InputSystem";
 import EntitySystem from "./systems/EntitySystem";
 
-import LivingEntity from "./entities/LivingEntity";
 import { PlayerEntity } from "./entities/PlayerEntity";
 
 export class RPG extends CoreGame {
@@ -27,7 +26,7 @@ export class RPG extends CoreGame {
 				tileWidth: 32,
 				tileHeight: 32,
 				/* IDEA: Incorporate zooming into the game to simulate differently sized models viz. the world tiles */
-				zoom: 4,
+				zoom: 1,
 			},
 		};
 
@@ -55,10 +54,6 @@ export class RPG extends CoreGame {
 			},
 			...(args.player ?? {}),
 		};
-	}
-
-	resize() {
-		this.pixi.resize(window.innerWidth, window.innerHeight);
 	}
 };
 

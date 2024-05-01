@@ -87,6 +87,8 @@ export class World extends AtlasWorld {
 		const centerX = window.innerWidth / 2;
 		const centerY = window.innerHeight / 2;
 
+		this.graphics.width = window.innerWidth;
+		this.graphics.height = window.innerHeight;
 		this.graphics.scale.set(zoom);
 		this.graphics.position.set(
 			centerX - (px * zoom),
@@ -96,14 +98,15 @@ export class World extends AtlasWorld {
 		this.entityManager.render(({ entity }) => {
 			const g = entity.getComponent(EnumComponentType.Animus).graphics;
 			const { x: tx, y: ty } = entity.getComponent(EnumComponentType.Physics);
-			const dx = Math.abs(tx - x);
-			const dy = Math.abs(ty - y);
-			const sight = 2;
+			const dx = ~~tx - ~~x;
+			const dy = ~~ty - ~~y;
+			const sight = 4;
 
 			g.x = tx * tw;
 			g.y = ty * th;
 			
-			if(dx < sight && dy < sight) {
+			if(dx >= -sight && dx < sight && dy >= -sight && dy < sight) {
+				if(Math.random() < 0.001) console.log("G", g.x, g.y, "T", tx, ty, "P", x, y, "D", dx, dy);
 				g.visible = true;
 			} else {
 				g.visible = false;

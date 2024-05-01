@@ -14,17 +14,14 @@ export class Animus extends CoreAnimus {
 	}
 
 	render({ game, entity, g = this.graphics } = {}) {
-		if(this.isDirty === false) return g;
+		// if(this.isDirty === false) return g;
 
 		const { model } = entity.getComponent(EnumComponentType.Physics);
 		const { tileWidth: scaleFactor } = game.config.world;
 		/* model.r is unitary, so we must scale it */
 		const radius = model.r * scaleFactor;
 
-		g.clear();
-
 		const gSoma = this.soma;
-		g.zIndex = 1;
 		gSoma.clear();
 		gSoma.lineStyle(1, this.color);
 		gSoma.beginFill(this.color);
