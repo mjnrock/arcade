@@ -84,37 +84,43 @@ export class World extends AtlasWorld {
 
 		const px = x * tw;
 		const py = y * th;
+
+		this.graphics.width = this.atlas.map.width;
+		this.graphics.height = this.atlas.map.height;
+
 		const centerX = window.innerWidth / 2;
 		const centerY = window.innerHeight / 2;
 
-		this.graphics.width = window.innerWidth;
-		this.graphics.height = window.innerHeight;
 		this.graphics.scale.set(zoom);
 		this.graphics.position.set(
 			centerX - (px * zoom),
 			centerY - (py * zoom)
 		);
 
+		const sightRadius = 5;  // Sight radius in tiles
+
 		this.entityManager.render(({ entity }) => {
 			const animus = entity.getComponent(EnumComponentType.Animus);
 			const { graphics: g, soma } = animus;
 			const { x: tx, y: ty } = entity.getComponent(EnumComponentType.Physics);
-			const dx = ~~tx - ~~x;
-			const dy = ~~ty - ~~y;
-			const sight = 2;
+			if(tx < 0 || ty < 0 || tx >= game.worldWidth || ty >= game.worldHeight) {
+				return; // Skip rendering this tile
+			}
 
 			g.x = tx * tw;
 			g.y = ty * th;
 
-			if(dx >= -sight && dx < sight && dy >= -sight && dy < sight) {
-				g.visible = true;
+			const dx = tx - x;
+			const dy = ty - y;
+			const distance = Math.sqrt(dx * dx + dy * dy);
 
+			if(distance <= sightRadius) {
+				g.visible = true;
 				entity.render({ game, dt });
 			} else {
 				entity.render({ game, dt });
 
-				soma.lineStyle(1, "#000", 0.8);
-				soma.beginFill("#000", 0.8);
+				soma.beginFill("#000000", 0.9);
 				soma.drawRect(0, 0, tw, th);
 				soma.endFill();
 			}
@@ -122,6 +128,7 @@ export class World extends AtlasWorld {
 
 		return this;
 	}
+
 };
 
 export default World;
