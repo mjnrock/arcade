@@ -92,13 +92,16 @@ export class Resource extends Component {
 	}
 
 	render({ game, dt, g = this.graphics } = {}) {
-		/* draw a rectangle representing the current value of the resource */
 		g.clear();
-		g.beginFill("#0F0");
-		const ratio = this.current / this.max;
-		const maxWidth = 32;
-		g.drawRect(-16, -40, ratio * maxWidth, 10);
-		g.endFill();
+		
+		if(game.config.ui.showHealth) {
+			/* draw a rectangle representing the current value of the resource */
+			g.beginFill("#0F0");
+			const ratio = this.current / this.max;
+			const maxWidth = 24;
+			g.drawRect(-maxWidth / 2, -maxWidth + maxWidth / 6, ratio * maxWidth, maxWidth / 6);
+			g.endFill();
+		}
 
 		return g;
 	}

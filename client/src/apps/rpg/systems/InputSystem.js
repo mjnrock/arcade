@@ -6,6 +6,18 @@ import LivingEntity from "../entities/LivingEntity";
 export class InputSystem extends CoreSystem {
 	constructor ({ game } = {}) {
 		super({ game });
+
+		game.input.mouse.target.addEventListener("wheel", event => {
+			event.preventDefault();
+			game.config.world.zoom += Math.sign(event.deltaY) * (game.config.world.zoom * -0.05);
+			game.config.world.zoom = Math.min(Math.max(0.1, game.config.world.zoom), 33);
+		});
+		/* MVP of centralized, event-listener input handling */
+		game.input.keyboard.target.addEventListener("keypress", event => {
+			if(event.code === "KeyV") {
+				game.config.ui.showHealth = !game.config.ui.showHealth;
+			}
+		});
 	}
 
 	update({ game, dt } = {}) {

@@ -10,6 +10,7 @@ export class Animus extends Component {
 	constructor ({ g, ...props } = {}) {
 		super({ ...props });
 
+		this.isDirty = true;
 		this.graphics = g ?? new Graphics();
 	}
 }

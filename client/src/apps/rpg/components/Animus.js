@@ -14,7 +14,8 @@ export class Animus extends CoreAnimus {
 	}
 
 	render({ game, entity, g = this.graphics } = {}) {
-		if(entity.meta.type === "TerrainEntity" && game.loop.draws > 100) return g;
+		if(this.isDirty === false) return g;
+
 		const { model } = entity.getComponent(EnumComponentType.Physics);
 		const { tileWidth: scaleFactor } = game.config.world;
 		/* model.r is unitary, so we must scale it */
@@ -33,6 +34,8 @@ export class Animus extends CoreAnimus {
 			gSoma.drawRect(0, 0, ~~model.w, ~~model.h);
 		}
 		gSoma.endFill();
+
+		this.isDirty = false;
 
 		return g;
 	}

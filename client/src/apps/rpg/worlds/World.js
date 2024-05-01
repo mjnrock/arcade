@@ -127,9 +127,20 @@ export class World extends CoreWorld {
 		);
 
 		this.entityManager.render(({ entity }) => {
-			const g = entity.getComponent(EnumComponentType.Animus).graphics;
 			let { x: tx, y: ty, model } = entity.getComponent(EnumComponentType.Physics);
+
+			const g = entity.getComponent(EnumComponentType.Animus).graphics;
 			const { tileWidth: tw, tileHeight: th, zoom } = game.config.world;
+
+			// const { x: px, y: py } = playerPhysics;
+			// const dx = Math.abs(tx - px);
+			// const dy = Math.abs(ty - py);
+
+			// if(dx <= 5 || dy <= 5) {
+			// 	g.visible = true;
+			// } else {
+			// 	g.visible = false;
+			// }
 
 			g.x = tx * tw;
 			g.y = ty * th;

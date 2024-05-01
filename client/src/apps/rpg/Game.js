@@ -18,13 +18,16 @@ export class RPG extends CoreGame {
 		);
 
 		this.config = {
+			ui: {
+				showHealth: true,
+			},
 			world: {
 				width: 800,
 				height: 600,
 				tileWidth: 32,
 				tileHeight: 32,
 				/* IDEA: Incorporate zooming into the game to simulate differently sized models viz. the world tiles */
-				zoom: 5,
+				zoom: 7,
 			},
 		};
 
@@ -33,7 +36,7 @@ export class RPG extends CoreGame {
 				physics: {
 					x: 3,
 					y: 3,
-					speed: 0.075,
+					speed: 0.045,
 
 					model: {
 						type: "circle",
