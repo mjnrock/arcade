@@ -111,37 +111,35 @@ export class World extends CoreWorld {
 
 
 	render({ game, dt } = {}) {
-		this.refreshViewport({ game, dt });
-
-		const { viewport } = game.config.world;
-
 		const playerPhysics = game.player.entity.getComponent(EnumComponentType.Physics);
-		viewport.x = ~~(playerPhysics.x * game.config.world.tileWidth);
-		viewport.y = ~~(playerPhysics.y * game.config.world.tileHeight);
+		const { x, y } = playerPhysics;
+		const { tileWidth: tw, tileHeight: th, zoom } = game.config.world;
+
+		const px = x * tw;
+		const py = y * th;
+		const centerX = window.innerWidth / 2;
+		const centerY = window.innerHeight / 2;
+
+		this.graphics.scale.set(zoom);
+		this.graphics.position.set(
+			centerX - (px * zoom),
+			centerY - (py * zoom)
+		);
 
 		this.entityManager.render(({ entity }) => {
 			const g = entity.getComponent(EnumComponentType.Animus).graphics;
-
 			let { x: tx, y: ty, model } = entity.getComponent(EnumComponentType.Physics);
 			const { tileWidth: tw, tileHeight: th, zoom } = game.config.world;
 
-			let px = tx * tw;
-			let py = ty * th;
-
-			if(entity === game.player.entity) {
-				g.x = ~~(viewport.width / 2);
-				g.y = ~~(viewport.height / 2);
-			} else {
-				/* offset all other entities so that player is center screen */
-				g.x = ~~(px - viewport.x + viewport.width / 2);
-				g.y = ~~(py - viewport.y + viewport.height / 2);
-			}
+			g.x = tx * tw;
+			g.y = ty * th;
 
 			entity.render({ game, dt });
 		}, { game, dt });
 
 		return this;
 	}
+
 };
 
 export default World;

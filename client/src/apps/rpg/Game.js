@@ -19,18 +19,12 @@ export class RPG extends CoreGame {
 
 		this.config = {
 			world: {
-				viewport: {
-					x: 0,
-					y: 0,
-					width: window.innerWidth,
-					height: window.innerHeight,
-				},
 				width: 800,
 				height: 600,
 				tileWidth: 32,
 				tileHeight: 32,
 				/* IDEA: Incorporate zooming into the game to simulate differently sized models viz. the world tiles */
-				zoom: 1.0,
+				zoom: 5,
 			},
 		};
 
@@ -39,11 +33,11 @@ export class RPG extends CoreGame {
 				physics: {
 					x: 3,
 					y: 3,
-					speed: 0.18,
+					speed: 0.075,
 
 					model: {
 						type: "circle",
-						r: 0.5,
+						r: 0.33,
 					},
 				},
 				animus: {
@@ -62,7 +56,6 @@ export class RPG extends CoreGame {
 
 	resize() {
 		this.pixi.resize(window.innerWidth, window.innerHeight);
-		this.currentWorld?.refreshViewport();
 	}
 };
 

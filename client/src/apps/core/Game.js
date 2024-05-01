@@ -118,7 +118,6 @@ export class Game {
 
 	resize() {
 		this.pixi.resize(window.innerWidth, window.innerHeight);
-		this.currentWorld?.refreshViewport();
 	}
 
 	/**

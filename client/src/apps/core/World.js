@@ -8,7 +8,6 @@ import { Actionable } from "./lib/Actionable";
 export const ClientSide = {
 	initializeGraphics(world) {
 		world.graphics = new PIXI.Container();
-		world.refreshViewport({ game: world.game });
 		world.game.pixi.stage.addChild(world.graphics);
 	},
 	attachEntityGraphics({ game, entity } = {}) {
@@ -90,17 +89,6 @@ export class World extends Actionable {
 				this.removeEntity(entity);
 			}
 		}
-
-		return this;
-	}
-
-	refreshViewport({ game, dt } = {}) {
-		if(!game?.config) return;
-
-		game.config.world.viewport.x = 0;
-		game.config.world.viewport.y = 0;
-		game.config.world.viewport.width = window.innerWidth;
-		game.config.world.viewport.height = window.innerHeight;
 
 		return this;
 	}
