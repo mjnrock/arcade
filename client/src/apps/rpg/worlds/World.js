@@ -103,8 +103,10 @@ export class World extends AtlasWorld {
 			const animus = entity.getComponent(EnumComponentType.Animus);
 			const { graphics: g, soma } = animus;
 			const { x: tx, y: ty } = entity.getComponent(EnumComponentType.Physics);
+
 			if(tx < 0 || ty < 0 || tx >= game.worldWidth || ty >= game.worldHeight) {
-				return; // Skip rendering this tile
+				entity.isDead = true;
+				return;
 			}
 
 			g.x = tx * tw;
