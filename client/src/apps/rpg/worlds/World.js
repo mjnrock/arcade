@@ -2,17 +2,34 @@ import AtlasWorld from "../../core/AtlasWorld";
 import EnumComponentType from "../components/EnumComponentType";
 import { TerrainEntity } from "../entities/TerrainEntity";
 
+export const Actions = {
+	moveToNearestTerrain(entity) {
+		const physics = entity.getComponent(EnumComponentType.Physics);
+		const { x, y } = physics;
+		const terrain = this.getTerrainAt(x, y);
+
+		if(!terrain) {
+			const nearest = this.getNearestTerrain(x, y);
+
+			physics.setPosition({
+				x: nearest.x,
+				y: nearest.y,
+			});
+		}
+
+		return this;
+	},
+};
+
 export class World extends AtlasWorld {
 	constructor ({ atlas, entities = [], ...args } = {}) {
 		super({
 			...args,
 		});
 
-		if(atlas) {
-			this.loadFromAtlas(atlas, TerrainEntity);
-		}
-
+		this.loadFromAtlas(atlas, TerrainEntity);
 		this.addEntity(...entities);
+		this.addActions(Actions, { bind: this });
 	}
 
 	update({ game, dt } = {}) {
@@ -43,7 +60,7 @@ export class World extends AtlasWorld {
 					}
 				} else {
 					console.log(playerPhysics.x, playerPhysics.y, entity);
-					this.moveToNearestTerrain(entity);
+					this.dispatch("moveToNearestTerrain", entity);
 				}
 			}
 

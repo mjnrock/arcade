@@ -1,3 +1,7 @@
+/**
+ * Importantly, any "action" will be bound to the instance of the class that it is added to.
+ * Accordingly, actions are de-facto extensions of the class, 
+ */
 export class Actionable {
 	constructor ({ actions = {}, effects = [] } = {}) {
 		this.queue = [];
@@ -22,10 +26,27 @@ export class Actionable {
 		}
 	}
 
+
+	/**
+	 * Run an action without emitting any effects
+	 */
+	run(action, ...args) {
+		const fn = this.actions.get(action);
+		if(fn) {
+			const result = fn.call(this, ...args);
+
+			return result;
+		}
+
+		return;
+	}
+	/**
+	 * Dispatch an action and emit any effects
+	 */
 	dispatch(action, ...args) {
 		const fn = this.actions.get(action);
 		if(fn) {
-			const result = fn(...args);
+			const result = fn.call(this, ...args);
 
 			this.emit(action, result);
 
@@ -34,22 +55,14 @@ export class Actionable {
 
 		return;
 	}
-	exec(action, ...args) {
-		const fn = this.actions.get(action);
-		if(fn) {
-			return fn.call(this, ...args);
-		}
-
-		return;
-	}
-	async emit(effect, ...args) {
-		if(this.effects.has(effect)) {
-			const effects = this.effects.get(effect);
-			for(const eff of effects) {
-				eff(effect, ...args);
+	async emit(action, ...args) {
+		if(this.effects.has(action)) {
+			const effects = this.effects.get(action);
+			for(const fn of effects) {
+				fn(...args);
 			}
 
-			this.emit("*", effect, ...args);
+			this.emit("*", action, ...args);
 
 			return true;
 		}
@@ -62,13 +75,9 @@ export class Actionable {
 
 		return this;
 	}
-	addActions(actionObj = {}, { bind } = {}) {
+	addActions(actionObj = {}) {
 		for(const [ alias, fn ] of Object.entries(actionObj)) {
-			if(bind) {
-				this.addAction(alias, fn.bind(bind));
-			} else {
-				this.addAction(alias, fn);
-			}
+			this.addAction(alias, fn);
 		}
 
 		return this;

@@ -1,5 +1,5 @@
 import CoreWorld from "./World";
-import EnumComponentType from "./components/EnumComponentType";
+import TerrainEntity from "./entities/TerrainEntity";
 
 export class AtlasWorld extends CoreWorld {
 	constructor ({ atlas, entities = [], ...args } = {}) {
@@ -7,10 +7,7 @@ export class AtlasWorld extends CoreWorld {
 			...args,
 		});
 
-		if(atlas) {
-			this.loadFromAtlas(atlas);
-		}
-
+		this.loadFromAtlas(atlas);
 		this.addEntity(...entities);
 	}
 
@@ -27,7 +24,9 @@ export class AtlasWorld extends CoreWorld {
 		return this.atlas.map.height;
 	}
 
-	loadFromAtlas(atlas, terrainEntityClass) {
+	loadFromAtlas(atlas, terrainEntityClass = TerrainEntity) {
+		if(!atlas) return;
+
 		this.atlas = atlas;
 
 		let { tileWidth: tw, tileHeight: th, zoom } = this.game.config.world;
@@ -102,22 +101,6 @@ export class AtlasWorld extends CoreWorld {
 				}
 			}
 		}
-	}
-	moveToNearestTerrain(entity) {
-		const physics = entity.getComponent(EnumComponentType.Physics);
-		const { x, y } = physics;
-		const terrain = this.getTerrainAt(x, y);
-
-		if(!terrain) {
-			const nearest = this.getNearestTerrain(x, y);
-
-			physics.setPosition({
-				x: nearest.x,
-				y: nearest.y,
-			});
-		}
-
-		return this;
 	}
 };
 
