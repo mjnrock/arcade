@@ -12,8 +12,15 @@ export class InputSystem extends CoreSystem {
 			game.config.world.zoom += Math.sign(event.deltaY) * (game.config.world.zoom * -0.05);
 			game.config.world.zoom = Math.min(Math.max(0.1, game.config.world.zoom), 33);
 		});
-		/* MVP of centralized, event-listener input handling */
 		game.input.keyboard.target.addEventListener("keypress", event => {
+			/* Randomly teleport the player */
+			if(event.code === "KeyQ") {
+				const physics = game.player.entity.getComponent(EnumComponentType.Physics);
+				physics.x = ~~(Math.random() * game.currentWorld.cols);
+				physics.y = ~~(Math.random() * game.currentWorld.rows);
+			}
+
+			/* Toggle health bar */
 			if(event.code === "KeyV") {
 				game.config.ui.showHealth = !game.config.ui.showHealth;
 			}

@@ -15,7 +15,24 @@ export class World extends CoreWorld {
 		this.addEntity(...entities);
 	}
 
+	get rows() {
+		return this.atlas.map.tiles.length;
+	}
+	get cols() {
+		return this.atlas.map.tiles[ 0 ].length;
+	}
+	get width() {
+		return this.atlas.map.width;
+	}
+	get height() {
+		return this.atlas.map.height;
+	}
+
 	getTerrainAt(x, y) {
+		if(isNaN(x) || isNaN(y) || x === Infinity || y === Infinity || x === -Infinity || y === -Infinity) {
+			return false;
+		}
+
 		let ty = ~~y;
 		let tx = ~~x;
 
@@ -70,30 +87,75 @@ export class World extends CoreWorld {
 		return this;
 	}
 
+	//IDEA: This is a perfect action candidate
+	getNearestTerrain(x, y) {
+		const terrain = this.getTerrainAt(x, y);
+
+		if(terrain) {
+			return terrain;
+		} else {
+			/* iterate through this.atlas.map.tiles[ ty ][ tx ] to find the first non-VOID terrain */
+			for(let y = 0; y < this.atlas.map.tiles.length; y++) {
+				for(let x = 0; x < this.atlas.map.tiles[ y ].length; x++) {
+					const terrain = this.getTerrainAt(x, y);
+
+					if(terrain && terrain.type !== "VOID") {
+						return { x, y };
+					}
+				}
+			}
+		}
+	}
+
+	//IDEA: This is a perfect action candidate
+	moveToNearestTerrain(entity) {
+		const physics = entity.getComponent(EnumComponentType.Physics);
+		const { x, y } = physics;
+		const terrain = this.getTerrainAt(x, y);
+
+		if(!terrain) {
+			const nearest = this.getNearestTerrain(x, y);
+
+			physics.setPosition({
+				x: nearest.x,
+				y: nearest.y,
+			});
+
+			return this.moveToNearestTerrain(entity);
+		}
+
+		return this;
+	}
+
 	update({ game, dt } = {}) {
 		super.update({ game, dt });
 
 		this.entityManager.update(({ entity }) => {
 			if(entity === game.player.entity) {
 				const playerPhysics = entity.getComponent(EnumComponentType.Physics);
-				const { x, y } = playerPhysics;
+				const { x: x0, y: y0 } = playerPhysics;
 
-				const terrain = this.getTerrainAt(x, y);
-				if(!terrain) return;
+				if(x0 >= 0 && x0 < this.atlas.map.width && y0 >= 0 && y0 < this.atlas.map.height) {
+					const terrain = this.getTerrainAt(x0, y0);
 
-				const inverseCost = 1 / terrain.cost;
-				playerPhysics.vx *= inverseCost;
-				playerPhysics.vy *= inverseCost;
+					const inverseCost = 1 / terrain.cost;
+					playerPhysics.vx *= inverseCost;
+					playerPhysics.vy *= inverseCost;
 
-				playerPhysics.applyVelocity({ dt });
+					playerPhysics.applyVelocity({ dt });
 
-				const { x: x2, y: y2 } = playerPhysics;
-				const nextTerrain = this.getTerrainAt(x2, y2);
-				if(nextTerrain && (nextTerrain.type === "VOID" || nextTerrain.cost === null || nextTerrain.cost === Infinity)) {
-					playerPhysics.vx = 0;
-					playerPhysics.vy = 0;
+					const { x: x1, y: y1 } = playerPhysics;
+					const nextTerrain = this.getTerrainAt(x1, y1);
+					if(nextTerrain && (nextTerrain.type === "VOID" || nextTerrain.cost === null || nextTerrain.cost === Infinity)) {
+						playerPhysics.vx = 0;
+						playerPhysics.vy = 0;
 
-					playerPhysics.setPosition({ x, y });
+						/* Undo the velocity update */
+						playerPhysics.setPosition({ x: x0, y: y0 });
+					}
+				} else {
+					this.moveToNearestTerrain(entity);
+					console.log(entity)
 				}
 			}
 
@@ -108,7 +170,6 @@ export class World extends CoreWorld {
 
 		return this;
 	}
-
 
 	render({ game, dt } = {}) {
 		const playerPhysics = game.player.entity.getComponent(EnumComponentType.Physics);
