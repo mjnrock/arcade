@@ -26,7 +26,7 @@ export class RPG extends CoreGame {
 				tileWidth: 32,
 				tileHeight: 32,
 				/* IDEA: Incorporate zooming into the game to simulate differently sized models viz. the world tiles */
-				zoom: 1,
+				zoom: 4,
 			},
 		};
 

@@ -30,8 +30,6 @@ export class AtlasWorld extends CoreWorld {
 		this.atlas = atlas;
 
 		let { tileWidth: tw, tileHeight: th, zoom } = this.game.config.world;
-		tw *= zoom;
-		th *= zoom;
 
 		for(const col of this.atlas.map.tiles) {
 			for(const tile of col) {

@@ -19,6 +19,19 @@ export class InputSystem extends CoreSystem {
 				physics.y = ~~(Math.random() * game.currentWorld.rows);
 			}
 
+			if(e.code === "Digit1") {
+				game.config.world.zoom = 1;
+			}
+			if(e.code === "Digit2") {
+				game.config.world.zoom = 2;
+			}
+			if(e.code === "Digit3") {
+				game.config.world.zoom = 4;
+			}
+			if(e.code === "Digit4") {
+				game.config.world.zoom = 8;
+			}
+
 			/* Toggle health bar */
 			if(e.code === "KeyV") {
 				game.config.ui.showHealth = !game.config.ui.showHealth;

@@ -91,11 +91,11 @@ export class World extends AtlasWorld {
 		const centerX = window.innerWidth / 2;
 		const centerY = window.innerHeight / 2;
 
-		this.graphics.scale.set(zoom);
 		this.graphics.position.set(
 			centerX - (px * zoom),
 			centerY - (py * zoom)
 		);
+		this.graphics.scale.set(zoom);
 
 		const sightRadius = 5;  // Sight radius in tiles
 
@@ -122,7 +122,8 @@ export class World extends AtlasWorld {
 			} else {
 				entity.render({ game, dt });
 
-				soma.beginFill("#000000", 0.9);
+				soma.lineStyle(1, "#000000",0.25);
+				soma.beginFill("#000000", 0.5);
 				soma.drawRect(0, 0, tw, th);
 				soma.endFill();
 			}
