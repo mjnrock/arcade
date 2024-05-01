@@ -34,6 +34,14 @@ export class Actionable {
 
 		return;
 	}
+	exec(action, ...args) {
+		const fn = this.actions.get(action);
+		if(fn) {
+			return fn.call(this, ...args);
+		}
+
+		return;
+	}
 	async emit(effect, ...args) {
 		if(this.effects.has(effect)) {
 			const effects = this.effects.get(effect);
@@ -49,15 +57,18 @@ export class Actionable {
 		return false;
 	}
 
-
 	addAction(alias, fn) {
 		this.actions.set(alias, fn);
 
 		return this;
 	}
-	addActions(actionObj = {}) {
+	addActions(actionObj = {}, { bind } = {}) {
 		for(const [ alias, fn ] of Object.entries(actionObj)) {
-			this.addAction(alias, fn);
+			if(bind) {
+				this.addAction(alias, fn.bind(bind));
+			} else {
+				this.addAction(alias, fn);
+			}
 		}
 
 		return this;

@@ -27,25 +27,7 @@ export class AtlasWorld extends CoreWorld {
 		return this.atlas.map.height;
 	}
 
-	getTerrainAt(x, y) {
-		if(isNaN(x) || isNaN(y) || x === Infinity || y === Infinity || x === -Infinity || y === -Infinity) {
-			return false;
-		}
-
-		let ty = ~~y;
-		let tx = ~~x;
-
-		try {
-			const tile = this.atlas.map.tiles[ ty ][ tx ];
-			const terrain = this.atlas.terrain.terrains[ tile.data ];
-
-			return terrain;
-		} catch(e) {
-			return false;
-		}
-	};
-
-	loadFromAtlas(atlas, entityClass) {
+	loadFromAtlas(atlas, terrainEntityClass) {
 		this.atlas = atlas;
 
 		let { tileWidth: tw, tileHeight: th, zoom } = this.game.config.world;
@@ -59,7 +41,7 @@ export class AtlasWorld extends CoreWorld {
 
 				const { texture: color } = terrain;
 
-				this.addEntity(entityClass.Spawn({
+				this.addEntity(terrainEntityClass.Spawn({
 					physics: {
 						x,
 						y,
@@ -76,8 +58,7 @@ export class AtlasWorld extends CoreWorld {
 		}
 
 		return this;
-	};
-
+	}
 	async loadFromAtlasFile(uri) {
 		const atlas = await fetch(uri).then(response => response.json());
 
@@ -86,7 +67,24 @@ export class AtlasWorld extends CoreWorld {
 		return this;
 	}
 
-	//IDEA: This is a perfect action candidate
+
+	getTerrainAt(x, y) {
+		if(isNaN(x) || isNaN(y) || x === Infinity || y === Infinity || x === -Infinity || y === -Infinity) {
+			return false;
+		}
+
+		let ty = ~~y;
+		let tx = ~~x;
+
+		try {
+			const tile = this.atlas.map.tiles[ ty ][ tx ];
+			const terrain = this.atlas.terrain.terrains[ tile.data ];
+
+			return terrain;
+		} catch(e) {
+			return false;
+		}
+	}
 	getNearestTerrain(x, y) {
 		const terrain = this.getTerrainAt(x, y);
 
@@ -105,8 +103,6 @@ export class AtlasWorld extends CoreWorld {
 			}
 		}
 	}
-
-	//IDEA: This is a perfect action candidate
 	moveToNearestTerrain(entity) {
 		const physics = entity.getComponent(EnumComponentType.Physics);
 		const { x, y } = physics;
@@ -119,8 +115,6 @@ export class AtlasWorld extends CoreWorld {
 				x: nearest.x,
 				y: nearest.y,
 			});
-
-			return this.moveToNearestTerrain(entity);
 		}
 
 		return this;

@@ -3,7 +3,7 @@ import EnumComponentType from "../components/EnumComponentType";
 import { TerrainEntity } from "../entities/TerrainEntity";
 
 export class World extends AtlasWorld {
-	constructor ({ atlas, entities, ...args } = {}) {
+	constructor ({ atlas, entities = [], ...args } = {}) {
 		super({
 			...args,
 		});
@@ -42,8 +42,8 @@ export class World extends AtlasWorld {
 						playerPhysics.setPosition({ x: x0, y: y0 });
 					}
 				} else {
+					console.log(playerPhysics.x, playerPhysics.y, entity);
 					this.moveToNearestTerrain(entity);
-					console.log(entity)
 				}
 			}
 
