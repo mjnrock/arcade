@@ -96,23 +96,28 @@ export class World extends AtlasWorld {
 		);
 
 		this.entityManager.render(({ entity }) => {
-			const g = entity.getComponent(EnumComponentType.Animus).graphics;
+			const animus = entity.getComponent(EnumComponentType.Animus);
+			const { graphics: g, soma } = animus;
 			const { x: tx, y: ty } = entity.getComponent(EnumComponentType.Physics);
 			const dx = ~~tx - ~~x;
 			const dy = ~~ty - ~~y;
-			const sight = 4;
+			const sight = 2;
 
 			g.x = tx * tw;
 			g.y = ty * th;
-			
-			if(dx >= -sight && dx < sight && dy >= -sight && dy < sight) {
-				if(Math.random() < 0.001) console.log("G", g.x, g.y, "T", tx, ty, "P", x, y, "D", dx, dy);
-				g.visible = true;
-			} else {
-				g.visible = false;
-			}
 
-			entity.render({ game, dt });
+			if(dx >= -sight && dx < sight && dy >= -sight && dy < sight) {
+				g.visible = true;
+
+				entity.render({ game, dt });
+			} else {
+				entity.render({ game, dt });
+
+				soma.lineStyle(1, "#000", 0.8);
+				soma.beginFill("#000", 0.8);
+				soma.drawRect(0, 0, tw, th);
+				soma.endFill();
+			}
 		}, { game, dt });
 
 		return this;
