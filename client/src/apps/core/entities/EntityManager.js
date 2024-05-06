@@ -15,9 +15,8 @@ export class EntityManager {
 	[ Symbol.iterator ]() {
 		return this.entities.values();
 	}
-	/* An equivalent of the iterator, except over the cache */
 	get cached() {
-		return this.cache.values();
+		return new EntityManager({ entities: this.cache });
 	}
 
 	get size() {
@@ -30,7 +29,7 @@ export class EntityManager {
 		} else if(entities instanceof Set) {
 			this.cache = entities;
 		}
-		
+
 		return this;
 	}
 
@@ -67,7 +66,7 @@ export class EntityManager {
 	}
 
 	union(...entityManagers) {
-		const entities = new Set();
+		const entities = new Set(this.entities.values());
 
 		for(const entityManager of entityManagers) {
 			for(const entity of entityManager) {
@@ -75,33 +74,34 @@ export class EntityManager {
 			}
 		}
 
-		return new EntityManager({ entities });
+		return new EntityManager({ entities: Array.from(entities) });
 	}
 	intersect(...entityManagers) {
-		const entities = new Set();
+		const firstSet = new Set(this.entities.values());
+		const intersection = new Set();
 
-		for(const entityManager of entityManagers) {
-			for(const entity of entityManager) {
-				if(entities.has(entity)) {
-					entities.add(entity);
-				}
+		if(entityManagers.length === 0) return new EntityManager({ entities: Array.from(firstSet) });
+
+		for(const entity of firstSet) {
+			if(entityManagers.every(manager => manager.entities.has(entity))) {
+				intersection.add(entity);
 			}
 		}
 
-		return new EntityManager({ entities });
+		return new EntityManager({ entities: Array.from(intersection) });
 	}
 	difference(...entityManagers) {
-		const entities = new Set();
+		const allOtherEntities = new Set();
 
 		for(const entityManager of entityManagers) {
 			for(const entity of entityManager) {
-				if(!entities.has(entity)) {
-					entities.add(entity);
-				}
+				allOtherEntities.add(entity);
 			}
 		}
 
-		return new EntityManager({ entities });
+		const difference = new Set(Array.from(this.entities.values()).filter(entity => !allOtherEntities.has(entity)));
+
+		return new EntityManager({ entities: Array.from(difference) });
 	}
 
 	/* Logic on whether or not an entity should receive an update should be short-circuited in the `fn` */

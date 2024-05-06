@@ -86,6 +86,16 @@ export class PhysicsSystem extends CorePhysicsSystem {
 			g.y = ty * th;
 
 			entity.render({ game, dt });
+
+			g.visible = true;
+		}
+
+		const difference = game.currentWorld.entityManager.difference(game.currentWorld.entityManager.cached);
+		for(const entity of difference) {
+			const animus = entity.getComponent(EnumComponentType.Animus);
+			const { graphics: g } = animus;
+
+			g.visible = false;
 		}
 	}
 }

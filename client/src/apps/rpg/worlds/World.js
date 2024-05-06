@@ -16,21 +16,21 @@ export class World extends AtlasWorld {
 		super.update({ game, dt });
 
 		const { viewport } = game.config.world;
-		let { tx, ty, tw, th } = viewport;
 
 		/* get the player's physics component */
 		const playerPhysics = game.player.entity.getComponent(EnumComponentType.Physics);
 		/* make the viewport track the player */
-		tx = playerPhysics.x;
-		ty = playerPhysics.y;
+		viewport.tx = playerPhysics.x;
+		viewport.ty = playerPhysics.y;
 
+		const { tx, ty, tw, th } = viewport;
 		const filteredEntities = [];
 		for(const entity of game.currentWorld.entityManager) {
 			const physics = entity.getComponent(EnumComponentType.Physics);
 			const { x, y } = physics;
 
 			/* Kill any entities that are out of bounds */
-			if(x < 0 || y < 0 || x >= this.atlas.map.width || y >= this.atlas.map.height) {
+			if(x < 0 || y < 0 || x > this.atlas.map.width || y > this.atlas.map.height) {
 				entity.ttl = 0;
 				continue;
 			}
