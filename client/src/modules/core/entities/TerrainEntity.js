@@ -1,6 +1,6 @@
-import LivingEntity from "./LivingEntity";
+import AnimateEntity from "./AnimateEntity";
 
-export class TerrainEntity extends LivingEntity {
+export class TerrainEntity extends AnimateEntity {
 	constructor ({ physics, animus, ...props } = {}) {
 		super({
 			...props,

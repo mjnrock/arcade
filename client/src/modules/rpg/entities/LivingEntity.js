@@ -1,14 +1,15 @@
-import CoreLivingEntity from "../../core/entities/LivingEntity";
+import AnimateEntity from "./AnimateEntity";
 
-import Animus from "../../../apps/gaia/components/Animus";
-
-export class LivingEntity extends CoreLivingEntity {
-	constructor ({ physics = {}, animus = {}, ...props } = {}) {
-		super({
-			...props,
-			physics,
-			animus: [ Animus, animus ],
-		});
+/**
+ * This is meant to be a slightly more restrictive version
+ * of the AnimateEntity, by enforcing some game-level concept
+ * of "being alive".  This could be thought of as something like
+ * a "CreatureEntity", but more general, while precluding something
+ * like "TerrainEntity".
+ */
+export class LivingEntity extends AnimateEntity {
+	constructor ({ ...props } = {}) {
+		super({ ...props });
 	}
 };
 

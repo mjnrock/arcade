@@ -20,4 +20,4 @@ export class PlayerEntity extends LivingEntity {
 	}
 };
 
-export default LivingEntity;
+export default PlayerEntity;

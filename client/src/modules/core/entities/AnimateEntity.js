@@ -3,7 +3,13 @@ import Entity from "./Entity";
 import Physics from "../components/Physics";
 import Animus from "../components/Animus";
 
-export class LivingEntity extends Entity {
+/**
+ * I vascillate on the naming here, but an AnimateEntity
+ * is just a way to say an Entity that has Physics and Animus
+ * components.  It's really just a way to slightly abstract
+ * a pure Entity from a practical one.
+ */
+export class AnimateEntity extends Entity {
 	constructor ({ id, meta = {}, components = [], physics = {}, animus = {} } = {}) {
 		super({ id, meta, components });
 
@@ -25,4 +31,4 @@ export class LivingEntity extends Entity {
 	}
 };
 
-export default LivingEntity;
+export default AnimateEntity;

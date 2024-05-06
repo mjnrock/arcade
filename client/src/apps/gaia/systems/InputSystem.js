@@ -1,5 +1,5 @@
 import CoreSystem from "../../../modules/core/lib/message/System";
-import LivingEntity from "../../../modules/rpg/entities/LivingEntity";
+import AnimateEntity from "../../../modules/rpg/entities/AnimateEntity";
 
 import EnumComponentType from "../components/EnumComponentType";
 
@@ -108,7 +108,7 @@ export class InputSystem extends CoreSystem {
 					vy = projSpeed * -1;
 				}
 
-				const entProjectile = LivingEntity.Spawn({
+				const entProjectile = AnimateEntity.Spawn({
 					meta: {
 						ttl: 1500,
 					},

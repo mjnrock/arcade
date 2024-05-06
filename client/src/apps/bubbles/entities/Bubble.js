@@ -1,8 +1,8 @@
-import LivingEntity from "../../core/entities/LivingEntity";
+import AnimateEntity from "../../core/entities/AnimateEntity";
 
 import BubbleAnimus from "../components/BubbleAnimus";
 
-export class Bubble extends LivingEntity {
+export class Bubble extends AnimateEntity {
 	constructor ({ physics = {}, animus = {}, ...props } = {}) {
 		super({
 			...props,
