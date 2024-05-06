@@ -6,6 +6,39 @@ import LivingEntity from "../entities/LivingEntity";
 export class InputSystem extends CoreSystem {
 	constructor ({ game } = {}) {
 		super({ game });
+
+		game.input.mouse.target.addEventListener("wheel", e => {
+			game.config.world.zoom += Math.sign(e.deltaY) * (game.config.world.zoom * -0.05);
+			game.config.world.zoom = Math.min(Math.max(0.1, game.config.world.zoom), 33);
+		});
+		game.input.keyboard.target.addEventListener("keypress", e => {
+			/* Randomly teleport the player */
+			if(e.code === "KeyQ") {
+				const physics = game.player.entity.getComponent(EnumComponentType.Physics);
+				physics.x = ~~(Math.random() * game.currentWorld.cols);
+				physics.y = ~~(Math.random() * game.currentWorld.rows);
+
+				console.log(`Teleported player to ${ physics.x }, ${ physics.y }`)
+			}
+
+			if(e.code === "Digit1") {
+				game.config.world.zoom = 1;
+			}
+			if(e.code === "Digit2") {
+				game.config.world.zoom = 2;
+			}
+			if(e.code === "Digit3") {
+				game.config.world.zoom = 4;
+			}
+			if(e.code === "Digit4") {
+				game.config.world.zoom = 8;
+			}
+
+			/* Toggle health bar */
+			if(e.code === "KeyV") {
+				game.config.ui.showHealth = !game.config.ui.showHealth;
+			}
+		});
 	}
 
 	update({ game, dt } = {}) {
@@ -71,7 +104,6 @@ export class InputSystem extends CoreSystem {
 					vx = projSpeed * -1;
 					vy = projSpeed * -1;
 				} else if(compPlayerPhysics.facing === 45) {
-					console.log(123)
 					vx = projSpeed;
 					vy = projSpeed * -1;
 				}

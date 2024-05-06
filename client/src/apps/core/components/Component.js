@@ -14,6 +14,14 @@ export class Component {
 		}
 	}
 
+	merge({ ...props }) {
+		for(const key in props) {
+			this[ key ] = props[ key ];
+		}
+
+		return this;
+	}
+
 	update(...args) { }
 
 	render(...args) { }

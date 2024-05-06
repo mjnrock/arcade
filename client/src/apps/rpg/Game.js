@@ -1,42 +1,48 @@
-import Game from "../core/Game";
+import CoreGame from "../core/Game";
 
 import InputSystem from "./systems/InputSystem";
-import EntitySystem from "./systems/EntitySystem";
+import PhysicsSystem from "./systems/PhysicsSystem";
 
-import LivingEntity from "./entities/LivingEntity";
+import { PlayerEntity } from "./entities/PlayerEntity";
 
-export class RPG extends Game {
-	constructor ({ ...args } = {}) {
+export class RPG extends CoreGame {
+	constructor ({ config = {}, ...args } = {}) {
 		super({
 			...args,
 		});
 
 		this.mountSystems(
 			InputSystem,
-			EntitySystem,
+			PhysicsSystem,
 		);
 
-		this.config = {
+		this.mergeConfig({
+			ui: {
+				showHealth: false,
+			},
 			world: {
-				width: 800,
-				height: 600,
 				tileWidth: 32,
 				tileHeight: 32,
-				/* IDEA: Incorporate zooming into the game to simulate differently sized models viz. the world tiles */
-				zoom: 1.0,
+				zoom: 4,
+				viewport: {
+					tx: 0,
+					ty: 0,
+					txr: 5,
+					tyr: 5,
+				},
 			},
-		};
+		}, config);
 
 		this.player = {
-			entity: LivingEntity.Spawn({
+			entity: PlayerEntity.Spawn({
 				physics: {
 					x: 3,
 					y: 3,
-					speed: 0.18,
+					speed: 0.25,	// 0.045
 
 					model: {
 						type: "circle",
-						r: 0.5,
+						r: 0.16,
 					},
 				},
 				animus: {
@@ -51,8 +57,6 @@ export class RPG extends Game {
 			},
 			...(args.player ?? {}),
 		};
-
-		console.log(this.player)
 	}
 };
 

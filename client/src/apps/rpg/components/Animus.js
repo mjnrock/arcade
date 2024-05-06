@@ -1,3 +1,4 @@
+import * as PIXI from "pixi.js";
 import CoreAnimus from "../../core/components/Animus";
 import { EnumComponentType } from "./EnumComponentType";
 
@@ -6,26 +7,34 @@ export class Animus extends CoreAnimus {
 		super({ ...props });
 
 		this.color = color ?? `#${ Math.floor(Math.random() * 16777215).toString(16).padStart(6, "0") }`;
+
+		/* Use this.graphics as an abstract container for all the PIXI.Graphics objects, so that we can easily manipulate them (e.g. ordering) */
+		this.soma = new PIXI.Graphics();
+		this.graphics.addChild(this.soma);
 	}
 
 	render({ game, entity, g = this.graphics } = {}) {
-		let { x: px, y: py, model } = entity.getComponent(EnumComponentType.Physics);
-		const { tileWidth: tw, tileHeight: th, zoom } = game.config.world;
+		if(this.isDirty === false) return g;
 
-		px *= tw * zoom;
-		py *= th * zoom;
+		// console.log(entity)
 
-		let radius = model.r * tw * zoom;
+		const { model } = entity.getComponent(EnumComponentType.Physics);
+		const { tileWidth: scaleFactor } = game.config.world;
+		/* model.r is unitary, so we must scale it */
+		const radius = model.r * scaleFactor;
 
-		g.clear();
-		g.lineStyle(1, this.color);
-		g.beginFill(this.color);
+		const gSoma = this.soma;
+		gSoma.clear();
+		gSoma.lineStyle(1, this.color);
+		gSoma.beginFill(this.color);
 		if(model.type === "circle") {
-			g.drawCircle(~~px, ~~py, ~~radius);
+			gSoma.drawCircle(0, 0, ~~radius);
 		} else if(model.type === "rect") {
-			g.drawRect(~~px, ~~py, ~~model.w, ~~model.h);
+			gSoma.drawRect(0, 0, ~~model.w, ~~model.h);
 		}
-		g.endFill();
+		gSoma.endFill();
+
+		this.isDirty = false;
 
 		return g;
 	}

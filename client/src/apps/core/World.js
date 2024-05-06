@@ -1,35 +1,49 @@
 import { v4 as uuid } from "uuid";
+import * as PIXI from "pixi.js";
 
 import EntityManager from "./entities/EntityManager";
 import { EnumComponentType } from "./components/EnumComponentType";
+import { Actionable } from "./lib/Actionable";
 
 export const ClientSide = {
+	initializeGraphics(world) {
+		world.graphics = new PIXI.Container();
+		world.game.pixi.stage.addChild(world.graphics);
+	},
 	attachEntityGraphics({ game, entity } = {}) {
 		const animus = entity.getComponent(EnumComponentType.Animus);
 		if(animus) {
-			game.pixi.stage.addChild(animus.graphics);
+			game.currentWorld.graphics.addChild(animus.graphics);
 		}
 	},
 	detachEntityGraphics({ game, entity } = {}) {
 		const animus = entity.getComponent(EnumComponentType.Animus);
 		if(animus) {
-			game.pixi.stage.removeChild(animus.graphics);
+			game.currentWorld.graphics.removeChild(animus.graphics);
 		}
 	},
 };
 
-export class World {
-	constructor ({ game, id, entities = [], culler } = {}) {
+export class World extends Actionable {
+	static IsServer = false;
+	static get IsClient() {
+		return !this.IsServer;
+	}
+
+	constructor ({ game, id, entities = [], ...actionables } = {}) {
+		super({ ...actionables });
+
 		this.id = id ?? uuid();
 		this.game = game;
 		this.entityManager = new EntityManager();
 
-		this.addEntity(...entities);
+		game.addWorld(this);
 
-		/* This will apply to every update and render cycle, only applying said methods to the resulting entities */
-		if(culler) {
-			this.entityManager.cull = culler.bind(this.entityManager);
+		if(World.IsClient) {
+			ClientSide.initializeGraphics(this);
 		}
+
+		this.addEntity(...entities);
 	}
 
 	/**
@@ -68,19 +82,13 @@ export class World {
 	}
 
 	update({ game, dt } = {}) {
-		this.entityManager.update({ game, dt });
+		this.process({ game, dt });
 
 		for(const entity of this.entityManager) {
 			if(entity.isDead) {
 				this.removeEntity(entity);
 			}
 		}
-
-		return this;
-	}
-
-	render({ game, dt } = {}) {
-		this.entityManager.render({ game, dt });
 
 		return this;
 	}
