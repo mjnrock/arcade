@@ -1,7 +1,6 @@
 export const EnumComponentType = {
-	Component: "component",
-	Animus: "animus",
-	Physics: "physics",
+	HEALTH: "health",
+	MANA: "mana",
 };
 
 export default EnumComponentType;

@@ -4,7 +4,7 @@ import { EnumComponentType } from "./EnumComponentType";
 export class Physics extends Component {
 	static Type = EnumComponentType.Physics;
 
-	constructor ({ x, y, vx, vy, ...props } = {}) {
+	constructor ({ x, y, vx = 0, vy = 0, ...props } = {}) {
 		super({ ...props });
 
 		this.facing = 0;
@@ -65,10 +65,6 @@ export class Physics extends Component {
 		this.y += this.vy * dt;
 
 		return this;
-	}
-
-	update({ dt } = {}) {
-		this.applyVelocity({ dt });
 	}
 }
 

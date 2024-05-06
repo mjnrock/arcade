@@ -6,6 +6,39 @@ import LivingEntity from "../entities/LivingEntity";
 export class InputSystem extends CoreSystem {
 	constructor ({ game } = {}) {
 		super({ game });
+
+		game.input.mouse.target.addEventListener("wheel", e => {
+			game.config.world.zoom += Math.sign(e.deltaY) * (game.config.world.zoom * -0.05);
+			game.config.world.zoom = Math.min(Math.max(0.1, game.config.world.zoom), 33);
+		});
+		game.input.keyboard.target.addEventListener("keypress", e => {
+			/* Randomly teleport the player */
+			if(e.code === "KeyQ") {
+				const physics = game.player.entity.getComponent(EnumComponentType.Physics);
+				physics.x = ~~(Math.random() * game.currentWorld.cols);
+				physics.y = ~~(Math.random() * game.currentWorld.rows);
+
+				console.log(`Teleported player to ${ physics.x }, ${ physics.y }`)
+			}
+
+			if(e.code === "Digit1") {
+				game.config.world.zoom = 1;
+			}
+			if(e.code === "Digit2") {
+				game.config.world.zoom = 2;
+			}
+			if(e.code === "Digit3") {
+				game.config.world.zoom = 4;
+			}
+			if(e.code === "Digit4") {
+				game.config.world.zoom = 8;
+			}
+
+			/* Toggle health bar */
+			if(e.code === "KeyV") {
+				game.config.ui.showHealth = !game.config.ui.showHealth;
+			}
+		});
 	}
 
 	update({ game, dt } = {}) {
@@ -15,15 +48,6 @@ export class InputSystem extends CoreSystem {
 		if(compPlayerPhysics) {
 			/* Map controller inputs into player physics state */
 			const normalizedSpeed = compPlayerPhysics.speed * dtSeconds;
-			if(game.input.arcade?.joystick?.UP || game.input.keyboard?.hasFlag("UP")) {
-				compPlayerPhysics.vy = normalizedSpeed * -1;
-				compPlayerPhysics.facing = 0;
-			} else if(game.input.arcade?.joystick?.DOWN || game.input.keyboard?.hasFlag("DOWN")) {
-				compPlayerPhysics.vy = normalizedSpeed;
-				compPlayerPhysics.facing = 180;
-			} else {
-				compPlayerPhysics.vy = 0;
-			}
 			if(game.input.arcade?.joystick?.LEFT || game.input.keyboard?.hasFlag("LEFT")) {
 				compPlayerPhysics.vx = normalizedSpeed * -1;
 				compPlayerPhysics.facing = 270;
@@ -33,26 +57,60 @@ export class InputSystem extends CoreSystem {
 			} else {
 				compPlayerPhysics.vx = 0;
 			}
+			if(game.input.arcade?.joystick?.UP || game.input.keyboard?.hasFlag("UP")) {
+				compPlayerPhysics.vy = normalizedSpeed * -1;
+				compPlayerPhysics.facing = 0;
+			} else if(game.input.arcade?.joystick?.DOWN || game.input.keyboard?.hasFlag("DOWN")) {
+				compPlayerPhysics.vy = normalizedSpeed;
+				compPlayerPhysics.facing = 180;
+			} else {
+				compPlayerPhysics.vy = 0;
+			}
+
+			// calculate diagonal facings, if any
+			if(compPlayerPhysics.vx && compPlayerPhysics.vy) {
+				if(compPlayerPhysics.vx < 0 && compPlayerPhysics.vy < 0) {
+					compPlayerPhysics.facing = 135;
+				} else if(compPlayerPhysics.vx < 0 && compPlayerPhysics.vy > 0) {
+					compPlayerPhysics.facing = 225;
+				} else if(compPlayerPhysics.vx > 0 && compPlayerPhysics.vy < 0) {
+					compPlayerPhysics.facing = 45;
+				} else if(compPlayerPhysics.vx > 0 && compPlayerPhysics.vy > 0) {
+					compPlayerPhysics.facing = 315;
+				}
+			}
 
 			/* Simulate automatic firing */
 			if(game.input.arcade?.buttons?.K1 || game.input.keyboard.has("Space")) {
 				let vx = 0,
 					vy = 0,
-					projSpeed = 250;
+					projSpeed = 12.5;
 
-				if(compPlayerPhysics.facing === 0) {
-					vy = projSpeed * -1;
-				} else if(compPlayerPhysics.facing === 90) {
-					vx = projSpeed;
-				} else if(compPlayerPhysics.facing === 180) {
+				if(compPlayerPhysics.facing === 180) {
 					vy = projSpeed;
 				} else if(compPlayerPhysics.facing === 270) {
 					vx = projSpeed * -1;
+				} else if(compPlayerPhysics.facing === 0) {
+					vy = projSpeed * -1;
+				} else if(compPlayerPhysics.facing === 90) {
+					vx = projSpeed;
+				} else if(compPlayerPhysics.facing === 225) {
+					vx = projSpeed * -1;
+					vy = projSpeed;
+				} else if(compPlayerPhysics.facing === 315) {
+					vx = projSpeed;
+					vy = projSpeed;
+				} else if(compPlayerPhysics.facing === 135) {
+					vx = projSpeed * -1;
+					vy = projSpeed * -1;
+				} else if(compPlayerPhysics.facing === 45) {
+					vx = projSpeed;
+					vy = projSpeed * -1;
 				}
 
 				const entProjectile = LivingEntity.Spawn({
 					meta: {
-						ttl: 750,
+						ttl: 1500,
 					},
 					physics: {
 						x: compPlayerPhysics.x,
@@ -63,11 +121,11 @@ export class InputSystem extends CoreSystem {
 
 						model: {
 							type: "circle",
-							r: 5,
+							r: Math.random() > 0.33 ? 0.25 : 0.5,
 						},
 					},
 					animus: {
-						color: 0x000,
+						color: "rgba(64, 64, 228, 0.25)",
 					},
 				});
 

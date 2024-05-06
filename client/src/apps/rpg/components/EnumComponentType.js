@@ -2,6 +2,8 @@ import { EnumComponentType as CoreEnumComponentType } from "../../core/component
 
 export const EnumComponentType = {
 	...CoreEnumComponentType,
+	Health: "health",
+
 };
 
 export default EnumComponentType;
