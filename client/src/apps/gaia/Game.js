@@ -1,11 +1,11 @@
-import CoreGame from "../../modules/rpg/Game";
+import RPGGame from "../../modules/rpg/Game";
 import { PlayerEntity } from "../../modules/rpg/entities/PlayerEntity";
 
 import InputSystem from "./systems/InputSystem";
 import PhysicsSystem from "./systems/PhysicsSystem";
 
 
-export class RPG extends CoreGame {
+export class Game extends RPGGame {
 	constructor ({ config = {}, ...args } = {}) {
 		super({
 			...args,
@@ -60,4 +60,4 @@ export class RPG extends CoreGame {
 	}
 };
 
-export default RPG;
+export default Game;

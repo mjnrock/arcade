@@ -1,10 +1,10 @@
-import RPGGame from "./Game";
+import Game from "./Game";
 import World from "../../modules/rpg/worlds/World";
 
 import demoCaveMap from "./data/maps/demoCaveMap.json";
 
 export const main = async ({ settings = {}, start = false } = {}) => {
-	const game = new RPGGame(settings);
+	const game = new Game(settings);
 	const world = new World({
 		game,
 		atlas: demoCaveMap,

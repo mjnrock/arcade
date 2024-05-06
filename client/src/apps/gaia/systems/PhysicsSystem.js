@@ -1,4 +1,5 @@
 import CorePhysicsSystem from "../../../modules/core/systems/PhysicsSystem";
+import { PlayerEntity } from "../../../modules/rpg/entities/PlayerEntity";
 import TerrainEntity from "../../../modules/rpg/entities/TerrainEntity";
 
 import EnumComponentType from "../components/EnumComponentType";
@@ -35,6 +36,25 @@ export const Actions = {
 			physics.vx *= inverseCost;
 			physics.vy *= inverseCost;
 
+			//FIXME
+			/**
+			 * Currently, this selects "projectiles".  The projectiles appear
+			 * to come to a standstill when they hit non-cost=1 terrain.  This
+			 * is because of how quickly the inverseCost is applied to the
+			 * projectile's velocity.  The fix here is probably to implement a
+			 * more robust physics system that considers forces and momentum and
+			 * such.  Alternatively, we could just make the projectiles cost=1 or
+			 * apply a different cost function to them.
+			 * 
+			 * IDEA: This is a perfect Action candidate.
+			 */
+			if(
+				!(entity instanceof TerrainEntity)
+				&& !(entity instanceof PlayerEntity)
+			) {
+				// console.log(physics.vx, physics.vy, inverseCost);
+			}
+
 			physics.applyVelocity({ dt });
 
 			const { x: nextX, y: nextY } = physics;
@@ -42,6 +62,12 @@ export const Actions = {
 
 			/* If the *next* terrain is VOID, undo the movement */
 			if(nextTerrain?.type === "VOID") {
+				/* Kill any projectile that hits the VOID */
+				//FIXME: Adjust this to be more robust once a "ProjectileEntity" is implemented
+				if(!(entity instanceof TerrainEntity) && !(entity instanceof PlayerEntity)) {
+					entity.meta.ttl = 0;
+				}
+
 				physics.vx = 0;
 				physics.vy = 0;
 				physics.setPosition({ x: x, y: y });
