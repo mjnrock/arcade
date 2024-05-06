@@ -55,10 +55,6 @@ export class World extends AtlasWorld {
 		const ppx = x * tw;
 		const ppy = y * th;
 
-		//? Not sure if this is necessary
-		// this.graphics.width = this.atlas.map.width;
-		// this.graphics.height = this.atlas.map.height;
-
 		const centerX = window.innerWidth / 2;
 		const centerY = window.innerHeight / 2;
 

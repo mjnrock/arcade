@@ -1,6 +1,7 @@
-export const EnumComponentType = {
-	HEALTH: "health",
-	MANA: "mana",
+import { EnumResourceType as CoreEnumResourceType } from "../../../modules/rpg/components/EnumResourceType";
+
+export const EnumResourceType = {
+	...CoreEnumResourceType,
 };
 
-export default EnumComponentType;
+export default EnumResourceType;

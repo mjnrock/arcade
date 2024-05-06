@@ -1,5 +1,5 @@
 import CoreTerrainEntity from "../../core/entities/TerrainEntity.js";
-import Animus from "../components/Animus.js";
+import Animus from "../../../apps/gaia/components/Animus.js";
 
 export class TerrainEntity extends CoreTerrainEntity {
 	constructor ({ animus, ...props } = {}) {

@@ -1,6 +1,6 @@
 import * as PIXI from "pixi.js";
-import CoreAnimus from "../../core/components/Animus";
-import { EnumComponentType } from "./EnumComponentType";
+import CoreAnimus from "../../../modules/core/components/Animus";
+import { EnumComponentType } from "../../../modules/rpg/components/EnumComponentType";
 
 export class Animus extends CoreAnimus {
 	constructor ({ color, ...props } = {}) {
