@@ -1,7 +1,7 @@
 import CoreGame from "../core/Game";
 
 import InputSystem from "./systems/InputSystem";
-import EntitySystem from "./systems/EntitySystem";
+import PhysicsSystem from "./systems/PhysicsSystem";
 
 import { PlayerEntity } from "./entities/PlayerEntity";
 
@@ -13,7 +13,7 @@ export class RPG extends CoreGame {
 
 		this.mountSystems(
 			InputSystem,
-			EntitySystem,
+			PhysicsSystem,
 		);
 
 		this.config = {
@@ -21,6 +21,12 @@ export class RPG extends CoreGame {
 				showHealth: false,
 			},
 			world: {
+				viewport: {
+					tx: 0,
+					ty: 0,
+					tw: 4,
+					th: 4,
+				},
 				width: 800,
 				height: 600,
 				tileWidth: 32,

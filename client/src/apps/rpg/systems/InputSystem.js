@@ -17,6 +17,8 @@ export class InputSystem extends CoreSystem {
 				const physics = game.player.entity.getComponent(EnumComponentType.Physics);
 				physics.x = ~~(Math.random() * game.currentWorld.cols);
 				physics.y = ~~(Math.random() * game.currentWorld.rows);
+
+				console.log(`Teleported player to ${ physics.x }, ${ physics.y }`)
 			}
 
 			if(e.code === "Digit1") {

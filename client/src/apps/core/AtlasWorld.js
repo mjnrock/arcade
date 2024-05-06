@@ -85,7 +85,7 @@ export class AtlasWorld extends CoreWorld {
 	getNearestTerrain(x, y) {
 		const terrain = this.getTerrainAt(x, y);
 
-		if(terrain) {
+		if(terrain && terrain.type !== "VOID") {
 			return terrain;
 		} else {
 			/* iterate through this.atlas.map.tiles[ ty ][ tx ] to find the first non-VOID terrain */

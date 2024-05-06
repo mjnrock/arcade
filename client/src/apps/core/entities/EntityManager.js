@@ -4,7 +4,10 @@ export class EntityManager {
 	constructor ({ id, entities = [] } = {}) {
 		this.id = id ?? uuid();
 
+		/* a registry of all Entities that are managed by this EntityManager */
 		this.entities = new Map();
+		/* a formalization of the "I only need a subset" pattern) */
+		this.cache = new Set();
 
 		this.add(...entities);
 	}
@@ -12,9 +15,23 @@ export class EntityManager {
 	[ Symbol.iterator ]() {
 		return this.entities.values();
 	}
+	/* An equivalent of the iterator, except over the cache */
+	get cached() {
+		return this.cache.values();
+	}
 
 	get size() {
 		return this.entities.size;
+	}
+
+	writeCache(entities) {
+		if(Array.isArray(entities)) {
+			this.cache = new Set(entities);
+		} else if(entities instanceof Set) {
+			this.cache = entities;
+		}
+		
+		return this;
 	}
 
 	add(...entities) {
@@ -49,17 +66,67 @@ export class EntityManager {
 		return Array.from(this.entities.values()).reduce(predicate, initialValue);
 	}
 
+	union(...entityManagers) {
+		const entities = new Set();
+
+		for(const entityManager of entityManagers) {
+			for(const entity of entityManager) {
+				entities.add(entity);
+			}
+		}
+
+		return new EntityManager({ entities });
+	}
+	intersect(...entityManagers) {
+		const entities = new Set();
+
+		for(const entityManager of entityManagers) {
+			for(const entity of entityManager) {
+				if(entities.has(entity)) {
+					entities.add(entity);
+				}
+			}
+		}
+
+		return new EntityManager({ entities });
+	}
+	difference(...entityManagers) {
+		const entities = new Set();
+
+		for(const entityManager of entityManagers) {
+			for(const entity of entityManager) {
+				if(!entities.has(entity)) {
+					entities.add(entity);
+				}
+			}
+		}
+
+		return new EntityManager({ entities });
+	}
+
 	/* Logic on whether or not an entity should receive an update should be short-circuited in the `fn` */
-	update(fn, { game, dt, ...args } = {}) {
-		for(const entity of this) {
-			fn({ entity, entities: this, game, dt, ...args });
+	update(fn, { game, dt, ...args } = {}, { useCache = false } = {}) {
+		if(useCache) {
+			for(const entity of this.cache) {
+				fn({ entity, entities: this, game, dt, ...args });
+			}
+		} else {
+			for(const entity of this) {
+				fn({ entity, entities: this, game, dt, ...args });
+			}
 		}
 	}
 
 	/* Logic on whether or not an entity should receive a render should be short-circuited in the `fn` */
-	render(fn, { game, dt, ...args } = {}) {
-		for(const entity of this) {
-			fn({ entity, entities: this, game, dt, ...args });
+	render(fn, { game, dt, ...args } = {}, { useCache = false } = {}) {
+		if(useCache) {
+			for(const entity of this.cache) {
+				fn({ entity, entities: this, game, dt, ...args });
+			}
+		} else {
+			for(const entity of this) {
+				fn({ entity, entities: this, game, dt, ...args });
+			}
 		}
 	}
 };

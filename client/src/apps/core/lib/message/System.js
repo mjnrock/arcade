@@ -1,13 +1,16 @@
 import { v4 as uuid } from "uuid";
+import { Actionable } from "../Actionable";
 
-export class System {
-	constructor ({ game } = {}) {
+export class System extends Actionable {
+	constructor ({ game, ...actionable } = {}) {
+		super({ ...actionable });
+
 		this.id = uuid();
 		this.game = game;
 	}
 
-	update({ game, dt } = {}) {}
-	render({ game, dt } = {}) {}
+	update({ game, dt } = {}) { }
+	render({ game, dt } = {}) { }
 
 	/* Centralized access to the game's router for easy refactoring */
 	get router() {
