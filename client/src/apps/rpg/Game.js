@@ -35,7 +35,7 @@ export class RPG extends CoreGame {
 				physics: {
 					x: 3,
 					y: 3,
-					speed: 0.5,	// 0.045
+					speed: 0.25,	// 0.045
 
 					model: {
 						type: "circle",

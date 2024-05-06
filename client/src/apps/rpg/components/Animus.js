@@ -14,7 +14,7 @@ export class Animus extends CoreAnimus {
 	}
 
 	render({ game, entity, g = this.graphics } = {}) {
-		// if(this.isDirty === false) return g;
+		if(this.isDirty === false) return g;
 
 		const { model } = entity.getComponent(EnumComponentType.Physics);
 		const { tileWidth: scaleFactor } = game.config.world;

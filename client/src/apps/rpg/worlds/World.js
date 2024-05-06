@@ -61,6 +61,10 @@ export class World extends AtlasWorld {
 		this.addActions(Actions, { bind: this });
 	}
 
+
+	/*FIXME: Update/render needs to be broken out for terrain and entities */
+	/*NOTE: The visibility is interesting, but it needs to be removed until it's made better */
+
 	update({ game, dt } = {}) {
 		super.update({ game, dt });
 
@@ -69,8 +73,15 @@ export class World extends AtlasWorld {
 		const sightRadius = 5;
 
 		this.entityManager.update(({ entity }) => {
+			if(entity === game.player.entity) return;
+
+			const physics = entity.getComponent(EnumComponentType.Physics);
 			this.run("updateVisibility", entity, playerX, playerY, sightRadius);
 			entity.update({ game, dt });
+
+			if(entity instanceof TerrainEntity) return;
+
+			physics.applyVelocity({ dt });
 		}, { game, dt });
 
 		this.run("handlePlayerTerrainInteraction", game.player.entity, dt);
@@ -98,7 +109,7 @@ export class World extends AtlasWorld {
 		);
 		this.graphics.scale.set(zoom);
 
-		const sightRadius = 5;
+		const sightRadius = 10;
 
 		this.entityManager.render(({ entity }) => {
 			const animus = entity.getComponent(EnumComponentType.Animus);
@@ -106,7 +117,7 @@ export class World extends AtlasWorld {
 			const { x: tx, y: ty } = entity.getComponent(EnumComponentType.Physics);
 
 			if(tx < 0 || ty < 0 || tx >= game.worldWidth || ty >= game.worldHeight) {
-				entity.isDead = true;
+				entity.ttl = 0;
 				return;
 			}
 
@@ -117,12 +128,12 @@ export class World extends AtlasWorld {
 			const dy = ty - y;
 			const distance = Math.sqrt(dx * dx + dy * dy);
 
-			entity.render({ game, dt });
+			/*FIXME Trivial blocking, this should be handled by the terrain renderer */
 			if(distance > sightRadius) {
-				soma.lineStyle(1, "#000000", 0.25);
-				soma.beginFill("#000000", 0.5);
-				soma.drawRect(0, 0, tw, th);
-				soma.endFill();
+				soma.visible = false;
+			} else {
+				soma.visible = true;
+				entity.render({ game, dt });
 			}
 		}, { game, dt });
 
