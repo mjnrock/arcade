@@ -11,14 +11,6 @@ export const Viewport = () => {
 			loop: {
 				fps: 60,
 			},
-			config: {
-				world: {
-					viewport: {
-						txr: 5,
-						tyr: 5,
-					},
-				},
-			}
 		},
 	});
 

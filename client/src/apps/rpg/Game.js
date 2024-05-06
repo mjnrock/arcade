@@ -27,8 +27,8 @@ export class RPG extends CoreGame {
 				viewport: {
 					tx: 0,
 					ty: 0,
-					txr: 5,
-					tyr: 5,
+					txr: 25,
+					tyr: 25,
 				},
 			},
 		}, config);
