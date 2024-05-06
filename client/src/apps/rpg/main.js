@@ -2,11 +2,9 @@ import RPGGame from "./Game";
 import World from "./worlds/World";
 
 import demoCaveMap from "./data/maps/demoCaveMap.json";
-import { TerrainEntity } from "./entities/TerrainEntity";
-import EnumComponentType from "./components/EnumComponentType";
 
-export const main = async ({ config = {}, start = false } = {}) => {
-	const game = new RPGGame(config);
+export const main = async ({ settings = {}, start = false } = {}) => {
+	const game = new RPGGame(settings);
 	const world = new World({
 		game,
 		atlas: demoCaveMap,

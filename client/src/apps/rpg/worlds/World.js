@@ -23,7 +23,7 @@ export class World extends AtlasWorld {
 		viewport.tx = playerPhysics.x;
 		viewport.ty = playerPhysics.y;
 
-		const { tx, ty, tw, th } = viewport;
+		const { tx, ty, txr, tyr } = viewport;
 		const filteredEntities = [];
 		for(const entity of game.currentWorld.entityManager) {
 			const physics = entity.getComponent(EnumComponentType.Physics);
@@ -36,7 +36,7 @@ export class World extends AtlasWorld {
 			}
 
 			/* check if the entity is within the viewport, treating tw and th as "rectangular radii" */
-			if(x >= tx - tw && x <= tx + tw && y >= ty - th && y <= ty + th) {
+			if(x >= tx - txr && x <= tx + txr && y >= ty - tyr && y <= ty + tyr) {
 				filteredEntities.push(entity);
 			}
 		}

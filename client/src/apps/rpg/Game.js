@@ -6,7 +6,7 @@ import PhysicsSystem from "./systems/PhysicsSystem";
 import { PlayerEntity } from "./entities/PlayerEntity";
 
 export class RPG extends CoreGame {
-	constructor ({ ...args } = {}) {
+	constructor ({ config = {}, ...args } = {}) {
 		super({
 			...args,
 		});
@@ -16,25 +16,22 @@ export class RPG extends CoreGame {
 			PhysicsSystem,
 		);
 
-		this.config = {
+		this.mergeConfig({
 			ui: {
 				showHealth: false,
 			},
 			world: {
+				tileWidth: 32,
+				tileHeight: 32,
+				zoom: 4,
 				viewport: {
 					tx: 0,
 					ty: 0,
-					tw: 4,
-					th: 4,
+					txr: 5,
+					tyr: 5,
 				},
-				width: 800,
-				height: 600,
-				tileWidth: 32,
-				tileHeight: 32,
-				/* IDEA: Incorporate zooming into the game to simulate differently sized models viz. the world tiles */
-				zoom: 4,
 			},
-		};
+		}, config);
 
 		this.player = {
 			entity: PlayerEntity.Spawn({

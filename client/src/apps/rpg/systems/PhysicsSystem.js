@@ -71,16 +71,11 @@ export class PhysicsSystem extends CorePhysicsSystem {
 	render({ game, dt } = {}) {
 		const { tileWidth: tw, tileHeight: th, zoom } = game.config.world;
 
-		for(const entity of game.currentWorld.entityManager.cached) {
+		const cache = game.currentWorld.entityManager.cached;
+		for(const entity of cache) {
 			const animus = entity.getComponent(EnumComponentType.Animus);
-			const { graphics: g, soma } = animus;
+			const { graphics: g } = animus;
 			const { x: tx, y: ty } = entity.getComponent(EnumComponentType.Physics);
-
-			if(tx < 0 || ty < 0 || tx >= game.worldWidth || ty >= game.worldHeight) {
-				/* Kill any entities that are out of bounds */
-				entity.ttl = 0;
-				return;
-			}
 
 			g.x = tx * tw;
 			g.y = ty * th;
@@ -90,7 +85,7 @@ export class PhysicsSystem extends CorePhysicsSystem {
 			g.visible = true;
 		}
 
-		const difference = game.currentWorld.entityManager.difference(game.currentWorld.entityManager.cached);
+		const difference = game.currentWorld.entityManager.difference(cache);
 		for(const entity of difference) {
 			const animus = entity.getComponent(EnumComponentType.Animus);
 			const { graphics: g } = animus;

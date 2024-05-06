@@ -10,6 +10,7 @@ import ArcadeInputSystem from "./systems/ArcadeInputSystem";
 import Router from "./lib/message/Router";
 import System from "./lib/message/System";
 import WebSocketBrowserClient from "./lib/ws/WebSocketBrowserClient";
+import { nestedMerge } from "./util/nestedMerge";
 
 export const CommonSide = {
 	initializeNetworking({ game, args }) {
@@ -106,6 +107,8 @@ export class Game {
 	constructor ({ ...args } = {}) {
 		this.id = uuid();
 
+		this.config = {};
+
 		CommonSide.initializeNetworking({ game: this, args });
 		CommonSide.initializeGameLoop({ game: this, args });
 		CommonSide.initializeWorlds({ game: this, args });
@@ -118,6 +121,20 @@ export class Game {
 
 	resize() {
 		this.pixi.resize(window.innerWidth, window.innerHeight);
+	}
+
+	mergeConfig(...partials) {
+		partials.forEach(partial => {
+			if(typeof partial === "function") {
+				partial = partial(this.config);
+			} else if(typeof partial !== "object") {
+				return;
+			}
+
+			this.config = nestedMerge(this.config, partial);
+		});
+
+		return this;
 	}
 
 	/**
