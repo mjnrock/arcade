@@ -1,4 +1,4 @@
-import RPGGame from "../../modules/rpg/Game";
+import RPGGame from "./Game";
 import World from "../../modules/rpg/worlds/World";
 
 import demoCaveMap from "./data/maps/demoCaveMap.json";

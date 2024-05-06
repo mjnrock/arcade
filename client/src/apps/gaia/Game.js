@@ -1,12 +1,20 @@
-import CoreGame from "../core/Game";
+import CoreGame from "../../modules/rpg/Game";
+import { PlayerEntity } from "../../modules/rpg/entities/PlayerEntity";
 
-import { PlayerEntity } from "./entities/PlayerEntity";
+import InputSystem from "./systems/InputSystem";
+import PhysicsSystem from "./systems/PhysicsSystem";
+
 
 export class RPG extends CoreGame {
 	constructor ({ config = {}, ...args } = {}) {
 		super({
 			...args,
 		});
+
+		this.mountSystems(
+			InputSystem,
+			PhysicsSystem,
+		);
 
 		this.mergeConfig({
 			ui: {

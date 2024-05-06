@@ -1,7 +1,7 @@
-import CoreSystem from "../../core/lib/message/System";
+import CoreSystem from "../../../modules/core/lib/message/System";
+import LivingEntity from "../../../modules/rpg/entities/LivingEntity";
 
-import { EnumComponentType } from "../components/EnumComponentType";
-import LivingEntity from "../entities/LivingEntity";
+import EnumComponentType from "../components/EnumComponentType";
 
 export class InputSystem extends CoreSystem {
 	constructor ({ game } = {}) {

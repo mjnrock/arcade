@@ -1,4 +1,4 @@
-import { EnumComponentType as CoreEnumComponentType } from "../../core/components/EnumComponentType";
+import { EnumComponentType as CoreEnumComponentType } from "../../../modules/core/components/EnumComponentType";
 
 export const EnumComponentType = {
 	...CoreEnumComponentType,

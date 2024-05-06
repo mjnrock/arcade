@@ -1,7 +1,8 @@
-import CorePhysicsSystem from "../../core/systems/PhysicsSystem";
+import CorePhysicsSystem from "../../../modules/core/systems/PhysicsSystem";
+import TerrainEntity from "../../../modules/rpg/entities/TerrainEntity";
+
 import EnumComponentType from "../components/EnumComponentType";
 
-import { TerrainEntity } from "../entities/TerrainEntity";
 export const Actions = {
 	moveToNearestTerrain({ game, entity, dt } = {}) {
 		const world = game.currentWorld;
