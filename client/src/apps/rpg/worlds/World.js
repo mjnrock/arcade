@@ -124,17 +124,16 @@ export class World extends AtlasWorld {
 			g.x = tx * tw;
 			g.y = ty * th;
 
-			const dx = tx - x;
-			const dy = ty - y;
-			const distance = Math.sqrt(dx * dx + dy * dy);
-
 			/*FIXME Trivial blocking, this should be handled by the terrain renderer */
-			if(distance > sightRadius) {
-				soma.visible = false;
-			} else {
-				soma.visible = true;
-				entity.render({ game, dt });
-			}
+			// const dx = tx - x;
+			// const dy = ty - y;
+			// const distance = Math.sqrt(dx * dx + dy * dy);
+			// if(distance > sightRadius) {
+			// 	soma.visible = false;
+			// } else {
+			// 	soma.visible = true;
+			// }
+			entity.render({ game, dt });
 		}, { game, dt });
 
 		return this;
