@@ -1,56 +1,32 @@
 import { v4 as uuid } from "uuid";
-import * as PIXI from "pixi.js";
 
 import EntityManager from "./entities/EntityManager";
 import { EnumComponentType } from "./components/EnumComponentType";
-import { Actionable } from "./lib/Actionable";
 
 export const ClientSide = {
-	initializeGraphics(world) {
-		world.graphics = new PIXI.Container();
-		world.game.pixi.stage.addChild(world.graphics);
-	},
 	attachEntityGraphics({ game, entity } = {}) {
 		const animus = entity.getComponent(EnumComponentType.Animus);
 		if(animus) {
-			game.currentWorld.graphics.addChild(animus.graphics);
+			game.pixi.stage.addChild(animus.graphics);
 		}
 	},
 	detachEntityGraphics({ game, entity } = {}) {
 		const animus = entity.getComponent(EnumComponentType.Animus);
 		if(animus) {
-			game.currentWorld.graphics.removeChild(animus.graphics);
+			game.pixi.stage.removeChild(animus.graphics);
 		}
 	},
 };
 
-export class World extends Actionable {
-	static IsServer = false;
-	static get IsClient() {
-		return !this.IsServer;
-	}
-
-	constructor ({ game, id, entities = [], ...actionables } = {}) {
-		super({ ...actionables });
-
+export class World {
+	constructor ({ game, id, entities = [] } = {}) {
 		this.id = id ?? uuid();
 		this.game = game;
 		this.entityManager = new EntityManager();
 
-		game.addWorld(this);
-
-		if(World.IsClient) {
-			ClientSide.initializeGraphics(this);
+		for(const entity of entities) {
+			this.addEntity(entity);
 		}
-
-		this.addEntity(...entities);
-	}
-
-	/**
-	 * Convenience method to get all entities in the World as an Array.
-	 */
-	get entities() {
-		return Array.from(this.entityManager.entities.values());
 	}
 
 	addEntity(...entities) {
@@ -82,13 +58,19 @@ export class World extends Actionable {
 	}
 
 	update({ game, dt } = {}) {
-		this.process({ game, dt });
+		this.entityManager.update({ game, dt });
 
 		for(const entity of this.entityManager) {
 			if(entity.isDead) {
 				this.removeEntity(entity);
 			}
 		}
+
+		return this;
+	}
+
+	render({ game, dt } = {}) {
+		this.entityManager.render({ game, dt });
 
 		return this;
 	}

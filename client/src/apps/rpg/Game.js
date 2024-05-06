@@ -1,53 +1,32 @@
-import CoreGame from "../core/Game";
+import Game from "../core/Game";
 
 import InputSystem from "./systems/InputSystem";
-import PhysicsSystem from "./systems/PhysicsSystem";
+import EntitySystem from "./systems/EntitySystem";
 
-import { PlayerEntity } from "./entities/PlayerEntity";
+import LivingEntity from "./entities/LivingEntity";
 
-export class RPG extends CoreGame {
-	constructor ({ config = {}, ...args } = {}) {
-		super({
-			...args,
-		});
+export class RPG extends Game {
+	constructor ({ ...args } = {}) {
+		super({ ...args });
 
-		this.mountSystems(
-			InputSystem,
-			PhysicsSystem,
-		);
-
-		this.mergeConfig({
-			ui: {
-				showHealth: false,
-			},
-			world: {
-				tileWidth: 32,
-				tileHeight: 32,
-				zoom: 4,
-				viewport: {
-					tx: 0,
-					ty: 0,
-					txr: 5,
-					tyr: 5,
-				},
-			},
-		}, config);
+		this.systems.InputSystem = new InputSystem({ game: this });
+		this.addSystems([
+			[ EntitySystem, {} ],
+		]);
 
 		this.player = {
-			entity: PlayerEntity.Spawn({
+			entity: LivingEntity.Spawn({
 				physics: {
-					x: 3,
-					y: 3,
-					speed: 0.25,	// 0.045
+					x: 0.5 * window.innerWidth,
+					y: 0.5 * window.innerHeight,
+					speed: 5,
 
 					model: {
 						type: "circle",
-						r: 0.16,
+						r: Math.random() * 20 + 5,
 					},
 				},
-				animus: {
-					color: "#3AF",
-				},
+				animus: {},
 			}),
 			input: {
 				mask: {},

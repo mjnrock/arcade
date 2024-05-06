@@ -1,16 +1,13 @@
 import { v4 as uuid } from "uuid";
-import { Actionable } from "../Actionable";
 
-export class System extends Actionable {
-	constructor ({ game, ...actionable } = {}) {
-		super({ ...actionable });
-
+export class System {
+	constructor ({ game } = {}) {
 		this.id = uuid();
 		this.game = game;
 	}
 
-	update({ game, dt } = {}) { }
-	render({ game, dt } = {}) { }
+	update({ game, dt } = {}) {}
+	render({ game, dt } = {}) {}
 
 	/* Centralized access to the game's router for easy refactoring */
 	get router() {
@@ -31,10 +28,6 @@ export class System extends Actionable {
 	}
 	sendToNetwork(message) {
 		this.router.send(message);
-	}
-
-	static Spawn({ game, ...args } = {}) {
-		return new this({ game, ...args });
 	}
 };
 

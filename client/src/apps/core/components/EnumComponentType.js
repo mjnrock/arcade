@@ -3,5 +3,3 @@ export const EnumComponentType = {
 	Animus: "animus",
 	Physics: "physics",
 };
-
-export default EnumComponentType;

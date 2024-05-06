@@ -5,20 +5,12 @@ import { main } from "./main";
 export const Viewport = () => {
 	const { game, viewport } = useGame(main, {
 		start: true,
-		settings: {
+		config: {
 			width: window.innerWidth,
 			height: window.innerHeight,
 			loop: {
 				fps: 60,
 			},
-			config: {
-				world: {
-					viewport: {
-						txr: 5,
-						tyr: 5,
-					},
-				},
-			}
 		},
 	});
 

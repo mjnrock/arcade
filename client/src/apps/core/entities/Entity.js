@@ -4,8 +4,6 @@ export class Entity {
 	constructor ({ id, meta = {}, components = [] } = {}) {
 		this.id = id ?? uuid();
 		this.meta = {
-			//IDEA: Should this follow suit with Component.type and enums?
-			type: this.constructor.name,
 			/* Time created */
 			ts: Date.now(),
 			/* Time to live, adjust as needed */
