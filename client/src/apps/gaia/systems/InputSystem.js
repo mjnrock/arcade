@@ -2,6 +2,7 @@ import CoreSystem from "../../../modules/core/lib/message/System";
 import AnimateEntity from "../../../modules/rpg/entities/AnimateEntity";
 
 import EnumComponentType from "../components/EnumComponentType";
+import { EnumFacing, FacingMatrix } from "../components/EnumFacing";
 
 export class InputSystem extends CoreSystem {
 	constructor ({ game } = {}) {
@@ -44,78 +45,60 @@ export class InputSystem extends CoreSystem {
 	update({ game, dt } = {}) {
 		const dtSeconds = dt * 1000;
 
-		const compPlayerPhysics = game.player.entity.getComponent(EnumComponentType.Physics);
-		if(compPlayerPhysics) {
+		const playerPhysics = game.player.entity.getComponent(EnumComponentType.Physics);
+		if(playerPhysics) {
 			/* Map controller inputs into player physics state */
-			const normalizedSpeed = compPlayerPhysics.speed * dtSeconds;
+			const normalizedSpeed = playerPhysics.speed * dtSeconds;
 			if(game.input.arcade?.joystick?.LEFT || game.input.keyboard?.hasFlag("LEFT")) {
-				compPlayerPhysics.vx = normalizedSpeed * -1;
-				compPlayerPhysics.facing = 270;
+				playerPhysics.vx = normalizedSpeed * -1;
+				playerPhysics.facing = EnumFacing.WEST;
 			} else if(game.input.arcade?.joystick?.RIGHT || game.input.keyboard?.hasFlag("RIGHT")) {
-				compPlayerPhysics.vx = normalizedSpeed;
-				compPlayerPhysics.facing = 90;
+				playerPhysics.vx = normalizedSpeed;
+				playerPhysics.facing = EnumFacing.EAST;
 			} else {
-				compPlayerPhysics.vx = 0;
+				playerPhysics.vx = 0;
 			}
 			if(game.input.arcade?.joystick?.UP || game.input.keyboard?.hasFlag("UP")) {
-				compPlayerPhysics.vy = normalizedSpeed * -1;
-				compPlayerPhysics.facing = 0;
+				playerPhysics.vy = normalizedSpeed * -1;
+				playerPhysics.facing = EnumFacing.NORTH;
 			} else if(game.input.arcade?.joystick?.DOWN || game.input.keyboard?.hasFlag("DOWN")) {
-				compPlayerPhysics.vy = normalizedSpeed;
-				compPlayerPhysics.facing = 180;
+				playerPhysics.vy = normalizedSpeed;
+				playerPhysics.facing = EnumFacing.SOUTH;
 			} else {
-				compPlayerPhysics.vy = 0;
+				playerPhysics.vy = 0;
 			}
 
-			// calculate diagonal facings, if any
-			if(compPlayerPhysics.vx && compPlayerPhysics.vy) {
-				if(compPlayerPhysics.vx < 0 && compPlayerPhysics.vy < 0) {
-					compPlayerPhysics.facing = 135;
-				} else if(compPlayerPhysics.vx < 0 && compPlayerPhysics.vy > 0) {
-					compPlayerPhysics.facing = 225;
-				} else if(compPlayerPhysics.vx > 0 && compPlayerPhysics.vy < 0) {
-					compPlayerPhysics.facing = 45;
-				} else if(compPlayerPhysics.vx > 0 && compPlayerPhysics.vy > 0) {
-					compPlayerPhysics.facing = 315;
+			/* Calculate diagonal facings, if any */
+			if(playerPhysics.vx && playerPhysics.vy) {
+				if(playerPhysics.vx > 0 && playerPhysics.vy < 0) {
+					playerPhysics.facing = EnumFacing.NORTH_EAST;  // Right and Up
+				} else if(playerPhysics.vx > 0 && playerPhysics.vy > 0) {
+					playerPhysics.facing = EnumFacing.SOUTH_EAST;  // Right and Down
+				} else if(playerPhysics.vx < 0 && playerPhysics.vy < 0) {
+					playerPhysics.facing = EnumFacing.NORTH_WEST;  // Left and Up
+				} else if(playerPhysics.vx < 0 && playerPhysics.vy > 0) {
+					playerPhysics.facing = EnumFacing.SOUTH_WEST;  // Left and Down
 				}
 			}
 
 			/* Simulate automatic firing */
 			if(game.input.arcade?.buttons?.K1 || game.input.keyboard.has("Space")) {
-				let vx = 0,
-					vy = 0,
-					projSpeed = 12.5;
+				/* Get direction vector based on the current facing from the matrix */
+				let direction = FacingMatrix[ playerPhysics.facing ] || [ 0, 0 ];
 
-				if(compPlayerPhysics.facing === 180) {
-					vy = projSpeed;
-				} else if(compPlayerPhysics.facing === 270) {
-					vx = projSpeed * -1;
-				} else if(compPlayerPhysics.facing === 0) {
-					vy = projSpeed * -1;
-				} else if(compPlayerPhysics.facing === 90) {
-					vx = projSpeed;
-				} else if(compPlayerPhysics.facing === 225) {
-					vx = projSpeed * -1;
-					vy = projSpeed;
-				} else if(compPlayerPhysics.facing === 315) {
-					vx = projSpeed;
-					vy = projSpeed;
-				} else if(compPlayerPhysics.facing === 135) {
-					vx = projSpeed * -1;
-					vy = projSpeed * -1;
-				} else if(compPlayerPhysics.facing === 45) {
-					vx = projSpeed;
-					vy = projSpeed * -1;
-				}
+				let projSpeed = 12.5;
+				let vx = direction[ 0 ] * projSpeed;
+				let vy = direction[ 1 ] * projSpeed;
 
+				/* Spawn a projectile */
 				const entProjectile = AnimateEntity.Spawn({
 					meta: {
 						ttl: 1500,
 					},
 					physics: {
-						x: compPlayerPhysics.x,
-						y: compPlayerPhysics.y,
-						facing: compPlayerPhysics.facing,
+						x: playerPhysics.x,
+						y: playerPhysics.y,
+						facing: playerPhysics.facing,
 						vx,
 						vy,
 
@@ -129,6 +112,7 @@ export class InputSystem extends CoreSystem {
 					},
 				});
 
+				/* Add the projectile to the world */
 				game.currentWorld.addEntity(entProjectile);
 			}
 		}
