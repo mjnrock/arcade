@@ -1,6 +1,8 @@
 import * as PIXI from "pixi.js";
 import CoreAnimus from "../../../modules/core/components/Animus";
 import { EnumComponentType } from "../../../modules/rpg/components/EnumComponentType";
+import Circle from "../../../modules/core/lib/geometry/Circle";
+import Rectangle from "../../../modules/core/lib/geometry/Rectangle";
 
 export class Animus extends CoreAnimus {
 	constructor ({ color, ...props } = {}) {
@@ -16,21 +18,18 @@ export class Animus extends CoreAnimus {
 	render({ game, entity, g = this.graphics } = {}) {
 		if(this.isDirty === false) return g;
 
-		// console.log(entity)
-
 		const { model } = entity.getComponent(EnumComponentType.Physics);
 		const { tileWidth: scaleFactor } = game.config.world;
-		/* model.r is unitary, so we must scale it */
-		const radius = model.r * scaleFactor;
+		const radius = model.radius * scaleFactor;
 
 		const gSoma = this.soma;
 		gSoma.clear();
 		gSoma.lineStyle(1, this.color);
 		gSoma.beginFill(this.color);
-		if(model.type === "circle") {
+		if(model instanceof Circle) {
 			gSoma.drawCircle(0, 0, ~~radius);
-		} else if(model.type === "rect") {
-			gSoma.drawRect(0, 0, ~~model.w, ~~model.h);
+		} else if(model instanceof Rectangle) {
+			gSoma.drawRect(0, 0, ~~model.width, ~~model.height);
 		}
 		gSoma.endFill();
 

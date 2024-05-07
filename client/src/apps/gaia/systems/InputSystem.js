@@ -103,11 +103,9 @@ export class InputSystem extends CoreSystem {
 						vx,
 						vy,
 
-						// model: new Circle()
-						model: {
-							type: "circle",
-							r: Math.random() > 0.33 ? 0.25 : 0.5,
-						},
+						model: new Circle({
+							radius: Math.random() > 0.33 ? 0.25 : 0.5,
+						}),
 					},
 					animus: {
 						color: "rgba(64, 64, 228, 0.25)",

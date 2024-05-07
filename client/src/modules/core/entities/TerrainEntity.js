@@ -1,3 +1,4 @@
+import Rectangle from "../lib/geometry/Rectangle";
 import AnimateEntity from "./AnimateEntity";
 
 export class TerrainEntity extends AnimateEntity {
@@ -6,10 +7,11 @@ export class TerrainEntity extends AnimateEntity {
 			...props,
 			physics: {
 				...(physics ?? {}),
-				model: {
-					type: "rect",
+				model: new Rectangle({
+					width: 1,
+					height: 1,
 					...(physics?.model ?? {}),
-				},
+				}),
 			},
 			animus,
 		});

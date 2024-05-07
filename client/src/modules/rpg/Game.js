@@ -1,4 +1,5 @@
 import CoreGame from "../core/Game";
+import Circle from "../core/lib/geometry/Circle";
 
 import { PlayerEntity } from "./entities/PlayerEntity";
 
@@ -32,10 +33,9 @@ export class RPG extends CoreGame {
 					y: 3,
 					speed: 0.25,	// 0.045
 
-					model: {
-						type: "circle",
-						r: 0.16,
-					},
+					model: new Circle({
+						radius: 0.16,
+					}),
 				},
 				animus: {
 					color: "#3AF",

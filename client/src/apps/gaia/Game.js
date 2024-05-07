@@ -1,5 +1,6 @@
 import RPGGame from "../../modules/rpg/Game";
 import { PlayerEntity } from "../../modules/rpg/entities/PlayerEntity";
+import { Circle } from "../../modules/core/lib/geometry/Circle";
 
 import InputSystem from "./systems/InputSystem";
 import PhysicsSystem from "./systems/PhysicsSystem";
@@ -40,10 +41,9 @@ export class Game extends RPGGame {
 					y: 3,
 					speed: 0.25,	// 0.045
 
-					model: {
-						type: "circle",
-						r: 0.16,
-					},
+					model: new Circle({
+						radius: 0.16,
+					}),
 				},
 				animus: {
 					color: "#3AF",

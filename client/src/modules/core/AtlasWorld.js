@@ -1,5 +1,6 @@
 import CoreWorld from "./World";
 import TerrainEntity from "./entities/TerrainEntity";
+import Rectangle from "./lib/geometry/Rectangle";
 
 export class AtlasWorld extends CoreWorld {
 	constructor ({ atlas, entities = [], ...args } = {}) {
@@ -42,10 +43,10 @@ export class AtlasWorld extends CoreWorld {
 					physics: {
 						x,
 						y,
-						model: {
-							w: tw,
-							h: th,
-						},
+						model: new Rectangle({
+							width: tw,
+							height: th,
+						}),
 					},
 					animus: {
 						color,
