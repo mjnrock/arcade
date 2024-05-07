@@ -9,7 +9,6 @@ export class Physics extends Component {
 		super({ ...props });
 
 		this.model = model ?? new Geometry({ x, y });
-		this.facing = 0;
 
 		this.vx = vx;
 		this.vy = vy;
@@ -26,12 +25,6 @@ export class Physics extends Component {
 	}
 	set y(value) {
 		this.model.y = value;
-	}
-
-	setFacing({ facing = 0 } = {}) {
-		this.facing = facing;
-
-		return this;
 	}
 
 	setPosition({ x, y, isAdd = false } = {}) {
