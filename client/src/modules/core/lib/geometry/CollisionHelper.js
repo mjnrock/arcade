@@ -4,7 +4,7 @@ export const CollisionHelper = {
 		"Circle:Rectangle": (...args) => this.rectangleToCircle(...args),
 		"Rectangle:Rectangle": (...args) => this.rectangleToRectangle(...args),
 		"Polygon:Polygon": (...args) => this.polygonToPolygon(...args),
-		"Triangle:Triangle": (...args) => this.polygonToPolygon(...args), // Assuming Triangle is a Polygon
+		"Triangle:Triangle": (...args) => this.polygonToPolygon(...args),
 		"Triangle:Polygon": (...args) => this.polygonToPolygon(...args),
 		"Polygon:Triangle": (...args) => this.polygonToPolygon(...args)
 	},
@@ -53,10 +53,10 @@ export const CollisionHelper = {
 	},
 
 	polygonToPolygon(poly1, poly2) {
-		// Using Separating Axis Theorem (SAT) for polygons
 		return this._SAT(poly1.vertices, poly2.vertices);
 	},
 
+	/* Separating Axis Theorem (SAT) for polygons */
 	_SAT(vertices1, vertices2) {
 		const normals = [ ...this._getNormals(vertices1), ...this._getNormals(vertices2) ];
 		for(const normal of normals) {
