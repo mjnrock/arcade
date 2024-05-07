@@ -1,8 +1,9 @@
 import Geometry from "./Geometry.js";
 
 export class Polygon extends Geometry {
-	constructor (x, y, vertices) {
-		super(x, y);
+	constructor ({ vertices, ...geometry } = {}) {
+		super(geometry);
+
 		this.vertices = vertices; // vertices should be an array of {x, y} objects
 	}
 

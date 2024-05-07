@@ -1,4 +1,5 @@
 import CoreSystem from "../../../modules/core/lib/message/System";
+import { Circle } from "../../../modules/core/lib/geometry/Circle";
 import AnimateEntity from "../../../modules/rpg/entities/AnimateEntity";
 
 import EnumComponentType from "../components/EnumComponentType";
@@ -102,6 +103,7 @@ export class InputSystem extends CoreSystem {
 						vx,
 						vy,
 
+						// model: new Circle()
 						model: {
 							type: "circle",
 							r: Math.random() > 0.33 ? 0.25 : 0.5,

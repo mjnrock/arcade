@@ -1,8 +1,9 @@
 import Geometry from "./Geometry.js";
 
 export class Circle extends Geometry {
-	constructor (x, y, radius) {
-		super(x, y);
+	constructor ({ radius, ...geometry } = {}) {
+		super(geometry);
+
 		this.radius = radius;
 	}
 
