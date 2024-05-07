@@ -1,7 +1,7 @@
 import { v4 as uuid } from "uuid";
 
 export class Geometry {
-	constructor ({ x = -Infinity, y = -Infinity, id } = {}) {
+	constructor ({ x = null, y = null, id } = {}) {
 		this.id = id ?? uuid();
 
 		this.x = x;

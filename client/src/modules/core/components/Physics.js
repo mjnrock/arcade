@@ -1,18 +1,31 @@
 import Component from "./Component";
 import { EnumComponentType } from "./EnumComponentType";
+import Geometry from "../lib/geometry/Geometry";
 
 export class Physics extends Component {
 	static Type = EnumComponentType.Physics;
 
-	constructor ({ x, y, vx = 0, vy = 0, ...props } = {}) {
+	constructor ({ x, y, vx = 0, vy = 0, model, ...props } = {}) {
 		super({ ...props });
 
+		this.model = model ?? new Geometry({ x, y });
 		this.facing = 0;
 
-		this.x = x;
-		this.y = y;
 		this.vx = vx;
 		this.vy = vy;
+	}
+
+	get x() {
+		return this.model.x;
+	}
+	set x(value) {
+		this.model.x = value;
+	}
+	get y() {
+		return this.model.y;
+	}
+	set y(value) {
+		this.model.y = value;
 	}
 
 	setFacing({ facing = 0 } = {}) {

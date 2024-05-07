@@ -97,13 +97,14 @@ export class InputSystem extends CoreSystem {
 						ttl: 1500,
 					},
 					physics: {
-						x: playerPhysics.x,
-						y: playerPhysics.y,
 						facing: playerPhysics.facing,
 						vx,
 						vy,
 
+						speed: projSpeed,
 						model: new Circle({
+							x: playerPhysics.x,
+							y: playerPhysics.y,
 							radius: Math.random() > 0.33 ? 0.25 : 0.5,
 						}),
 					},

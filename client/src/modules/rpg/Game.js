@@ -29,11 +29,10 @@ export class RPG extends CoreGame {
 		this.player = {
 			entity: PlayerEntity.Spawn({
 				physics: {
-					x: 3,
-					y: 3,
 					speed: 0.25,	// 0.045
-
 					model: new Circle({
+						x: 3,
+						y: 3,
 						radius: 0.16,
 					}),
 				},

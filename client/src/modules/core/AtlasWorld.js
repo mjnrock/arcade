@@ -41,9 +41,9 @@ export class AtlasWorld extends CoreWorld {
 
 				this.addEntity(terrainEntityClass.Spawn({
 					physics: {
-						x,
-						y,
 						model: new Rectangle({
+							x,
+							y,
 							width: tw,
 							height: th,
 						}),
