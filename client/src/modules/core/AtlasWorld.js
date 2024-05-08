@@ -28,6 +28,13 @@ export class AtlasWorld extends CoreWorld {
 	isInBounds(x, y) {
 		return x >= 0 && x < this.cols && y >= 0 && y < this.rows;
 	}
+	getTileAt(x, y) {
+		if(this.isInBounds(x, y)) {
+			return this.atlas.map.tiles[ y ][ x ];
+		}
+
+		return false;
+	}
 
 	loadFromAtlas(atlas, terrainEntityClass = TerrainEntity) {
 		if(!atlas) return;
