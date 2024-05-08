@@ -39,8 +39,8 @@ export class Game extends RPGGame {
 				physics: {
 					speed: 0.25,	// 0.045
 					model: new Circle({
-						x: 3,
-						y: 3,
+						x: 0,
+						y: 8,
 						radius: 0.16,
 					}),
 				},

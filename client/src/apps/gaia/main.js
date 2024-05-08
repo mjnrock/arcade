@@ -16,6 +16,12 @@ export const main = async ({ settings = {}, start = false } = {}) => {
 	console.log(game)
 	console.log(world)
 
+	const physics = game.player.entity.getComponent("physics");
+	const { x, y } = physics;
+
+	console.log(world.resolveTerrain(x, y))
+	console.log(world.resolveTerrain(-1, 8))
+
 	if(start) {
 		game.start();
 	}

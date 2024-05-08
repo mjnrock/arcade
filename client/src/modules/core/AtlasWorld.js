@@ -25,6 +25,10 @@ export class AtlasWorld extends CoreWorld {
 		return this.atlas.map.height;
 	}
 
+	isInBounds(x, y) {
+		return x >= 0 && x < this.cols && y >= 0 && y < this.rows;
+	}
+
 	loadFromAtlas(atlas, terrainEntityClass = TerrainEntity) {
 		if(!atlas) return;
 
@@ -83,19 +87,40 @@ export class AtlasWorld extends CoreWorld {
 			return false;
 		}
 	}
-	getNearestTerrain(x, y) {
+	resolveTerrain(x, y) {
 		const terrain = this.getTerrainAt(x, y);
 
-		if(terrain && terrain.type !== "VOID") {
-			return terrain;
-		} else {
-			/* iterate through this.atlas.map.tiles[ ty ][ tx ] to find the first non-VOID terrain */
-			for(let y = 0; y < this.atlas.map.tiles.length; y++) {
-				for(let x = 0; x < this.atlas.map.tiles[ y ].length; x++) {
-					const terrain = this.getTerrainAt(x, y);
+		if(terrain) {
+			if(terrain.type !== "VOID") {
+				return {
+					x: ~~x,
+					y: ~~y,
+					...terrain,
+				};
+			}
+		}
 
-					if(terrain && terrain.type !== "VOID") {
-						return { x, y };
+		/* Circularly iterating searching tiles from the north clockwise, find the nearest non-VOID terrain */
+		const radius = 1;
+		const maxRadius = Math.max(this.rows, this.cols);
+
+		for(let r = radius; r < maxRadius; r++) {
+			for(let i = 0; i < 4; i++) {
+				const dx = r * Math.cos(i * Math.PI / 2);
+				const dy = r * Math.sin(i * Math.PI / 2);
+
+				const nx = ~~(x + dx);
+				const ny = ~~(y + dy);
+
+				const terrain = this.getTerrainAt(nx, ny);
+
+				if(terrain) {
+					if(terrain.type !== "VOID") {
+						return {
+							x: nx,
+							y: ny,
+							...terrain,
+						};
 					}
 				}
 			}

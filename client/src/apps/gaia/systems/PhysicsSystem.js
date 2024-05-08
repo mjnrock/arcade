@@ -5,18 +5,48 @@ import TerrainEntity from "../../../modules/rpg/entities/TerrainEntity";
 import EnumComponentType from "../components/EnumComponentType";
 
 export const Actions = {
+	/**
+	 * BUG: Because of the circular calculation from north, coupled with
+	 * a tick's worth of applied velocity, you can exploit being out of
+	 * bounds and adjacent VOID tiles to "teleport" to the another tile.
+	 * 
+	 * NOTE: ./appendix/map-edge-exploit-a.bug.png
+	 * NOTE: ./appendix/map-edge-exploit-b.bug.png
+	 */
 	moveToNearestTerrain({ game, entity, dt } = {}) {
 		const world = game.currentWorld;
 		const physics = entity.getComponent(EnumComponentType.Physics);
-		const { x, y } = physics;
-		const nearest = world.getNearestTerrain(x, y);
+		const { x, y, vx, vy } = physics;
+	
+		/* First check if the entity is within the bounds of the world, but on a VOID tile */
+		const currentTerrain = world.getTerrainAt(x, y);
+		if(currentTerrain.type === "VOID") {
+			const terrain = world.resolveTerrain(x, y);
+			physics.x = terrain.x;
+			physics.y = terrain.y;
 
-		if(x !== nearest.x || y !== nearest.y) {
-			console.log(`Player was at ${ x }, ${ y }`)
-			console.log(`Moving entity to nearest terrain at ${ nearest.x }, ${ nearest.y }`)
-			physics.setPosition({ x: nearest.x, y: nearest.y });
+			return;
 		}
+
+		/* Assume the character is out of bounds, and move it to the nearest terrain */
+		const nextX = x + vx * dt;
+		const nextY = y + vy * dt;
+		const nextTerrain = world.resolveTerrain(nextX, nextY);
+	
+		/* Calculate the reflection point on the terrain */
+		const dx = nextX - nextTerrain.x;
+		const dy = nextY - nextTerrain.y;
+	
+		/* Reflect the position based on the incoming direction */
+		physics.x = Math.max(Math.min(nextTerrain.x + dx, world.atlas.map.columns), 0);
+		physics.y = Math.max(Math.min(nextTerrain.y + dy, world.atlas.map.rows), 0);
+	
+		// Optionally, reflect the velocity if the terrain is meant to reflect motion
+		// This part depends on whether the terrain should reflect entities or just stop them
+		physics.vx = -vx;
+		physics.vy = -vy;
 	},
+	
 	handleEntityTerrainInteraction({ game, entity, dt } = {}) {
 		const physics = entity.getComponent(EnumComponentType.Physics);
 		const { x, y } = physics;
@@ -60,10 +90,10 @@ export const Actions = {
 			const { x: nextX, y: nextY } = physics;
 			const nextTerrain = world.getTerrainAt(nextX, nextY);
 
-			/* If the *next* terrain is VOID, undo the movement */
-			if(nextTerrain?.type === "VOID") {
-				/* Kill any projectile that hits the VOID */
+			/* If the *next* terrain is VOID or OOB, undo the movement */
+			if(nextTerrain?.type === "VOID" || !world.isInBounds(nextX, nextY)) {
 				//FIXME: Adjust this to be more robust once a "ProjectileEntity" is implemented
+				/* Kill any projectile that hits the VOID */
 				if(!(entity instanceof TerrainEntity) && !(entity instanceof PlayerEntity)) {
 					entity.meta.ttl = 0;
 				}
@@ -91,6 +121,8 @@ export class PhysicsSystem extends CorePhysicsSystem {
 
 			if(entity instanceof TerrainEntity) continue;
 
+			//FIXME: The Player ceases to be updated once out of bounds, so something is happening before this function is called
+			// It may cease to be cached?
 			this.run("handleEntityTerrainInteraction", { game, entity, dt });
 		}
 

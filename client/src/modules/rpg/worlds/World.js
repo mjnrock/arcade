@@ -29,12 +29,6 @@ export class World extends AtlasWorld {
 			const physics = entity.getComponent(EnumComponentType.Physics);
 			const { x, y } = physics;
 
-			/* Kill any entities that are out of bounds */
-			if(x < 0 || y < 0 || x > this.atlas.map.width || y > this.atlas.map.height) {
-				entity.ttl = 0;
-				continue;
-			}
-
 			/* check if the entity is within the viewport, treating tw and th as "rectangular radii" */
 			if(x >= tx - txr && x <= tx + txr && y >= ty - tyr && y <= ty + tyr) {
 				filteredEntities.push(entity);
