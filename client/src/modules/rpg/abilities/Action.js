@@ -1,3 +1,5 @@
+import { Identity } from "../../core/lib/Identity";
+
 /**
  * @class Action
  * An Action should never be executed directly.  Instead, it should be
@@ -5,8 +7,10 @@
  * arguments to the Action and handle Entity-specific logic, like
  * selecting targets, etc.
  */
-export class Action {
+export class Action extends Identity {
 	constructor ({ action } = {}) {
+		super();
+
 		if(action) {
 			this.action = action;
 		}

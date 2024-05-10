@@ -2,13 +2,13 @@ import Action from "../../../modules/rpg/abilities/Action";
 import EnumComponentType from "../components/EnumComponentType";
 
 export class ActionDamage extends Action {
-	constructor ({ amount = 1, damageSource } = {}) {
+	constructor ({ amount = 1 } = {}) {
 		super();
 
 		this.amount = amount;
 
 		//TODO: Implement damageSource as a way to determine the source/magnitude of the damage
-		this.damageSource = damageSource;
+		// this.damageSource = damageSource;
 	}
 
 	action({ dt, game, source, target, amount = this.amount } = {}) {

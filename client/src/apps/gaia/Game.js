@@ -1,7 +1,7 @@
 import RPGGame from "../../modules/rpg/Game";
-import { PlayerEntity } from "../../modules/rpg/entities/PlayerEntity";
 import { Circle } from "../../modules/core/lib/geometry/Circle";
 
+import { PlayerEntity } from "./entities/PlayerEntity";
 import InputSystem from "./systems/InputSystem";
 import PhysicsSystem from "./systems/PhysicsSystem";
 

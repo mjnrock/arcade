@@ -89,8 +89,11 @@ export class InputSystem extends CoreSystem {
 
 			/* Simulate automatic firing */
 			if(game.input.arcade?.buttons?.K1 || game.input.keyboard.has("Space")) {
-				const actionDamage = new ActionDamage({ amount: 1 });
-				actionDamage.exec({
+				const playerAbilities = game.player.entity.getComponent(EnumComponentType.Abilities);
+				const abilityMelee = playerAbilities.getAbility("melee");
+				
+				//FIXME: This needs to utilize the .model before `target` can be used
+				abilityMelee.exec({
 					source: game.player.entity,
 					target: game.player.entity,
 				});

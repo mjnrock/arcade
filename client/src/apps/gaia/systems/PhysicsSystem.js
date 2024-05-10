@@ -1,8 +1,8 @@
 import CorePhysicsSystem from "../../../modules/core/systems/PhysicsSystem";
-import { PlayerEntity } from "../../../modules/rpg/entities/PlayerEntity";
 import TerrainEntity from "../../../modules/rpg/entities/TerrainEntity";
 
 import EnumComponentType from "../components/EnumComponentType";
+import { PlayerEntity } from "../entities/PlayerEntity";
 
 export const Actions = {
 	/**
@@ -17,7 +17,7 @@ export const Actions = {
 		const world = game.currentWorld;
 		const physics = entity.getComponent(EnumComponentType.Physics);
 		const { x, y, vx, vy } = physics;
-	
+
 		/* First check if the entity is within the bounds of the world, but on a VOID tile */
 		const currentTerrain = world.getTerrainAt(x, y);
 		if(currentTerrain.type === "VOID") {
@@ -32,21 +32,21 @@ export const Actions = {
 		const nextX = x + vx * dt;
 		const nextY = y + vy * dt;
 		const nextTerrain = world.resolveTerrain(nextX, nextY);
-	
+
 		/* Calculate the reflection point on the terrain */
 		const dx = nextX - nextTerrain.x;
 		const dy = nextY - nextTerrain.y;
-	
+
 		/* Reflect the position based on the incoming direction */
 		physics.x = Math.max(Math.min(nextTerrain.x + dx, world.atlas.map.columns), 0);
 		physics.y = Math.max(Math.min(nextTerrain.y + dy, world.atlas.map.rows), 0);
-	
+
 		// Optionally, reflect the velocity if the terrain is meant to reflect motion
 		// This part depends on whether the terrain should reflect entities or just stop them
 		physics.vx = -vx;
 		physics.vy = -vy;
 	},
-	
+
 	handleEntityTerrainCollision({ game, entity, dt } = {}) {
 		const physics = entity.getComponent(EnumComponentType.Physics);
 		const { x, y } = physics;
@@ -135,6 +135,8 @@ export class PhysicsSystem extends CorePhysicsSystem {
 			const animus = entity.getComponent(EnumComponentType.Animus);
 			const { graphics: g } = animus;
 			const { x: tx, y: ty } = entity.getComponent(EnumComponentType.Physics);
+
+			if(!g) continue;
 
 			g.x = tx * tw;
 			g.y = ty * th;

@@ -1,4 +1,5 @@
 import Geometry from "../../core/lib/geometry/Geometry";
+import { Identity } from "../../core/lib/Identity";
 import Action from "./Action";
 
 /**
@@ -8,8 +9,10 @@ import Action from "./Action";
  * series of .actions are executed upon any entities that are
  * within the hitbox.
  */
-export class Ability {
-	constructor ({ name, model } = {}) {
+export class Ability extends Identity {
+	constructor ({ name, model, actions = [] } = {}) {
+		super();
+
 		/* A unique identifier for the Ability */
 		this.name = name;
 
@@ -18,6 +21,7 @@ export class Ability {
 
 		/* An ordered list of repeatable-actions to execute when the ability is triggered */
 		this.actions = [];
+		this.addAction(...actions);
 	}
 
 	setModel(model) {
@@ -33,6 +37,8 @@ export class Ability {
 		for(const action of actions) {
 			if(action instanceof Action) {
 				this.actions.push(action);
+			} else if(typeof action === "object") {
+				this.actions.push(new Action(action));
 			} else if(typeof action === "function") {
 				this.actions.push(new Action({ action }));
 			}
@@ -45,7 +51,7 @@ export class Ability {
 	exec({ dt, game, ...args } = {}) {
 		const results = [];
 		for(const action of this.actions) {
-			results.push(action.exec({ dt, game, ...args, ability: this }));
+			results.push(action.exec.call(action, { dt, game, ...args, ability: this }));
 		}
 
 		return results;

@@ -1,11 +1,132 @@
-import { v4 as uuid } from "uuid";
+import { v4 as uuid, validate } from "uuid";
 import { Tags } from "./Tags.js";
 
 /**
  * @class IdentityClass
  * Represents an identity with unique identifier and associated tags.
  */
-export class IdentityClass {
+export class Identity {
+
+	static Comparators = {
+		/**
+		 * Single-comparison evaluators
+		 */
+		IsUndefined(input) {
+			return input === void 0;
+		},
+		IsNull(input) {
+			return input === null;
+		},
+		IsDefined(input) {
+			return input != null;
+		},
+		IsBoolean(input) {
+			return typeof input === "boolean";
+		},
+		IsNumber(input) {
+			return typeof input === "number";
+		},
+		IsNumeric(input) {
+			return !isNaN(parseFloat(input));
+		},
+		IsString(input) {
+			return typeof input === "string" || input instanceof String;
+		},
+		IsSymbol(input) {
+			return typeof input === "symbol";
+		},
+		IsSet(input) {
+			return input instanceof Set;
+		},
+		IsMap(input) {
+			return input instanceof Map;
+		},
+		IsArray(input) {
+			return Array.isArray(input);
+		},
+		IsObject(input) {
+			return input != null && typeof input === "object";
+		},
+		IsStrictObject(input) {
+			return Object.getPrototypeOf(input) === Object.prototype;
+		},
+		IsFunction(input) {
+			return typeof input === "function";
+		},
+		IsDate(input) {
+			return input instanceof Date;
+		},
+		IsRegExp(input) {
+			return input instanceof RegExp;
+		},
+		IsPromise(input) {
+			return input instanceof Promise;
+		},
+		IsIterable(input) {
+			return input != null && typeof input[ Symbol.iterator ] === "function";
+		},
+		IsUUID(input) {
+			return validate(input);
+		},
+		IsIdentity(input) {
+			return input instanceof Identity;
+		},
+		IsHierarchy(input) {
+			if(Identity.Comparators.IsArray(input)) {
+				return input.every(row => {
+					return Identity.Comparators.IsArray(row) && row.length === 4	//NOTE: [ id, tags, data, children ]
+						&& Identity.Comparators.IsNumeric(row[ 0 ])
+						&& (Identity.Comparators.IsNumeric(row[ 1 ]) || Identity.Comparators.IsNull(row[ 1 ]));
+				});
+			}
+
+			return false;
+		},
+		IsClass(input) {
+			return input.toString().substring(0, 5) === "class";
+		},
+		IsInstance(input) {
+			if(typeof input !== "object") {
+				return false;
+			}
+
+			return input instanceof input.constructor;
+		},
+		/**
+		 * This is meant as a broader "instanceof" checker,
+		 * allowing either @clazz instances and/or Objects that
+		 * have an @keys-defined shape (i.e. duck typing).
+		 */
+		Conforms(input, { keys = [], clazz } = {}) {
+			if(!Identity.Comparators.IsObject(input)) {
+				return false;
+			}
+
+			if(clazz && input instanceof clazz) {
+				return true;
+			}
+
+			return keys.every(key => key in input);
+		},
+
+		/**
+		 * Complex comparators
+		 */
+		IsStringOrSymbol(input) {
+			return Identity.Comparators.IsString(input) || Identity.Comparators.IsSymbol(input);
+		},
+		IsArrayOrSet(input) {
+			return Identity.Comparators.IsArray(input) || Identity.Comparators.IsSet(input);
+		},
+
+		HasTag(input, tag) {
+			return input.tags.has(tag);
+		},
+		HasTags(input, ...tags) {
+			return tags.every(tag => input.tags.has(tag));
+		},
+	};
+
 	/**
 	 * Constructs an instance of IdentityClass with a unique identifier and tags.
 	 * @param {Object} options - The options for creating an IdentityClass instance.
@@ -14,8 +135,8 @@ export class IdentityClass {
 	 * @param {Object} [rest] - Any additional properties and their values to be added to the instance.
 	 */
 	constructor ({ id, tags = [], ...rest } = {}) {
-		this.$id = id || uuid();
-		this.$tags = Tags.ToObject(Tags.From(...tags));
+		this.id = id || uuid();
+		this.tags = Tags.ToObject(Tags.From(...tags));
 
 		// Bind `this` to any functions passed in.
 		for(const key in rest) {
@@ -29,7 +150,7 @@ export class IdentityClass {
 
 	/**
 	 * Creates a copy of the current instance.
-	 * @returns {IdentityClass} A new instance of IdentityClass with the same properties.
+	 * @returns {Identity} A new instance of IdentityClass with the same properties.
 	 */
 	copy() {
 		return new this.constructor(this);
@@ -70,90 +191,4 @@ export class IdentityClass {
 	}
 };
 
-export const Identity = {
-	/**
-	 * Advances or updates an existing object with a new ID and tags, returning the updated object.
-	 * @param {Object} options - Options containing new values.
-	 * @param {string} [options.id] - The unique identifier. If not provided, a new UUID will be generated.
-	 * @param {Array} [options.tags=[]] - The set of tags.
-	 * @param {Object} [target] - Target object to be updated.
-	 * @returns {Object} The updated object with a new ID and tags.
-	 */
-	Next({ id, tags = [], ...target } = {}) {
-		target.$id = id || uuid();
-		target.$tags = Tags.ToObject(Tags.From(...tags));
-		return target;
-	},
-
-	/**
-	 * Creates a new object with a unique identifier and tags, and returns it.
-	 * @param {Object} options - Options for creating a new object.
-	 * @returns {Object} The newly created object with an ID and tags.
-	 */
-	New({ id, tags = [], ...rest } = {}) {
-		return Identity.Next({ id, tags, ...rest });
-	},
-
-	/**
-	 * Converts an object to a plain object with metadata stored separately.
-	 * @param {Object} target - The target object to convert.
-	 * @returns {Object} The plain object with metadata stored in a `$meta` property.
-	 */
-	toObject(target) {
-		const obj = {
-			$meta: {},
-		};
-
-		for(const [ key, value ] of Object.entries(target)) {
-			if(key.startsWith("$")) {
-				obj.$meta[ key.slice(1) ] = value;
-			} else {
-				obj[ key ] = value;
-			}
-		}
-
-		return obj;
-	},
-
-	/**
-	 * Converts an object to a JSON string representation.
-	 * @param {Object} target - The target object to stringify.
-	 * @param {...any} args - Additional arguments to pass to JSON.stringify.
-	 * @returns {string} A JSON string representation of the object.
-	 */
-	toString(target, ...args) {
-		return JSON.stringify(target, ...args);
-	},
-
-	/**
-	 * Creates an isolated object with only the metadata from the target object.
-	 * @param {Object} target - The target object to extract metadata from.
-	 * @returns {Object} An object containing only metadata.
-	 */
-	toMetaObject(target) {
-		const meta = {};
-
-		for(const [ key, value ] of Object.entries(target)) {
-			if(key.startsWith("$")) {
-				meta[ key.slice(1) ] = value;
-			}
-		}
-
-		return meta;
-	},
-
-	/**
-	 * Converts the metadata of an object to a JSON string.
-	 * @param {Object} target - The target object whose metadata to stringify.
-	 * @param {...any} args - Additional arguments to pass to JSON.stringify.
-	 * @returns {string} A JSON string representation of the object's metadata.
-	 */
-	toMetaString(target, ...args) {
-		return JSON.stringify(target.toMetaObject(), ...args);
-	},
-};
-
-export default {
-	IdentityClass,
-	Identity,
-};
+export default Identity;

@@ -40,6 +40,7 @@ export const main = async ({ settings = {}, start = false } = {}) => {
 
 	console.log(game)
 	console.log(world)
+	console.log(game.player.entity)
 
 	if(start) {
 		game.start();
