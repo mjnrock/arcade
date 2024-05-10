@@ -32,6 +32,9 @@ export const CommonSide = {
 			fps: 60,
 			...(args.loop ?? {}),
 		});
+
+        window.addEventListener("blur", () => game.loop.pause());
+        window.addEventListener("focus", () => game.loop.resume());
 	},
 	initializeWorlds({ game, args }) {
 		game.worlds = new Map();
@@ -51,7 +54,8 @@ export const ClientSide = {
 			...(args.pixi ?? {}),
 		});
 
-		window.addEventListener("resize", (...args) => game.resize.call(game, ...args));
+		/*FIXME: _this$pixi.resize is not a function keeps happening a lot on resizes */
+		// window.addEventListener("resize", (...args) => game.resize.call(game, ...args));
 	},
 	initializeControls({ game, args }) {
 		game.input = {

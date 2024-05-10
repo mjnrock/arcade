@@ -8,8 +8,11 @@ export class Entity {
 			type: this.constructor.name,
 			/* Time created */
 			ts: Date.now(),
-			/* Time to live, adjust as needed */
+			/* Time to live in milliseconds, adjust as needed */
 			ttl: Infinity,
+			/* To account for the time passed (this is needed because of pause/resume functionality) */
+			/* NOTE: Since TTL is in integer milliseconds, age should be scaled by 1000 if you use { dt } from .update, since it is already in seconds */
+			age: 0,
 			...meta,
 		};
 
@@ -19,7 +22,7 @@ export class Entity {
 	}
 
 	get isDead() {
-		return (Date.now() - this.meta.ts) > this.meta.ttl;
+		return this.meta.age >= this.meta.ttl;
 	}
 
 	addComponent(...components) {
@@ -75,7 +78,10 @@ export class Entity {
 		return false;
 	}
 
-	update({ ...args } = {}) {
+	update({ dt, ...args } = {}) {
+		/* Scale this to seconds to align with integer-millisecond TTL, and { dt } which is in fractional-seconds */
+		this.meta.age += (dt * 1000);
+
 		this.components.forEach(component => component?.update({ entity: this, ...args }));
 		return this;
 	}
