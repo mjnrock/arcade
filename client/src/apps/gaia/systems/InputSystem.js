@@ -90,8 +90,6 @@ export class InputSystem extends CoreSystem {
 				let vx = direction[ 0 ] * projSpeed;
 				let vy = direction[ 1 ] * projSpeed;
 
-				console.log(playerPhysics.vx, playerPhysics.vy, vx, vy)
-
 				/* Spawn a projectile */
 				const entProjectile = AnimateEntity.Spawn({
 					meta: {
