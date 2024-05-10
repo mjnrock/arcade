@@ -33,8 +33,9 @@ export const CommonSide = {
 			...(args.loop ?? {}),
 		});
 
-        window.addEventListener("blur", () => game.loop.pause());
-        window.addEventListener("focus", () => game.loop.resume());
+		//TODO: This is a good idea, but it throws all sorts of errors when the window is re-focused
+        // window.addEventListener("blur", () => game.loop.pause());
+        // window.addEventListener("focus", () => game.loop.resume());
 	},
 	initializeWorlds({ game, args }) {
 		game.worlds = new Map();

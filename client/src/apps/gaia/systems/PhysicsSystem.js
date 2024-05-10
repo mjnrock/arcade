@@ -136,8 +136,6 @@ export class PhysicsSystem extends CorePhysicsSystem {
 			const { graphics: g } = animus;
 			const { x: tx, y: ty } = entity.getComponent(EnumComponentType.Physics);
 
-			if(!g) continue;
-
 			g.x = tx * tw;
 			g.y = ty * th;
 
