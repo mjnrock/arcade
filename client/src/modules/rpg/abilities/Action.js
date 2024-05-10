@@ -7,7 +7,9 @@
  */
 export class Action {
 	constructor ({ action } = {}) {
-		this.action = action;
+		if(action) {
+			this.action = action;
+		}
 
 		if(typeof this.action !== "function") {
 			throw new Error("Action requires a trigger function");

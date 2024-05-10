@@ -32,6 +32,26 @@ export class Resource extends Component {
 	get isAtMin() {
 		return this.current <= this.min;
 	}
+	get isEmpty() {
+		return this.current <= 0;
+	}
+	get isFull() {
+		return this.current >= this.max;
+	}
+
+	fill() {
+		this.current = this.max;
+		return this;
+	}
+	empty() {
+		this.current = this.min;
+		return this;
+	}
+
+	set(value) {
+		this.current = value;
+		return this;
+	}
 
 	add(value, { iterations = 1 } = {}) {
 		this.current += value;
@@ -91,21 +111,53 @@ export class Resource extends Component {
 		return this;
 	}
 
+	//TODO: This look is interesting, but it needs work to be "correct"
 	render({ game, dt, g = this.graphics } = {}) {
 		g.clear();
-		
-		if(game.config.ui.showHealth) {
-			/* draw a rectangle representing the current value of the resource */
-			g.lineStyle(1, 0x000000, 1);
-			g.beginFill("#0F0");
-			const ratio = this.current / this.max;
+
+		if(game.config.ui.health.showBar) {
+			// Define color thresholds using array of arrays [threshold, color]
+			const colorThresholds = game.config.ui.health.thresholds;
+
+			// Border dimensions and style
 			const maxWidth = 24;
-			g.drawRect(-maxWidth / 2, -maxWidth + maxWidth / 6, ratio * maxWidth, maxWidth / 6);
+			const maxHeight = maxWidth / 6;
+			const borderWidth = 0.5; // Thickness of the border
+
+			// Draw the full-sized black border rectangle for health bar
+			g.lineStyle(borderWidth, 0x000000, 1);
+			g.beginFill(0xFFFFFF, 0); // Transparent fill for the border-only rectangle
+			g.drawRect(-maxWidth / 2, -maxWidth + maxHeight, maxWidth, maxHeight);
+			g.endFill();
+
+			// Determine the color based on the health ratio
+			const ratio = this.current / this.max;
+			let color = colorThresholds[ 0 ][ 1 ]; // Default color is the first threshold
+			for(let i = 0; i < colorThresholds.length; i++) {
+				if(ratio > colorThresholds[ i ][ 0 ]) {
+					color = colorThresholds[ i ][ 1 ];
+					break;
+				}
+			}
+
+			// Draw the filled rectangle inside the border
+			g.lineStyle(0); // No outline for the filled part
+			g.beginFill(parseInt(color.slice(1), 16)); // Convert hex string to numeric hex
+			// Adjust rectangle dimensions to fit inside the border
+			g.drawRect(
+				-maxWidth / 2 + borderWidth,
+				-maxWidth + maxHeight + borderWidth,
+				ratio * (maxWidth - 2 * borderWidth),
+				maxHeight - 2 * borderWidth
+			);
 			g.endFill();
 		}
 
 		return g;
 	}
+
+
+
 };
 
 export default Resource;

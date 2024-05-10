@@ -19,7 +19,15 @@ export class Game extends RPGGame {
 
 		this.mergeConfig({
 			ui: {
-				showHealth: false,
+				health: {
+					showBar: true,
+					thresholds: [
+						[ 0.8, "#005500" ],
+						[ 0.65, "#50AA50" ],
+						[ 0.3, "#CCCC33" ],
+						[ 0, "#FF5555" ],
+					],
+				}
 			},
 			world: {
 				tileWidth: 32,

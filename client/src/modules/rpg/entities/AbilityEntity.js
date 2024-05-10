@@ -1,9 +1,9 @@
-import RPGAnimateEntity from "./AnimateEntity";
+import AnimateEntity from "./AnimateEntity";
 
 /**
  * @class AbilityEntity
  */
-export class AbilityEntity extends RPGAnimateEntity {
+export class AbilityEntity extends AnimateEntity {
 	constructor ({ ability, ...sargs } = {}) {
 		super(sargs);
 

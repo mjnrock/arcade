@@ -30,6 +30,12 @@ export class World extends AtlasWorld {
 			const physics = entity.getComponent(EnumComponentType.Physics);
 			const { x, y } = physics;
 
+			const health = entity.getComponent(EnumComponentType.Health);
+			if(health?.isEmpty) {
+				this.removeEntity(entity);
+				continue;
+			}
+
 			/* check if the entity is within the viewport, treating tw and th as "rectangular radii" */
 			if(x >= tx - txr && x <= tx + txr && y >= ty - tyr && y <= ty + tyr) {
 				filteredEntities.push(entity);
@@ -58,7 +64,7 @@ export class World extends AtlasWorld {
 			~~(centerX - (ppx * zoom)),
 			~~(centerY - (ppy * zoom))
 		);
-		  
+
 		/* scale the Graphic */
 		this.graphics.scale.set(zoom);
 

@@ -4,6 +4,7 @@ import AnimateEntity from "../../../modules/rpg/entities/AnimateEntity";
 
 import EnumComponentType from "../components/EnumComponentType";
 import { EnumFacing, FacingMatrix } from "../components/EnumFacing";
+import ActionDamage from "../abilities/ActionDamage";
 
 export class InputSystem extends CoreSystem {
 	constructor ({ game } = {}) {
@@ -38,7 +39,7 @@ export class InputSystem extends CoreSystem {
 
 			/* Toggle health bar */
 			if(e.code === "KeyV") {
-				game.config.ui.showHealth = !game.config.ui.showHealth;
+				game.config.ui.health.showBar = !game.config.ui.health.showBar;
 			}
 		});
 	}
@@ -81,8 +82,19 @@ export class InputSystem extends CoreSystem {
 				}
 			}
 
+			if(game.input.keyboard.has("Backquote")) {
+				const health = game.player.entity.getComponent(EnumComponentType.Health);
+				health.fill();
+			}
+
 			/* Simulate automatic firing */
 			if(game.input.arcade?.buttons?.K1 || game.input.keyboard.has("Space")) {
+				const actionDamage = new ActionDamage({ amount: 1 });
+				actionDamage.exec({
+					source: game.player.entity,
+					target: game.player.entity,
+				});
+
 				/* Get direction vector based on the current facing from the matrix */
 				let direction = FacingMatrix[ playerPhysics.facing ] || [ 0, 0 ];
 
