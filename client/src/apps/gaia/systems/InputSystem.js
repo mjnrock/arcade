@@ -44,26 +44,25 @@ export class InputSystem extends CoreSystem {
 	}
 
 	update({ game, dt } = {}) {
-		const dtSeconds = dt * 1000;
-
 		const playerPhysics = game.player.entity.getComponent(EnumComponentType.Physics);
+		const { speed } = playerPhysics;
+
 		if(playerPhysics) {
 			/* Map controller inputs into player physics state */
-			const normalizedSpeed = playerPhysics.speed * dtSeconds;
 			if(game.input.arcade?.joystick?.LEFT || game.input.keyboard?.hasFlag("LEFT")) {
-				playerPhysics.vx = normalizedSpeed * -1;
+				playerPhysics.vx = speed * -1;
 				playerPhysics.facing = EnumFacing.WEST;
 			} else if(game.input.arcade?.joystick?.RIGHT || game.input.keyboard?.hasFlag("RIGHT")) {
-				playerPhysics.vx = normalizedSpeed;
+				playerPhysics.vx = speed;
 				playerPhysics.facing = EnumFacing.EAST;
 			} else {
 				playerPhysics.vx = 0;
 			}
 			if(game.input.arcade?.joystick?.UP || game.input.keyboard?.hasFlag("UP")) {
-				playerPhysics.vy = normalizedSpeed * -1;
+				playerPhysics.vy = speed * -1;
 				playerPhysics.facing = EnumFacing.NORTH;
 			} else if(game.input.arcade?.joystick?.DOWN || game.input.keyboard?.hasFlag("DOWN")) {
-				playerPhysics.vy = normalizedSpeed;
+				playerPhysics.vy = speed;
 				playerPhysics.facing = EnumFacing.SOUTH;
 			} else {
 				playerPhysics.vy = 0;
@@ -90,6 +89,8 @@ export class InputSystem extends CoreSystem {
 				let projSpeed = 12.5;
 				let vx = direction[ 0 ] * projSpeed;
 				let vy = direction[ 1 ] * projSpeed;
+
+				console.log(playerPhysics.vx, playerPhysics.vy, vx, vy)
 
 				/* Spawn a projectile */
 				const entProjectile = AnimateEntity.Spawn({

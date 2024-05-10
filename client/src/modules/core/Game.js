@@ -37,6 +37,7 @@ export const CommonSide = {
 		game.worlds = new Map();
 	},
 };
+
 export const ClientSide = {
 	initializeGraphics({ game, args }) {
 		game.pixi = new PIXI.Application({
@@ -49,8 +50,6 @@ export const ClientSide = {
 
 			...(args.pixi ?? {}),
 		});
-
-		game.pixi.ticker.add(game.render.bind(game));
 
 		/* FPS Counter, as needed */
 		// let fpsText = new PIXI.Text('FPS: 0', { fontFamily: 'Arial', fontSize: 24, fill: 0xffffff });
@@ -120,7 +119,7 @@ export class Game {
 	}
 
 	resize() {
-		this.pixi.resize(window.innerWidth, window.innerHeight);
+		this.pixi?.resize(window.innerWidth, window.innerHeight);
 	}
 
 	mergeConfig(...partials) {

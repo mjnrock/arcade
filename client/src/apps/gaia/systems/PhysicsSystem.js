@@ -47,7 +47,7 @@ export const Actions = {
 		physics.vy = -vy;
 	},
 	
-	handleEntityTerrainInteraction({ game, entity, dt } = {}) {
+	handleEntityTerrainCollision({ game, entity, dt } = {}) {
 		const physics = entity.getComponent(EnumComponentType.Physics);
 		const { x, y } = physics;
 
@@ -123,7 +123,7 @@ export class PhysicsSystem extends CorePhysicsSystem {
 
 			//FIXME: The Player ceases to be updated once out of bounds, so something is happening before this function is called
 			// It may cease to be cached?
-			this.run("handleEntityTerrainInteraction", { game, entity, dt });
+			this.run("handleEntityTerrainCollision", { game, entity, dt });
 		}
 
 	}

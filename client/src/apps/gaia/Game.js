@@ -37,7 +37,7 @@ export class Game extends RPGGame {
 		this.player = {
 			entity: PlayerEntity.Spawn({
 				physics: {
-					speed: 0.25,	// 0.045
+					speed: 4,
 					model: new Circle({
 						x: 0,
 						y: 8,
@@ -50,9 +50,6 @@ export class Game extends RPGGame {
 			}),
 			input: {
 				mask: {},
-				x: ~~(window.innerWidth / 2),
-				y: ~~(window.innerHeight / 2),
-				speed: 9,
 			},
 			...(args.player ?? {}),
 		};

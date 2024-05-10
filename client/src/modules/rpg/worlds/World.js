@@ -23,6 +23,7 @@ export class World extends AtlasWorld {
 		viewport.tx = playerPhysics.x;
 		viewport.ty = playerPhysics.y;
 
+
 		const { tx, ty, txr, tyr } = viewport;
 		const filteredEntities = [];
 		for(const entity of game.currentWorld.entityManager) {
@@ -54,15 +55,15 @@ export class World extends AtlasWorld {
 
 		/* center the Graphic on the player */
 		this.graphics.position.set(
-			centerX - (ppx * zoom),
-			centerY - (ppy * zoom)
+			~~(centerX - (ppx * zoom)),
+			~~(centerY - (ppy * zoom))
 		);
+		  
 		/* scale the Graphic */
 		this.graphics.scale.set(zoom);
 
 		return this;
 	}
-
 };
 
 export default World;

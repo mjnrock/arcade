@@ -96,6 +96,7 @@ export class Resource extends Component {
 		
 		if(game.config.ui.showHealth) {
 			/* draw a rectangle representing the current value of the resource */
+			g.lineStyle(1, 0x000000, 1);
 			g.beginFill("#0F0");
 			const ratio = this.current / this.max;
 			const maxWidth = 24;

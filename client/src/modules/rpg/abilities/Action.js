@@ -14,6 +14,16 @@ export class Action {
 		}
 	}
 
+	setAction(action) {
+		if(typeof action !== "function") {
+			return false;
+		}
+
+		this.action = action;
+
+		return this;
+	}
+
 	/* NOTE: While this does not directly explicate arguments, a working data model should exist when using Actions (e.g. source, target, etc.) */
 	exec({ dt, game, ...args } = {}) {
 		return this.action({ dt, game, ...args })
