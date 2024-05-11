@@ -35,4 +35,6 @@ export class PlayerEntity extends RPGPlayerEntity {
 		});
 		this.addComponent(abilities);
 	}
-}
+};
+
+export default PlayerEntity;

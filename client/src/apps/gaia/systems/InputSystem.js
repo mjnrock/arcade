@@ -95,25 +95,8 @@ export class InputSystem extends CoreSystem {
 
 			/* Simulate automatic firing */
 			if(game.input.arcade?.buttons?.K1 || game.input.keyboard.has("Space")) {
-
-
-
 				//* ABILITY TESTING */
 				const playerAbilities = game.player.entity.getComponent(EnumComponentType.Abilities);
-
-				
-				//FIXME: This needs to utilize the .model before `target` can be used
-				const abilityMelee = playerAbilities.getAbility("melee");
-				const world = game.currentWorld;
-				abilityMelee.exec({
-					source: game.player.entity,
-					target: game.player.entity,
-				});
-
-
-
-
-
 
 				/* Get direction vector based on the current facing from the matrix */
 				let direction = FacingMatrix[ playerPhysics.facing ] || [ 0, 0 ];
@@ -124,6 +107,8 @@ export class InputSystem extends CoreSystem {
 
 				/* Spawn a projectile */
 				const entProjectile = AbilityEntity.Spawn({
+					ability: playerAbilities.getAbility("melee"),
+					source: game.player.entity,
 					meta: {
 						ttl: 1500,
 					},

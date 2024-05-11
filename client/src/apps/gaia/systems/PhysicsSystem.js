@@ -1,3 +1,5 @@
+import chalk from "chalk";
+
 import CorePhysicsSystem from "../../../modules/core/systems/PhysicsSystem";
 import TerrainEntity from "../../../modules/rpg/entities/TerrainEntity";
 
@@ -132,6 +134,20 @@ export const Actions = {
 
 				if(CollisionHelper.collide(shape1, shape2)) {
 					checkedPairs.add(`${ Math.min(entity.id, other.id) }-${ Math.max(entity.id, other.id) }`);
+
+					//NOTE: I'm not sure where the bug is, but this only triggers when you're *not* holding Spacebar
+					if(
+						(entity instanceof PlayerEntity && other instanceof AbilityEntity && other.source !== entity)
+						|| (other instanceof PlayerEntity && entity instanceof AbilityEntity && entity.source !== other)
+					) {
+						console.log(chalk.blue("Ability Collision") + ":", entity, other);
+					}
+					//STUB: Test is the thing hit the other test PlayerEntity
+					if(entity instanceof PlayerEntity || other instanceof PlayerEntity) {
+						if(entity.source !== game.player.entity && other.source !== game.player.entity) {
+							console.log(chalk.red("Player Collision") + ":", entity, other);
+						}
+					}
 				}
 			}
 
