@@ -4,6 +4,8 @@ import Game from "./Game";
 import World from "../../modules/rpg/worlds/World";
 
 import demoCaveMap from "./data/maps/demoCaveMap.json";
+import { PlayerEntity } from "./entities/PlayerEntity";
+import Circle from "../../modules/core/lib/geometry/Circle";
 
 /* Get GPU info */
 function getWebGLContext() {
@@ -29,12 +31,30 @@ console.log(chalk.bold.blue('GPU Vendor:'), gpuInfo.vendor);
 console.log(chalk.bold.blue('GPU Renderer:'), gpuInfo.renderer);
 
 export const main = async ({ settings = {}, start = false } = {}) => {
-	const game = new Game(settings);
+	const game = new Game({
+		...settings,
+		loop: {
+			fps: 60,
+		},
+	});
 	const world = new World({
 		game,
 		atlas: demoCaveMap,
 		entities: [
-			game.player.entity
+			game.player.entity,
+			// STUB: Extra entity for collision testing
+			PlayerEntity.Spawn({
+				physics: {
+					model: new Circle({
+						x: 2,
+						y: 8,
+						radius: 0.32,
+					}),
+				},
+				animus: {
+					color: "#F33",
+				},
+			}),
 		],
 	});
 

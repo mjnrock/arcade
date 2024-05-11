@@ -1,19 +1,19 @@
 export const CollisionHelper = {
 	collisionFunctions: {
-		"Circle:Circle": (...args) => this.circleToCircle(...args),
-		"Circle:Rectangle": (...args) => this.rectangleToCircle(...args),
-		"Rectangle:Rectangle": (...args) => this.rectangleToRectangle(...args),
-		"Polygon:Polygon": (...args) => this.polygonToPolygon(...args),
-		"Triangle:Triangle": (...args) => this.polygonToPolygon(...args),
-		"Triangle:Polygon": (...args) => this.polygonToPolygon(...args),
-		"Polygon:Triangle": (...args) => this.polygonToPolygon(...args)
+		"Circle:Circle": (...args) => CollisionHelper.circleToCircle(...args),
+		"Circle:Rectangle": (...args) => CollisionHelper.rectangleToCircle(...args),
+		"Rectangle:Rectangle": (...args) => CollisionHelper.rectangleToRectangle(...args),
+		"Polygon:Polygon": (...args) => CollisionHelper.polygonToPolygon(...args),
+		"Triangle:Triangle": (...args) => CollisionHelper.polygonToPolygon(...args),
+		"Triangle:Polygon": (...args) => CollisionHelper.polygonToPolygon(...args),
+		"Polygon:Triangle": (...args) => CollisionHelper.polygonToPolygon(...args)
 	},
 
 	collide(shape1, shape2) {
 		const key1 = `${ shape1.constructor.name }:${ shape2.constructor.name }`;
 		const key2 = `${ shape2.constructor.name }:${ shape1.constructor.name }`;
 
-		const func = this.collisionFunctions[ key1 ] ?? this.collisionFunctions[ key2 ];
+		const func = CollisionHelper.collisionFunctions[ key1 ] ?? CollisionHelper.collisionFunctions[ key2 ];
 		if(func) {
 			return func(shape1, shape2);
 		}

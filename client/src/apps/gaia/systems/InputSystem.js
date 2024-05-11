@@ -5,6 +5,7 @@ import AnimateEntity from "../../../modules/rpg/entities/AnimateEntity";
 import EnumComponentType from "../components/EnumComponentType";
 import { EnumFacing, FacingMatrix } from "../components/EnumFacing";
 import ActionDamage from "../abilities/ActionDamage";
+import AbilityEntity from "../../../modules/rpg/entities/AbilityEntity";
 
 export class InputSystem extends CoreSystem {
 	constructor ({ game } = {}) {
@@ -22,6 +23,11 @@ export class InputSystem extends CoreSystem {
 				physics.y = ~~(Math.random() * game.currentWorld.rows);
 
 				console.log(`Teleported player to ${ physics.x }, ${ physics.y }`)
+			}
+
+			//FIXME: Debug only
+			if(e.code === "F5") {
+				window.location.reload();
 			}
 
 			if(e.code === "Digit1") {
@@ -89,14 +95,25 @@ export class InputSystem extends CoreSystem {
 
 			/* Simulate automatic firing */
 			if(game.input.arcade?.buttons?.K1 || game.input.keyboard.has("Space")) {
+
+
+
+				//* ABILITY TESTING */
 				const playerAbilities = game.player.entity.getComponent(EnumComponentType.Abilities);
-				const abilityMelee = playerAbilities.getAbility("melee");
+
 				
 				//FIXME: This needs to utilize the .model before `target` can be used
+				const abilityMelee = playerAbilities.getAbility("melee");
+				const world = game.currentWorld;
 				abilityMelee.exec({
 					source: game.player.entity,
 					target: game.player.entity,
 				});
+
+
+
+
+
 
 				/* Get direction vector based on the current facing from the matrix */
 				let direction = FacingMatrix[ playerPhysics.facing ] || [ 0, 0 ];
@@ -106,7 +123,7 @@ export class InputSystem extends CoreSystem {
 				let vy = direction[ 1 ] * projSpeed;
 
 				/* Spawn a projectile */
-				const entProjectile = AnimateEntity.Spawn({
+				const entProjectile = AbilityEntity.Spawn({
 					meta: {
 						ttl: 1500,
 					},

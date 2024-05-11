@@ -4,6 +4,7 @@ import * as PIXI from "pixi.js";
 import EntityManager from "./entities/EntityManager";
 import { EnumComponentType } from "./components/EnumComponentType";
 import { Actionable } from "./lib/Actionable";
+import TerrainEntity from "./entities/TerrainEntity";
 
 export const ClientSide = {
 	initializeGraphics(world) {
@@ -82,11 +83,17 @@ export class World extends Actionable {
 	}
 
 	update({ game, dt } = {}) {
+		this.quadTree.clear();
+
 		this.process({ game, dt });
 
 		for(const entity of this.entityManager) {
 			if(entity.isDead) {
 				this.removeEntity(entity);
+			} else {
+				if(!(entity instanceof TerrainEntity)) {
+					this.quadTree.insert(entity);
+				}
 			}
 		}
 

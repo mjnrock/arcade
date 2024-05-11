@@ -8,9 +8,6 @@ export const Viewport = () => {
 		settings: {
 			width: window.innerWidth,
 			height: window.innerHeight,
-			loop: {
-				fps: 60,
-			},
 		},
 	});
 

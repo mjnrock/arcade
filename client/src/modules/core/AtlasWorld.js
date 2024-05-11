@@ -1,5 +1,6 @@
 import CoreWorld from "./World";
 import TerrainEntity from "./entities/TerrainEntity";
+import QuadTree from "./lib/QuadTree";
 import Rectangle from "./lib/geometry/Rectangle";
 
 export class AtlasWorld extends CoreWorld {
@@ -40,6 +41,13 @@ export class AtlasWorld extends CoreWorld {
 		if(!atlas) return;
 
 		this.atlas = atlas;
+
+		this.quadTree = new QuadTree(0, {
+			x: 0,
+			y: 0,
+			width: this.width,
+			height: this.height,
+		});
 
 		let { tileWidth: tw, tileHeight: th, zoom } = this.game.config.world;
 

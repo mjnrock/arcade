@@ -4,6 +4,9 @@ import TerrainEntity from "../../../modules/rpg/entities/TerrainEntity";
 import EnumComponentType from "../components/EnumComponentType";
 import { PlayerEntity } from "../entities/PlayerEntity";
 
+import CollisionHelper from "../../../modules/core/lib/geometry/CollisionHelper";
+import AbilityEntity from "../../../modules/rpg/entities/AbilityEntity";
+
 export const Actions = {
 	/**
 	 * BUG: Because of the circular calculation from north, coupled with
@@ -87,6 +90,9 @@ export const Actions = {
 
 			physics.applyVelocity({ dt });
 
+			if(Math.abs(physics.vx) < 0.01) physics.vx = 0;
+			if(Math.abs(physics.vy) < 0.01) physics.vy = 0;
+
 			const { x: nextX, y: nextY } = physics;
 			const nextTerrain = world.getTerrainAt(nextX, nextY);
 
@@ -105,7 +111,34 @@ export const Actions = {
 		} else {
 			this.run("moveToNearestTerrain", { game, entity, dt });
 		}
-	}
+	},
+	handleCollisions({ game, dt } = {}) {
+		const { quadTree } = game.currentWorld;
+		const checkedPairs = new Set();
+
+		const returnObjects = [];
+		for(const entity of game.currentWorld.entityManager.cached) {
+			if(entity instanceof TerrainEntity) continue;
+
+			quadTree.retrieve(returnObjects, entity);
+			for(const other of returnObjects) {
+				if(other === entity) continue;
+				if(checkedPairs.has(`${ Math.min(entity.id, other.id) }-${ Math.max(entity.id, other.id) }`)) continue;
+				/* Prevent Abilities from colliding to dramatically reduce the number of collision checks */
+				if(entity instanceof AbilityEntity && other instanceof AbilityEntity) continue;
+
+				const shape1 = entity.getComponent(EnumComponentType.Physics).model;
+				const shape2 = other.getComponent(EnumComponentType.Physics).model;
+
+				if(CollisionHelper.collide(shape1, shape2)) {
+					checkedPairs.add(`${ Math.min(entity.id, other.id) }-${ Math.max(entity.id, other.id) }`);
+				}
+			}
+
+			/* Clear the array without creating a new one */
+			returnObjects.length = 0;
+		}
+	},
 };
 
 export class PhysicsSystem extends CorePhysicsSystem {
@@ -121,10 +154,10 @@ export class PhysicsSystem extends CorePhysicsSystem {
 
 			if(entity instanceof TerrainEntity) continue;
 
-			//FIXME: The Player ceases to be updated once out of bounds, so something is happening before this function is called
-			// It may cease to be cached?
 			this.run("handleEntityTerrainCollision", { game, entity, dt });
 		}
+
+		this.run("handleCollisions", { game, dt });
 
 	}
 	render({ game, dt } = {}) {

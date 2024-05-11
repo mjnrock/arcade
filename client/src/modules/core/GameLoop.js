@@ -53,7 +53,7 @@ export class GameLoop {
 		this.lastTime = currentTime;
 		this.accumulatedTime += deltaTime;
 
-		while(this.accumulatedTime >= this.spf) {
+		if(this.accumulatedTime >= this.spf) {
 			this.onTick(this.spf);
 			/* Drop all extra time to prevent rapid catch-ups */
 			this.accumulatedTime = 0;
