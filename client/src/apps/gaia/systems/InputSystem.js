@@ -126,7 +126,7 @@ export class InputSystem extends CoreSystem {
 						}),
 					},
 					animus: {
-						color: "rgba(64, 64, 228, 0.25)",
+						color: "rgba(176, 64, 228, 0.25)",
 					},
 				});
 

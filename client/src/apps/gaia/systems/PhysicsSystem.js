@@ -68,27 +68,10 @@ export const Actions = {
 		}
 
 		if(x >= 0 && y >= 0 && x < atlasWidth && y < atlasHeight) {
-			const inverseCost = 1 / terrain.cost;
-			physics.vx *= inverseCost;
-			physics.vy *= inverseCost;
-
-			//FIXME
-			/**
-			 * Currently, this selects "projectiles".  The projectiles appear
-			 * to come to a standstill when they hit non-cost=1 terrain.  This
-			 * is because of how quickly the inverseCost is applied to the
-			 * projectile's velocity.  The fix here is probably to implement a
-			 * more robust physics system that considers forces and momentum and
-			 * such.  Alternatively, we could just make the projectiles cost=1 or
-			 * apply a different cost function to them.
-			 * 
-			 * IDEA: This is a perfect Action candidate.
-			 */
-			if(
-				!(entity instanceof TerrainEntity)
-				&& !(entity instanceof PlayerEntity)
-			) {
-				// console.log(physics.vx, physics.vy, inverseCost);
+			if(!(entity instanceof AbilityEntity)) {
+				const inverseCost = 1 / terrain.cost;
+				physics.vx *= inverseCost;
+				physics.vy *= inverseCost;
 			}
 
 			physics.applyVelocity({ dt });
