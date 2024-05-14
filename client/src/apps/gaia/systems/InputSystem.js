@@ -45,8 +45,8 @@ export class InputSystem extends CoreSystem {
 
 			/* Toggle health bar */
 			if(e.code === "KeyV") {
-				game.config.ui[EnumResourceType.Health].showBar = !game.config.ui[EnumResourceType.Health].showBar;
-				game.config.ui[EnumResourceType.Mana].showBar = !game.config.ui[EnumResourceType.Mana].showBar;
+				game.config.ui[ EnumResourceType.Health ].showBar = !game.config.ui[ EnumResourceType.Health ].showBar;
+				game.config.ui[ EnumResourceType.Mana ].showBar = !game.config.ui[ EnumResourceType.Mana ].showBar;
 			}
 		});
 	}
@@ -59,34 +59,17 @@ export class InputSystem extends CoreSystem {
 			/* Map controller inputs into player physics state */
 			if(game.input.arcade?.joystick?.LEFT || game.input.keyboard?.hasFlag("LEFT")) {
 				playerPhysics.vx = speed * -1;
-				playerPhysics.facing = EnumFacing.WEST;
 			} else if(game.input.arcade?.joystick?.RIGHT || game.input.keyboard?.hasFlag("RIGHT")) {
 				playerPhysics.vx = speed;
-				playerPhysics.facing = EnumFacing.EAST;
 			} else {
 				playerPhysics.vx = 0;
 			}
 			if(game.input.arcade?.joystick?.UP || game.input.keyboard?.hasFlag("UP")) {
 				playerPhysics.vy = speed * -1;
-				playerPhysics.facing = EnumFacing.NORTH;
 			} else if(game.input.arcade?.joystick?.DOWN || game.input.keyboard?.hasFlag("DOWN")) {
 				playerPhysics.vy = speed;
-				playerPhysics.facing = EnumFacing.SOUTH;
 			} else {
 				playerPhysics.vy = 0;
-			}
-
-			/* Calculate diagonal facings, if any */
-			if(playerPhysics.vx && playerPhysics.vy) {
-				if(playerPhysics.vx > 0 && playerPhysics.vy < 0) {
-					playerPhysics.facing = EnumFacing.NORTH_EAST;  // Right and Up
-				} else if(playerPhysics.vx > 0 && playerPhysics.vy > 0) {
-					playerPhysics.facing = EnumFacing.SOUTH_EAST;  // Right and Down
-				} else if(playerPhysics.vx < 0 && playerPhysics.vy < 0) {
-					playerPhysics.facing = EnumFacing.NORTH_WEST;  // Left and Up
-				} else if(playerPhysics.vx < 0 && playerPhysics.vy > 0) {
-					playerPhysics.facing = EnumFacing.SOUTH_WEST;  // Left and Down
-				}
 			}
 
 			if(game.input.keyboard.has("Backquote")) {
@@ -95,7 +78,7 @@ export class InputSystem extends CoreSystem {
 			}
 
 			/* Simulate automatic firing */
-			if(game.input.arcade?.buttons?.K1 || game.input.keyboard.has("Space")) {
+			if(game.input.arcade?.buttons?.K1 || game.input.keyboard.has("Space") || game.input.mouse.has("RIGHTa")) {
 				//* ABILITY TESTING */
 				const playerAbilities = game.player.entity.getComponent(EnumComponentType.Abilities);
 
@@ -135,6 +118,22 @@ export class InputSystem extends CoreSystem {
 			}
 		}
 	}
+
+	render({ dt, game }) {
+		const playerPhysics = game.player.entity.getComponent(EnumComponentType.Physics);
+	
+		const centerX = window.innerWidth / 2;
+		const centerY = window.innerHeight / 2;
+		const mouseX = game.input.mouse.x;
+		const mouseY = game.input.mouse.y;
+	
+		const angle = Math.atan2(mouseY - centerY, mouseX - centerX);
+		const angleDegrees = ((angle * 180 / Math.PI) - 90 + 540) % 360;
+		const angle45 = Math.round(angleDegrees / 45) * 45 % 360;
+	
+		playerPhysics.facing = angle45;
+	}
+	
 };
 
 export default InputSystem;
