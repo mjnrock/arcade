@@ -1,7 +1,7 @@
 import * as PIXI from "pixi.js";
 
 import { Component } from "../../core/components/Component";
-import EnumComponentType from "./EnumComponentType";
+import EnumComponentType from "../../core/components/EnumComponentType";
 import Circle from "../../core/lib/geometry/Circle";
 import Rectangle from "../../core/lib/geometry/Rectangle";
 

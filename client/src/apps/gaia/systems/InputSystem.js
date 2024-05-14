@@ -21,7 +21,13 @@ export class InputSystem extends CoreSystem {
 			game.config.world.zoom += Math.sign(e.deltaY) * (game.config.world.zoom * -0.05);
 			game.config.world.zoom = Math.min(Math.max(0.1, game.config.world.zoom), 33);
 		});
-		game.input.keyboard.target.addEventListener("keypress", e => {
+
+		// game.input.keyboard.target.addEventListener("keypress", e => {
+		/* NOTE: Apparently keypress doesn't capture F-keys, so keydown with repeat check */
+		document.addEventListener("keydown", e => {
+			/* Put anything above this that needs to respect key holding */
+			if(e.repeat) return;
+
 			/* Randomly teleport the player */
 			if(e.code === "KeyQ") {
 				const physics = game.player.entity.getComponent(EnumComponentType.Physics);
@@ -53,6 +59,12 @@ export class InputSystem extends CoreSystem {
 			if(e.code === "KeyV") {
 				game.config.ui[ EnumResourceType.Health ].showBar = !game.config.ui[ EnumResourceType.Health ].showBar;
 				game.config.ui[ EnumResourceType.Mana ].showBar = !game.config.ui[ EnumResourceType.Mana ].showBar;
+			}
+
+			/* Toggle arcade mode */
+			if(e.code === "F8" && e.ctrlKey) {
+				game.config.arcadeMode = !game.config.arcadeMode;
+				console.log(`Arcade mode is now ${ game.config.arcadeMode ? "enabled" : "disabled" }`);
 			}
 		});
 	}
@@ -119,7 +131,8 @@ export class InputSystem extends CoreSystem {
 				const mana = game.player.entity.getComponent(EnumResourceType.Mana);
 
 				//TODO: Incorporate resource costs into Abilities
-				const abilityCost = 5;
+				//NOTE: Probably need like `attempt` with contingencies for failure
+				const abilityCost = 2.5;
 				if(mana.current >= abilityCost) {
 					mana.sub(abilityCost);
 				} else {

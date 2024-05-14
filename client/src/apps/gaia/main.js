@@ -4,9 +4,10 @@ import Game from "./Game";
 import World from "../../modules/rpg/worlds/World";
 
 import demoCaveMap from "./data/maps/demoCaveMap.json";
-import { PlayerEntity } from "./entities/PlayerEntity";
 import Circle from "../../modules/core/lib/geometry/Circle";
 import CreatureEntity from "./entities/CreatureEntity";
+import Resource from "../../modules/rpg/components/Resource";
+import EnumResourceType from "../../modules/rpg/components/EnumResourceType";
 
 /* Get GPU info */
 function getWebGLContext() {
@@ -45,6 +46,22 @@ export const main = async ({ settings = {}, start = false } = {}) => {
 			game.player.entity,
 			// STUB: Extra entity for collision testing
 			CreatureEntity.Spawn({
+				components: [
+					new Resource({
+						type: EnumResourceType.Health,
+						current: 100,
+						max: 100,
+						step: 0.1,
+						regenRate: 0.1,
+					}),
+					new Resource({
+						type: EnumResourceType.Mana,
+						current: 250,
+						max: 250,
+						step: 0.1,
+						regenRate: 0.5,
+					}),
+				],
 				physics: {
 					model: new Circle({
 						x: 2,

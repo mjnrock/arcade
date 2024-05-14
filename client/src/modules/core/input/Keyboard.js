@@ -98,6 +98,19 @@ export class Keyboard {
 	hasFlag(key) {
 		return (this.mask & MaskKeys[ key ]) !== 0;
 	}
+
+	get hasCtrl() {
+		return this.hasFlag("CTRL");
+	}
+	get hasShift() {
+		return this.hasFlag("SHIFT");
+	}
+	get hasAlt() {
+		return this.hasFlag("ALT");
+	}
+	get hasSpace() {
+		return this.hasFlag("SPACE");
+	}
 };
 
 export default Keyboard;

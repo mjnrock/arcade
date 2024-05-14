@@ -1,5 +1,6 @@
 import Geometry from "../../core/lib/geometry/Geometry";
 import { Identity } from "../../core/lib/Identity";
+import Resource from "../components/Resource";
 import Action from "./Action";
 
 /**
@@ -10,7 +11,7 @@ import Action from "./Action";
  * within the hitbox.
  */
 export class Ability extends Identity {
-	constructor ({ name, model, actions = [] } = {}) {
+	constructor ({ name, model, cost, actions = [] } = {}) {
 		super();
 
 		/* A unique identifier for the Ability */
@@ -22,6 +23,9 @@ export class Ability extends Identity {
 		/* An ordered list of repeatable-actions to execute when the ability is triggered */
 		this.actions = [];
 		this.addAction(...actions);
+
+		/* The cost(s) to use the ability */
+		this.setCost(cost);
 	}
 
 	setModel(model) {
@@ -30,6 +34,18 @@ export class Ability extends Identity {
 		}
 
 		this.model = model;
+		return this;
+	}
+
+	setCost(resource) {
+		if(resource instanceof Resource) {
+			this.cost = resource;
+		} else if(Array.isArray(resource)) {
+			this.cost = resource.map(r => new Resource(r));
+		} else {
+			this.cost = new Resource(resource);
+		}
+
 		return this;
 	}
 

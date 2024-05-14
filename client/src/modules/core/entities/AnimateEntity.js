@@ -2,6 +2,10 @@ import Entity from "./Entity";
 
 import Physics from "../components/Physics";
 import Animus from "../components/Animus";
+import Component from "../components/Component";
+import Resource from "../../rpg/components/Resource";
+
+import EnumComponentType from "../components/EnumComponentType";
 
 /**
  * I vascillate on the naming here, but an AnimateEntity
@@ -11,7 +15,7 @@ import Animus from "../components/Animus";
  */
 export class AnimateEntity extends Entity {
 	constructor ({ id, meta = {}, components = [], physics = {}, animus = {} } = {}) {
-		super({ id, meta, components });
+		super({ id, meta });
 
 		/* Allow for overriding the physics and animus component classes */
 		if(Array.isArray(physics)) {
@@ -28,7 +32,23 @@ export class AnimateEntity extends Entity {
 		} else {
 			this.addComponent(Animus.Factory(animus));
 		}
+
+		this.addComponent(...components);
 	}
+
+	addComponent(...components) {
+		for(const component of components) {
+			if(component instanceof Component) {
+				super.addComponent(component);
+
+				if(component instanceof Resource) {
+					const animus = this.components.get(EnumComponentType.Animus);
+					animus.graphics.addChild(component.graphics);
+				}
+			}
+		}
+	}
+
 };
 
 export default AnimateEntity;
