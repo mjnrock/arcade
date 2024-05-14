@@ -118,6 +118,7 @@ export class InputSystem extends CoreSystem {
 				const playerAbilities = game.player.entity.getComponent(EnumComponentType.Abilities);
 				const mana = game.player.entity.getComponent(EnumResourceType.Mana);
 
+				//TODO: Incorporate resource costs into Abilities
 				const abilityCost = 5;
 				if(mana.current >= abilityCost) {
 					mana.sub(abilityCost);
