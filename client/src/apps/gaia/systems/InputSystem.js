@@ -116,6 +116,14 @@ export class InputSystem extends CoreSystem {
 			if(game.input.arcade?.buttons?.K1 || game.input.keyboard.has("Space") || game.input.mouse.has("RIGHT")) {
 				//* ABILITY TESTING */
 				const playerAbilities = game.player.entity.getComponent(EnumComponentType.Abilities);
+				const mana = game.player.entity.getComponent(EnumResourceType.Mana);
+
+				const abilityCost = 5;
+				if(mana.current >= abilityCost) {
+					mana.sub(abilityCost);
+				} else {
+					return;
+				}
 
 				/* Get direction vector based on the current facing from the matrix */
 				let direction = FacingMatrix[ playerPhysics.facing ] || [ 0, 0 ];

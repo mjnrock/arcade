@@ -17,7 +17,7 @@ export class CreatureEntity extends LivingEntity {
 			current: 100,
 			max: 100,
 			step: 0.1,
-			regenRate: 0.25,
+			regenRate: 0.1,
 		});
 		this.addComponent(health);
 		//* How should rendering like this be handled?

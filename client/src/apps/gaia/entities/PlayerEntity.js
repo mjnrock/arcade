@@ -24,10 +24,10 @@ export class PlayerEntity extends RPGPlayerEntity {
 
 		const mana = new Resource({
 			type: EnumResourceType.Mana,	// sic
-			current: 100,
-			max: 100,
+			current: 250,
+			max: 250,
 			step: 0.1,
-			regenRate: 0.1,
+			regenRate: 0.5,
 		});
 		this.addComponent(mana);
 
