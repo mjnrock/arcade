@@ -7,6 +7,12 @@ import EnumResourceType from "../../../modules/rpg/components/EnumResourceType";
 import AbilityEntity from "../../../modules/rpg/entities/AbilityEntity";
 import EnumAbility from "../abilities/EnumAbility";
 
+export const hasDirection = (input, direction) => input.arcade?.joystick?.[ direction ] || input.keyboard?.hasFlag(direction);
+export const hasUp = input => hasDirection(input, "UP");
+export const hasDown = input => hasDirection(input, "DOWN");
+export const hasLeft = input => hasDirection(input, "LEFT");
+export const hasRight = input => hasDirection(input, "RIGHT");
+
 export class InputSystem extends CoreSystem {
 	constructor ({ game } = {}) {
 		super({ game });
@@ -51,25 +57,54 @@ export class InputSystem extends CoreSystem {
 		});
 	}
 
+	// Helper functions for directional checks
+	hasDirection(input, direction) {
+		return input.arcade?.joystick?.[ direction ] || input.keyboard?.hasFlag(direction);
+	}
+	hasUp() { return this.hasDirection(this.game.input, "UP"); }
+	hasDown() { return this.hasDirection(this.game.input, "DOWN"); }
+	hasLeft() { return this.hasDirection(this.game.input, "LEFT"); }
+	hasRight() { return this.hasDirection(this.game.input, "RIGHT"); }
+	manageArcadeFacing(facing) {
+		const left = this.hasLeft();
+		const right = this.hasRight();
+		const up = this.hasUp();
+		const down = this.hasDown();
+
+		if(left && up) {
+			return EnumFacing.NORTH_WEST;
+		} else if(right && up) {
+			return EnumFacing.NORTH_EAST;
+		} else if(left && down) {
+			return EnumFacing.SOUTH_WEST;
+		} else if(right && down) {
+			return EnumFacing.SOUTH_EAST;
+		} else if(left) {
+			return EnumFacing.WEST;
+		} else if(right) {
+			return EnumFacing.EAST;
+		} else if(up) {
+			return EnumFacing.NORTH;
+		} else if(down) {
+			return EnumFacing.SOUTH;
+		}
+
+		return EnumFacing.NORTH;
+	}
+
+
 	update({ game, dt } = {}) {
 		const playerPhysics = game.player.entity.getComponent(EnumComponentType.Physics);
 		const { speed } = playerPhysics;
 
 		if(playerPhysics) {
 			/* Map controller inputs into player physics state */
-			if(game.input.arcade?.joystick?.LEFT || game.input.keyboard?.hasFlag("LEFT")) {
-				playerPhysics.vx = speed * -1;
-			} else if(game.input.arcade?.joystick?.RIGHT || game.input.keyboard?.hasFlag("RIGHT")) {
-				playerPhysics.vx = speed;
-			} else {
-				playerPhysics.vx = 0;
-			}
-			if(game.input.arcade?.joystick?.UP || game.input.keyboard?.hasFlag("UP")) {
-				playerPhysics.vy = speed * -1;
-			} else if(game.input.arcade?.joystick?.DOWN || game.input.keyboard?.hasFlag("DOWN")) {
-				playerPhysics.vy = speed;
-			} else {
-				playerPhysics.vy = 0;
+			playerPhysics.vx = this.hasLeft() ? -speed : this.hasRight() ? speed : 0;
+			playerPhysics.vy = this.hasUp() ? -speed : this.hasDown() ? speed : 0;
+
+			/* Since there's no mouse, we'll use the joystick to determine facing */
+			if(game.config.arcadeMode) {
+				playerPhysics.facing = this.manageArcadeFacing(playerPhysics.facing);
 			}
 
 			if(game.input.keyboard.has("Backquote")) {
@@ -121,19 +156,19 @@ export class InputSystem extends CoreSystem {
 
 	render({ dt, game }) {
 		const playerPhysics = game.player.entity.getComponent(EnumComponentType.Physics);
-	
+
 		const centerX = window.innerWidth / 2;
 		const centerY = window.innerHeight / 2;
 		const mouseX = game.input.mouse.x;
 		const mouseY = game.input.mouse.y;
-	
+
 		const angle = Math.atan2(mouseY - centerY, mouseX - centerX);
 		const angleDegrees = ((angle * 180 / Math.PI) - 90 + 540) % 360;
 		const angle45 = Math.round(angleDegrees / 45) * 45 % 360;
-	
+
 		playerPhysics.facing = angle45;
 	}
-	
+
 };
 
 export default InputSystem;

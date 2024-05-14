@@ -20,6 +20,8 @@ export class Game extends RPGGame {
 		);
 
 		this.mergeConfig({
+			/* If enabled, locks facing to the joystick direction */
+			arcadeMode: false,
 			ui: {
 				[ EnumResourceType.Health ]: {
 					showBar: true,
