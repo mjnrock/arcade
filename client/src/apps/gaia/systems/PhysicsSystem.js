@@ -8,6 +8,7 @@ import { PlayerEntity } from "../entities/PlayerEntity";
 
 import CollisionHelper from "../../../modules/core/lib/geometry/CollisionHelper";
 import AbilityEntity from "../../../modules/rpg/entities/AbilityEntity";
+import CreatureEntity from "../entities/CreatureEntity";
 
 export const Actions = {
 	/**
@@ -119,35 +120,46 @@ export const Actions = {
 		const checkedPairs = new Set();
 
 		const returnObjects = [];
+		const getPairKey = (id1, id2) => {
+			// Sort the IDs to ensure the key is order-independent
+			const sortedIds = [ id1, id2 ].sort();
+			// Concatenate sorted IDs to form the key
+			return sortedIds.join('-');
+		};
 		for(const entity of game.currentWorld.entityManager.cached) {
 			if(entity instanceof TerrainEntity) continue;
 
 			quadTree.retrieve(returnObjects, entity);
+			// console.log(game.currentWorld.entityManager.cached.size, returnObjects)
 			for(const other of returnObjects) {
 				if(other === entity) continue;
-				if(checkedPairs.has(`${ Math.min(entity.id, other.id) }-${ Math.max(entity.id, other.id) }`)) continue;
 				/* Prevent Abilities from colliding to dramatically reduce the number of collision checks */
 				if(entity instanceof AbilityEntity && other instanceof AbilityEntity) continue;
+				if(checkedPairs.has(getPairKey(entity.id, other.id))) continue;
 
 				const shape1 = entity.getComponent(EnumComponentType.Physics).model;
 				const shape2 = other.getComponent(EnumComponentType.Physics).model;
 
 				if(CollisionHelper.collide(shape1, shape2)) {
-					checkedPairs.add(`${ Math.min(entity.id, other.id) }-${ Math.max(entity.id, other.id) }`);
-
-					//NOTE: I'm not sure where the bug is, but this only triggers when you're *not* holding Spacebar
-					if(
-						(entity instanceof PlayerEntity && other instanceof AbilityEntity && other.source !== entity)
-						|| (other instanceof PlayerEntity && entity instanceof AbilityEntity && entity.source !== other)
-					) {
-						console.log(chalk.blue("Ability Collision") + ":", entity, other);
-					}
-					//STUB: Test is the thing hit the other test PlayerEntity
-					if(entity instanceof PlayerEntity || other instanceof PlayerEntity) {
-						if(entity.source !== game.player.entity && other.source !== game.player.entity) {
-							console.log(chalk.red("Player Collision") + ":", entity, other);
+					if(entity instanceof PlayerEntity) {
+						if(other instanceof AbilityEntity && other.source !== entity) {
+							console.log(chalk.yellow("Player collided with an ability!"), entity.id, other.id);
+						} else if(other instanceof CreatureEntity) {
+							console.log(chalk.yellow("Player collided with a creature!"), entity.id, other.id);
 						}
 					}
+
+					if(entity instanceof CreatureEntity) {
+						if(other instanceof AbilityEntity && other.source !== entity) {
+							// console.log(chalk.red("Creature collided with an ability!"), entity.id, other.id);
+							const { ability } = other;
+							ability.exec({ dt, game, source: other.source, target: entity });
+
+							const health = entity.getComponent(EnumComponentType.Health);
+						}
+					}
+
+					checkedPairs.add(getPairKey(entity.id, other.id));
 				}
 			}
 

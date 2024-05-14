@@ -1,11 +1,11 @@
 import CoreSystem from "../../../modules/core/lib/message/System";
 import { Circle } from "../../../modules/core/lib/geometry/Circle";
-import AnimateEntity from "../../../modules/rpg/entities/AnimateEntity";
 
 import EnumComponentType from "../components/EnumComponentType";
 import { EnumFacing, FacingMatrix } from "../components/EnumFacing";
-import ActionDamage from "../abilities/ActionDamage";
+import EnumResourceType from "../../../modules/rpg/components/EnumResourceType";
 import AbilityEntity from "../../../modules/rpg/entities/AbilityEntity";
+import EnumAbility from "../abilities/EnumAbility";
 
 export class InputSystem extends CoreSystem {
 	constructor ({ game } = {}) {
@@ -45,7 +45,8 @@ export class InputSystem extends CoreSystem {
 
 			/* Toggle health bar */
 			if(e.code === "KeyV") {
-				game.config.ui.health.showBar = !game.config.ui.health.showBar;
+				game.config.ui[EnumResourceType.Health].showBar = !game.config.ui[EnumResourceType.Health].showBar;
+				game.config.ui[EnumResourceType.Mana].showBar = !game.config.ui[EnumResourceType.Mana].showBar;
 			}
 		});
 	}
@@ -107,7 +108,7 @@ export class InputSystem extends CoreSystem {
 
 				/* Spawn a projectile */
 				const entProjectile = AbilityEntity.Spawn({
-					ability: playerAbilities.getAbility("melee"),
+					ability: playerAbilities.getAbility(EnumAbility.DeathRay),
 					source: game.player.entity,
 					meta: {
 						ttl: 1500,

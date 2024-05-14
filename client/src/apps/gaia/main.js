@@ -6,6 +6,7 @@ import World from "../../modules/rpg/worlds/World";
 import demoCaveMap from "./data/maps/demoCaveMap.json";
 import { PlayerEntity } from "./entities/PlayerEntity";
 import Circle from "../../modules/core/lib/geometry/Circle";
+import CreatureEntity from "./entities/CreatureEntity";
 
 /* Get GPU info */
 function getWebGLContext() {
@@ -43,7 +44,7 @@ export const main = async ({ settings = {}, start = false } = {}) => {
 		entities: [
 			game.player.entity,
 			// STUB: Extra entity for collision testing
-			PlayerEntity.Spawn({
+			CreatureEntity.Spawn({
 				physics: {
 					model: new Circle({
 						x: 2,

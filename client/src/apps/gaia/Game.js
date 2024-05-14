@@ -5,6 +5,8 @@ import { PlayerEntity } from "./entities/PlayerEntity";
 import InputSystem from "./systems/InputSystem";
 import PhysicsSystem from "./systems/PhysicsSystem";
 
+import EnumResourceType from "../../modules/rpg/components/EnumResourceType";
+
 
 export class Game extends RPGGame {
 	constructor ({ config = {}, ...args } = {}) {
@@ -19,7 +21,7 @@ export class Game extends RPGGame {
 
 		this.mergeConfig({
 			ui: {
-				health: {
+				[ EnumResourceType.Health ]: {
 					showBar: true,
 					thresholds: [
 						[ 0.8, "#005500" ],
@@ -27,7 +29,24 @@ export class Game extends RPGGame {
 						[ 0.3, "#CCCC33" ],
 						[ 0, "#FF5555" ],
 					],
-				}
+					ox: 0,
+					oy: -5,
+					width: 24,
+					height: 4,
+				},
+				[ EnumResourceType.Mana ]: {
+					showBar: true,
+					thresholds: [
+						[ 0.8, "#550055" ],
+						[ 0.65, "#AA50AA" ],
+						[ 0.3, "#CC33CC" ],
+						[ 0, "#FF55FF" ],
+					],
+					ox: 0,
+					oy: -2,
+					width: 20,
+					height: 3,
+				},
 			},
 			world: {
 				tileWidth: 32,

@@ -1,8 +1,12 @@
 import * as PIXI from "pixi.js";
+
 import { Component } from "../../core/components/Component";
+import EnumComponentType from "./EnumComponentType";
+import Circle from "../../core/lib/geometry/Circle";
+import Rectangle from "../../core/lib/geometry/Rectangle";
 
 export class Resource extends Component {
-	constructor ({ current = 0, min = 0, max = Infinity, step = 1, ...props } = {}) {
+	constructor ({ current = 0, min = 0, max = Infinity, step = 1, regenRate = 0, ...props } = {}) {
 		super({ ...props });
 
 		this.step = step;
@@ -12,6 +16,8 @@ export class Resource extends Component {
 		this.max = max;
 
 		this.graphics = new PIXI.Graphics();
+
+		this.regenRate = regenRate;
 	}
 
 	get asArray() {
@@ -37,6 +43,11 @@ export class Resource extends Component {
 	}
 	get isFull() {
 		return this.current >= this.max;
+	}
+
+	regen(dt = 1) {
+		this.add(this.regenRate * dt);
+		return this;
 	}
 
 	fill() {
@@ -111,23 +122,43 @@ export class Resource extends Component {
 		return this;
 	}
 
+	update({ game, dt, entity } = {}) {
+		this.regen(dt);
+	}
 	//TODO: This look is interesting, but it needs work to be "correct"
-	render({ game, dt, g = this.graphics } = {}) {
+	render({ game, dt, g = this.graphics, entity } = {}) {
 		g.clear();
 
-		if(game.config.ui.health.showBar) {
-			// Define color thresholds using array of arrays [threshold, color]
-			const colorThresholds = game.config.ui.health.thresholds;
+		// Accessing the physics component
+		const physics = entity.components.get(EnumComponentType.Physics);
+		const model = physics.model;
 
-			// Border dimensions and style
-			const maxWidth = 24;
-			const maxHeight = maxWidth / 6;
+		const uiConfig = game.config.ui[ this.type ];
+		if(uiConfig?.showBar) {
+			// Define color thresholds using array of arrays [threshold, color]
+			const colorThresholds = uiConfig.thresholds;
+
+			// Border dimensions and style derived from config
+			const maxWidth = uiConfig.width;
+			const maxHeight = uiConfig.height;
 			const borderWidth = 0.5; // Thickness of the border
 
-			// Draw the full-sized black border rectangle for health bar
+			// Calculate the top position of the entity's model to place the UI
+			let topY = 0;
+			if(model instanceof Circle) {
+				topY = -model.radius * game.config.world.tileHeight;
+			} else if(model instanceof Rectangle) {
+				topY = -model.height / 2 * game.config.world.tileHeight;
+			}
+
+			// Offset coordinates from config (adjusted for topY)
+			const offsetX = uiConfig.ox;
+			const offsetY = topY + uiConfig.oy - maxHeight;
+
+			// Draw the full-sized black border rectangle for the bar
 			g.lineStyle(borderWidth, 0x000000, 1);
 			g.beginFill(0xFFFFFF, 0); // Transparent fill for the border-only rectangle
-			g.drawRect(-maxWidth / 2, -maxWidth + maxHeight, maxWidth, maxHeight);
+			g.drawRect(offsetX - maxWidth / 2, offsetY, maxWidth, maxHeight);
 			g.endFill();
 
 			// Determine the color based on the health ratio
@@ -145,8 +176,8 @@ export class Resource extends Component {
 			g.beginFill(parseInt(color.slice(1), 16)); // Convert hex string to numeric hex
 			// Adjust rectangle dimensions to fit inside the border
 			g.drawRect(
-				-maxWidth / 2 + borderWidth,
-				-maxWidth + maxHeight + borderWidth,
+				offsetX - maxWidth / 2 + borderWidth,
+				offsetY + borderWidth,
 				ratio * (maxWidth - 2 * borderWidth),
 				maxHeight - 2 * borderWidth
 			);
@@ -155,9 +186,6 @@ export class Resource extends Component {
 
 		return g;
 	}
-
-
-
 };
 
 export default Resource;
