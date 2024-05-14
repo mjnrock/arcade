@@ -49,6 +49,9 @@ export class Resource extends Component {
 		this.add(this.regenRate * dt);
 		return this;
 	}
+	check(amount) {
+		return this.current >= amount;
+	}
 
 	fill() {
 		this.current = this.max;

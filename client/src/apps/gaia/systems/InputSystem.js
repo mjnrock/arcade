@@ -129,13 +129,9 @@ export class InputSystem extends CoreSystem {
 				//* ABILITY TESTING */
 				const playerAbilities = game.player.entity.getComponent(EnumComponentType.Abilities);
 				const mana = game.player.entity.getComponent(EnumResourceType.Mana);
+				const ability = playerAbilities.getAbility(EnumAbility.DeathRay);
 
-				//TODO: Incorporate resource costs into Abilities
-				//NOTE: Probably need like `attempt` with contingencies for failure
-				const abilityCost = 2.5;
-				if(mana.current >= abilityCost) {
-					mana.sub(abilityCost);
-				} else {
+				if(!ability.pay({ mana })) {
 					return;
 				}
 
@@ -148,7 +144,7 @@ export class InputSystem extends CoreSystem {
 
 				/* Spawn a projectile */
 				const entProjectile = AbilityEntity.Spawn({
-					ability: playerAbilities.getAbility(EnumAbility.DeathRay),
+					ability,
 					source: game.player.entity,
 					meta: {
 						ttl: 1500,

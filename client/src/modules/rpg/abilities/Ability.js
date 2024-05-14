@@ -37,16 +37,37 @@ export class Ability extends Identity {
 		return this;
 	}
 
-	setCost(resource) {
-		if(resource instanceof Resource) {
-			this.cost = resource;
-		} else if(Array.isArray(resource)) {
-			this.cost = resource.map(r => new Resource(r));
+	setCost(cost) {
+		if(Array.isArray(cost)) {
+			this.cost = [
+				...cost,
+			];
 		} else {
-			this.cost = new Resource(resource);
+			this.cost = [
+				cost,
+			];
 		}
 
 		return this;
+	}
+	pay(resources = {}) {
+		for(const [ type, amount ] of this.cost) {
+			const resource = resources[ type ];
+			if(resource instanceof Resource) {
+				if(!resource.check(amount)) {
+					return false;
+				}
+			} else {
+				return false;
+			}
+		}
+
+		for(const [ type, amount ] of this.cost) {
+			const resource = resources[ type ];
+			resource.sub(amount);
+		}
+
+		return true;
 	}
 
 	addAction(...actions) {

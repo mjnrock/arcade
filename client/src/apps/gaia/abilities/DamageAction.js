@@ -1,7 +1,7 @@
 import Action from "../../../modules/rpg/abilities/Action";
 import EnumComponentType from "../components/EnumComponentType";
 
-export class ActionDamage extends Action {
+export class DamageAction extends Action {
 	constructor ({ amount = 1 } = {}) {
 		super();
 
@@ -27,4 +27,4 @@ export class ActionDamage extends Action {
 	}
 };
 
-export default ActionDamage;
+export default DamageAction;

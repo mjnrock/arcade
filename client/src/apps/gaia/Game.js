@@ -7,6 +7,12 @@ import PhysicsSystem from "./systems/PhysicsSystem";
 
 import EnumResourceType from "../../modules/rpg/components/EnumResourceType";
 import Resource from "../../modules/rpg/components/Resource";
+import Rectangle from "../../modules/core/lib/geometry/Rectangle";
+
+import EnumAbility from "./abilities/EnumAbility";
+import DamageAction from "./abilities/DamageAction";
+import Abilities from "../../modules/rpg/components/Abilities";
+import DeathRayAbility from "./abilities/DeathRayAbility";
 
 
 export class Game extends RPGGame {
@@ -65,22 +71,6 @@ export class Game extends RPGGame {
 			},
 		}, config);
 
-
-
-		//FIXME: This paradigm is currently insane, but it demonstrates each requirement
-		// const abilities = new Abilities({
-		// 	abilities: [
-		// 		{
-		// 			name: EnumAbility.DeathRay,
-		// 			model: new Rectangle({ width: 4, height: 4 }),
-		// 			actions: [
-		// 				new ActionDamage({ amount: 0.1 }),
-		// 			],
-		// 		},
-		// 	],
-		// });
-		// this.addComponent(abilities);
-
 		this.player = {
 			entity: PlayerEntity.Spawn({
 				components: [
@@ -97,6 +87,16 @@ export class Game extends RPGGame {
 						max: 250,
 						step: 0.1,
 						regenRate: 0.5,
+					}),
+					new Abilities({
+						abilities: [
+							new DeathRayAbility({
+								amount: 0.25,
+								cost: [
+									[ EnumResourceType.Mana, 1 ],
+								],
+							}),
+						],
 					}),
 				],
 				physics: {

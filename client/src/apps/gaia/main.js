@@ -8,6 +8,11 @@ import Circle from "../../modules/core/lib/geometry/Circle";
 import CreatureEntity from "./entities/CreatureEntity";
 import Resource from "../../modules/rpg/components/Resource";
 import EnumResourceType from "../../modules/rpg/components/EnumResourceType";
+import Abilities from "../../modules/rpg/components/Abilities";
+import EnumAbility from "./abilities/EnumAbility";
+import DamageAction from "./abilities/DamageAction";
+import Rectangle from "../../modules/core/lib/geometry/Rectangle";
+import DeathRayAbility from "./abilities/DeathRayAbility";
 
 /* Get GPU info */
 function getWebGLContext() {
@@ -44,7 +49,8 @@ export const main = async ({ settings = {}, start = false } = {}) => {
 		atlas: demoCaveMap,
 		entities: [
 			game.player.entity,
-			// STUB: Extra entity for collision testing
+
+			/* STUB: Extra entity for collision testing */
 			CreatureEntity.Spawn({
 				components: [
 					new Resource({
@@ -60,6 +66,13 @@ export const main = async ({ settings = {}, start = false } = {}) => {
 						max: 250,
 						step: 0.1,
 						regenRate: 0.5,
+					}),
+					new Abilities({
+						abilities: [
+							new DeathRayAbility({
+								amount: 0.1,
+							}),
+						],
 					}),
 				],
 				physics: {
