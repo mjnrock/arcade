@@ -6,13 +6,8 @@ import InputSystem from "./systems/InputSystem";
 import PhysicsSystem from "./systems/PhysicsSystem";
 
 import EnumResourceType from "../../modules/rpg/components/EnumResourceType";
-import Resource from "../../modules/rpg/components/Resource";
-import Rectangle from "../../modules/core/lib/geometry/Rectangle";
 
-import EnumAbility from "./abilities/EnumAbility";
-import DamageAction from "./abilities/DamageAction";
-import Abilities from "../../modules/rpg/components/Abilities";
-import DeathRayAbility from "./abilities/DeathRayAbility";
+import BasicWizard from "./entities/templates/BasicWizard";
 
 
 export class Game extends RPGGame {
@@ -73,32 +68,7 @@ export class Game extends RPGGame {
 
 		this.player = {
 			entity: PlayerEntity.Spawn({
-				components: [
-					new Resource({
-						type: EnumResourceType.Health,
-						current: 100,
-						max: 100,
-						step: 0.1,
-						regenRate: 0.1,
-					}),
-					new Resource({
-						type: EnumResourceType.Mana,
-						current: 250,
-						max: 250,
-						step: 0.1,
-						regenRate: 0.5,
-					}),
-					new Abilities({
-						abilities: [
-							new DeathRayAbility({
-								amount: 0.25,
-								cost: [
-									[ EnumResourceType.Mana, 1 ],
-								],
-							}),
-						],
-					}),
-				],
+				components: BasicWizard.Components(),
 				physics: {
 					speed: 4,
 					model: new Circle({

@@ -6,13 +6,8 @@ import World from "../../modules/rpg/worlds/World";
 import demoCaveMap from "./data/maps/demoCaveMap.json";
 import Circle from "../../modules/core/lib/geometry/Circle";
 import CreatureEntity from "./entities/CreatureEntity";
-import Resource from "../../modules/rpg/components/Resource";
-import EnumResourceType from "../../modules/rpg/components/EnumResourceType";
-import Abilities from "../../modules/rpg/components/Abilities";
-import EnumAbility from "./abilities/EnumAbility";
-import DamageAction from "./abilities/DamageAction";
-import Rectangle from "../../modules/core/lib/geometry/Rectangle";
-import DeathRayAbility from "./abilities/DeathRayAbility";
+
+import BasicWizard from "./entities/templates/BasicWizard";
 
 /* Get GPU info */
 function getWebGLContext() {
@@ -52,29 +47,7 @@ export const main = async ({ settings = {}, start = false } = {}) => {
 
 			/* STUB: Extra entity for collision testing */
 			CreatureEntity.Spawn({
-				components: [
-					new Resource({
-						type: EnumResourceType.Health,
-						current: 100,
-						max: 100,
-						step: 0.1,
-						regenRate: 0.1,
-					}),
-					new Resource({
-						type: EnumResourceType.Mana,
-						current: 250,
-						max: 250,
-						step: 0.1,
-						regenRate: 0.5,
-					}),
-					new Abilities({
-						abilities: [
-							new DeathRayAbility({
-								amount: 0.1,
-							}),
-						],
-					}),
-				],
+				components: BasicWizard.Components(),
 				physics: {
 					model: new Circle({
 						x: 2,

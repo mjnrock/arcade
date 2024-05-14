@@ -13,7 +13,7 @@ export class DeathRayAbility extends Ability {
 				new DamageAction({ amount }),
 			],
 			cost: [
-				[ EnumResourceType.Mana, 10 ],
+				[ EnumResourceType.Mana, 3 ],
 			],
 
 			...props,
