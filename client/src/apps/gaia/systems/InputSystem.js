@@ -93,7 +93,7 @@ export class InputSystem extends CoreSystem {
 	}
 
 
-	update({ game, dt } = {}) {
+	update({ game, dt }) {
 		const playerPhysics = game.player.entity.getComponent(EnumComponentType.Physics);
 		const { speed } = playerPhysics;
 
