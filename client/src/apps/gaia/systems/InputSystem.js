@@ -26,6 +26,16 @@ export class InputSystem extends CoreSystem {
 		// game.input.keyboard.target.addEventListener("keypress", e => {
 		/* NOTE: Apparently keypress doesn't capture F-keys, so keydown with repeat check */
 		document.addEventListener("keydown", e => {
+			//DEBUG: Development controls
+			if(e.code === "F5") {
+				window.location.reload();
+			} else if(e.code === "F12") {
+				//NOOP: Allow console access by not preventing default
+			} else {
+				/* Outside of meta controls, prevent default behavior */
+				e.preventDefault();
+			}
+
 			/* Put anything above this that needs to respect key holding */
 			if(e.repeat) return;
 
@@ -36,11 +46,6 @@ export class InputSystem extends CoreSystem {
 				physics.y = ~~(Math.random() * game.currentWorld.rows);
 
 				console.log(`Teleported player to ${ physics.x }, ${ physics.y }`)
-			}
-
-			//FIXME: Debug only
-			if(e.code === "F5") {
-				window.location.reload();
 			}
 
 			if(e.code === "Digit1") {

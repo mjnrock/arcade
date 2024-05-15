@@ -29,7 +29,7 @@ export const Components = (components = {}) => {
 					amount: 0.1,
 				} ],
 				[ EnumAbility.HolyNova, HolyNovaAbility, {
-					amount: 0.1,
+					amount: 0.25,
 					radius: 1,
 				} ],
 			],
