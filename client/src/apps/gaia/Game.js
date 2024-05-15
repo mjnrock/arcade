@@ -24,6 +24,9 @@ export class Game extends RPGGame {
 		this.mergeConfig({
 			/* If enabled, locks facing to the joystick direction */
 			arcadeMode: false,
+			/* Difficulty level, as a scaling factor */
+			difficulty: 1,
+			/* UI configuration for resources */
 			ui: {
 				[ EnumResourceType.Health ]: {
 					showBar: true,
@@ -53,6 +56,7 @@ export class Game extends RPGGame {
 					height: 3,
 				},
 			},
+			/* World tile configuration */
 			world: {
 				tileWidth: 32,
 				tileHeight: 32,

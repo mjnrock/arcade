@@ -9,6 +9,7 @@ import { PlayerEntity } from "../entities/PlayerEntity";
 import CollisionHelper from "../../../modules/core/lib/geometry/CollisionHelper";
 import AbilityEntity from "../../../modules/rpg/entities/AbilityEntity";
 import CreatureEntity from "../entities/CreatureEntity";
+import HolyNovaAbility from "../abilities/HolyNovaAbility";
 
 export const Actions = {
 	/**
@@ -123,12 +124,17 @@ export const Actions = {
 				const shape1 = entity.getComponent(EnumComponentType.Physics).model;
 				const shape2 = other.getComponent(EnumComponentType.Physics).model;
 
+				//FIXME: CUrrently, this can't differentiate between a DeathRay (don't hit source) and HolyNova (do hit source)
 				if(CollisionHelper.collide(shape1, shape2)) {
 					if(entity instanceof PlayerEntity) {
 						if(other instanceof AbilityEntity && other.source !== entity) {
 							console.log(chalk.yellow("Player collided with an ability!"), entity.id, other.id);
 						} else if(other instanceof CreatureEntity) {
 							console.log(chalk.yellow("Player collided with a creature!"), entity.id, other.id);
+						} else if(other instanceof AbilityEntity && other.ability instanceof HolyNovaAbility) {
+							// console.log(chalk.green("Player collided with an ability!"), entity.id, other.id);
+							const { ability } = other;
+							ability.exec({ dt, game, source: other.source, target: entity });
 						}
 					}
 
@@ -137,8 +143,6 @@ export const Actions = {
 							// console.log(chalk.red("Creature collided with an ability!"), entity.id, other.id);
 							const { ability } = other;
 							ability.exec({ dt, game, source: other.source, target: entity });
-
-							const health = entity.getComponent(EnumComponentType.Health);
 						}
 					}
 

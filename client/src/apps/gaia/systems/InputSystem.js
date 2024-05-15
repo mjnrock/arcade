@@ -125,7 +125,6 @@ export class InputSystem extends CoreSystem {
 				health.fill();
 			}
 
-			/* Simulate automatic firing */
 			//TODO: Implement a more standardized way to spawn and manage ability entities
 			if(game.input.arcade?.buttons?.K1 || game.input.keyboard.has("Space") || game.input.mouse.has("RIGHT")) {
 				//* ABILITY TESTING */
@@ -175,6 +174,48 @@ export class InputSystem extends CoreSystem {
 					},
 					animus: {
 						color: "rgba(176, 64, 228, 0.25)",
+					},
+				});
+
+				/* Add the projectile to the world */
+				game.currentWorld.addEntity(entProjectile);
+			}
+			//TODO: Add a "cooldown" to prevent spamming
+			if(game.input.mouse.has("LEFT")) {
+				//* ABILITY TESTING */
+				const playerAbilities = game.player.entity.getComponent(EnumComponentType.Abilities);
+				const abilityFn = playerAbilities.getAbility(EnumAbility.HolyNova);
+
+				/* If the ability is not found, return */
+				if(!abilityFn) {
+					return;
+				}
+
+				const ability = abilityFn();
+
+				/* true if all Resources were paid, else false */
+				const paid = ability.pay(game.player.entity.compObj);
+				if(!paid) {
+					return;
+				}
+
+				/* Spawn a projectile */
+				const entProjectile = new AbilityEntity({
+					ability,
+					source: game.player.entity,
+					meta: {
+						ttl: 25,
+					},
+					physics: {
+						facing: playerPhysics.facing,
+						vx: 0,
+						vy: 0,
+
+						speed: 0,
+						model: ability.model,
+					},
+					animus: {
+						color: "rgba(176, 176, 228, 0.25)",
 					},
 				});
 
