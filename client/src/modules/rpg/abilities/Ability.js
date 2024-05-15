@@ -3,6 +3,13 @@ import { Identity } from "../../core/lib/Identity";
 import Resource from "../components/Resource";
 import Action from "./Action";
 
+/* Self is synonymous with the Source here, as its Entity-level by this point is use */
+export const Selectors = {
+	Self: (entities = [], source) => [ source ],
+	All: (entities = [], source) => entities,
+	AllButSelf: (entities = [], source) => entities.filter(entity => entity !== source),
+};
+
 /**
  * @class Ability
  * The general idea of an Ability is that a Geometric .model is
@@ -11,7 +18,9 @@ import Action from "./Action";
  * within the hitbox.
  */
 export class Ability extends Identity {
-	constructor ({ name, model, cost, actions = [] } = {}) {
+	static Selectors = Selectors;
+
+	constructor ({ name, model, cost, actions = [], selector } = {}) {
 		super();
 
 		/* A unique identifier for the Ability */
@@ -26,6 +35,14 @@ export class Ability extends Identity {
 
 		/* The cost(s) to use the ability */
 		this.setCost(cost);
+
+		if(typeof selector === "function") {
+			this.selector = selector;
+		}
+	}
+
+	selector(entities = [], source) {
+		return entities;
 	}
 
 	setModel(model) {
@@ -84,11 +101,15 @@ export class Ability extends Identity {
 		return this;
 	}
 
-	//TODO: Decide on to handle things like: source, target, trigger, etc.
-	exec({ dt, game, ...args } = {}) {
+	/**
+	 * Collision detection should happen elsewhere using the .model and passed in.
+	 */
+	exec(collidedEntities = [], { dt, game, source, ...args } = {}) {
+		const targets = this.selector.call(this, collidedEntities, source);
+
 		const results = [];
 		for(const action of this.actions) {
-			results.push(action.exec.call(action, { dt, game, ...args, ability: this }));
+			results.push(action.exec.call(action, { dt, game, targets, source, ...args, ability: this }));
 		}
 
 		return results;

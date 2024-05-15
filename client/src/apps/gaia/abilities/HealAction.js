@@ -11,19 +11,12 @@ export class HealAction extends Action {
 		// this.damageSource = damageSource;
 	}
 
-	action({ dt, game, source, target, amount = this.amount } = {}) {
-		if(!target || !source) {
-			return false;
+	action({ dt, game, source, targets } = {}) {
+		for(const target of targets) {
+			const health = target.getComponent(EnumComponentType.Health);
+
+			health.add(this.amount);
 		}
-
-		const health = target.getComponent(EnumComponentType.Health);
-		if(!health) {
-			return false;
-		}
-
-		health.add(amount);
-
-		return true;
 	}
 };
 

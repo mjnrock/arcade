@@ -1,0 +1,8 @@
+DamageSource:
+
+Standardized Ability Management:
+	☐ Nuanced source Entity handling
+	Collision Resolution:
+		☐ Paradigm to differentiate things like "heal the source entity" vs "don't apply to source entity" and such
+
+Cooldowns:

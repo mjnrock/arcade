@@ -135,7 +135,6 @@ export class Resource extends Component {
 	update({ game, dt, entity } = {}) {
 		this.regen(dt);
 	}
-	//TODO: This look is interesting, but it needs work to be "correct"
 	render({ game, dt, g = this.graphics, entity } = {}) {
 		g.clear();
 

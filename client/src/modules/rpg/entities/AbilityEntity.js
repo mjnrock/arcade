@@ -8,8 +8,9 @@ export class AbilityEntity extends AnimateEntity {
 	constructor ({ source, ability, ...sargs } = {}) {
 		super(sargs);
 
-		//TODO: This should be wrapped by a Component
+		/* The Entity that spawned the Ability */
 		this.source = source;
+		/* The Ability that this represents */
 		this.ability = ability;
 
 		/* By default, spawn the Ability at the source's position */

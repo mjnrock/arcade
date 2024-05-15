@@ -85,9 +85,8 @@ export const Actions = {
 
 			/* If the *next* terrain is VOID or OOB, undo the movement */
 			if(nextTerrain?.type === "VOID" || !world.isInBounds(nextX, nextY)) {
-				//FIXME: Adjust this to be more robust once a "ProjectileEntity" is implemented
-				/* Kill any projectile that hits the VOID */
-				if(!(entity instanceof TerrainEntity) && !(entity instanceof PlayerEntity)) {
+				/* Kill any ability that hits the VOID */
+				if(entity instanceof AbilityEntity) {
 					entity.meta.ttl = 0;
 				}
 
@@ -124,26 +123,10 @@ export const Actions = {
 				const shape1 = entity.getComponent(EnumComponentType.Physics).model;
 				const shape2 = other.getComponent(EnumComponentType.Physics).model;
 
-				//FIXME: CUrrently, this can't differentiate between a DeathRay (don't hit source) and HolyNova (do hit source)
 				if(CollisionHelper.collide(shape1, shape2)) {
-					if(entity instanceof PlayerEntity) {
-						if(other instanceof AbilityEntity && other.source !== entity) {
-							console.log(chalk.yellow("Player collided with an ability!"), entity.id, other.id);
-						} else if(other instanceof CreatureEntity) {
-							console.log(chalk.yellow("Player collided with a creature!"), entity.id, other.id);
-						} else if(other instanceof AbilityEntity && other.ability instanceof HolyNovaAbility) {
-							// console.log(chalk.green("Player collided with an ability!"), entity.id, other.id);
-							const { ability } = other;
-							ability.exec({ dt, game, source: other.source, target: entity });
-						}
-					}
-
-					if(entity instanceof CreatureEntity) {
-						if(other instanceof AbilityEntity && other.source !== entity) {
-							// console.log(chalk.red("Creature collided with an ability!"), entity.id, other.id);
-							const { ability } = other;
-							ability.exec({ dt, game, source: other.source, target: entity });
-						}
+					if(other instanceof AbilityEntity) {
+						const { ability } = other;
+						ability.exec([ entity, other.source ], { dt, game, source: other.source });
 					}
 
 					checkedPairs.add(getPairKey(entity.id, other.id));

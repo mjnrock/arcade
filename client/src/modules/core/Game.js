@@ -56,7 +56,7 @@ export const ClientSide = {
 		});
 
 		/*FIXME: _this$pixi.resize is not a function keeps happening a lot on resizes */
-		// window.addEventListener("resize", (...args) => game.resize.call(game, ...args));
+		// window.addEventListener("resize", (...args) => game.resize.call(game, ...args));/
 	},
 	initializeControls({ game, args }) {
 		game.input = {

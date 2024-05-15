@@ -1,5 +1,4 @@
 import Ability from "../../../modules/rpg/abilities/Ability";
-import DamageAction from "./DamageAction";
 import EnumAbility from "./EnumAbility";
 import EnumResourceType from "../../../modules/rpg/components/EnumResourceType";
 import Circle from "../../../modules/core/lib/geometry/Circle";
@@ -23,6 +22,8 @@ export class HolyNovaAbility extends Ability {
 
 			...props,
 		});
+
+		this.selector = Ability.Selectors.Self;
 	}
 };
 

@@ -56,10 +56,10 @@ export class Entity {
 	}
 
 	hasComponent(component) {
-		if(validate(component)) {
+		if(validate(component?.id)) {
 			return this.components.has(component);
 		}
-		return this.components.has(component.id);
+		return this.components.has(component);
 	}
 
 	getComponent(component) {

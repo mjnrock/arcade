@@ -2,9 +2,7 @@ import { Registry } from "../../core/lib/Registry";
 import { Component } from "../../core/components/Component";
 
 import { EnumComponentType } from "../components/EnumComponentType";
-import Ability from "../abilities/Ability";
 
-/* TODO: Turn this into a Registry and leverage pools */
 /**
  * @class Abilities
  * This is meant to be an inventory of Abilities that can be
