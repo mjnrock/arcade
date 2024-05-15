@@ -45,6 +45,13 @@ export class Resource extends Component {
 		return this.current >= this.max;
 	}
 
+	get ratio() {
+		return this.current / this.max;
+	}
+	get percent() {
+		return this.ratio * 100;
+	}
+
 	regen(dt = 1) {
 		this.add(this.regenRate * dt);
 		return this;
@@ -138,15 +145,15 @@ export class Resource extends Component {
 
 		const uiConfig = game.config.ui[ this.type ];
 		if(uiConfig?.showBar) {
-			// Define color thresholds using array of arrays [threshold, color]
+			/* Define color thresholds using array of arrays [threshold, color] */
 			const colorThresholds = uiConfig.thresholds;
 
-			// Border dimensions and style derived from config
+			/* Border dimensions and style derived from config */
 			const maxWidth = uiConfig.width;
 			const maxHeight = uiConfig.height;
-			const borderWidth = 0.5; // Thickness of the border
+			const borderSize = 0.25;
 
-			// Calculate the top position of the entity's model to place the UI
+			/* Calculate the top position of the entity's model to place the UI */
 			let topY = 0;
 			if(model instanceof Circle) {
 				topY = -model.radius * game.config.world.tileHeight;
@@ -154,35 +161,39 @@ export class Resource extends Component {
 				topY = -model.height / 2 * game.config.world.tileHeight;
 			}
 
-			// Offset coordinates from config (adjusted for topY)
+			/* Offset coordinates from config (adjusted for topY) */
 			const offsetX = uiConfig.ox;
 			const offsetY = topY + uiConfig.oy - maxHeight;
 
-			// Draw the full-sized black border rectangle for the bar
-			g.lineStyle(borderWidth, 0x000000, 1);
-			g.beginFill(0xFFFFFF, 0); // Transparent fill for the border-only rectangle
-			g.drawRect(offsetX - maxWidth / 2, offsetY, maxWidth, maxHeight);
+			/* Draw the black borders */
+			g.lineStyle(borderSize, 0x000000, 1);
+			g.beginFill(0xFFFFFF, 0);
+			g.drawRect(
+				offsetX - maxWidth / 2,
+				offsetY,
+				maxWidth,
+				maxHeight,
+			);
 			g.endFill();
 
-			// Determine the color based on the health ratio
-			const ratio = this.current / this.max;
-			let color = colorThresholds[ 0 ][ 1 ]; // Default color is the first threshold
+			/* Determine the color based on the resource ratio */
+			let color = colorThresholds[ 0 ][ 1 ];
 			for(let i = 0; i < colorThresholds.length; i++) {
-				if(ratio > colorThresholds[ i ][ 0 ]) {
+				if(this.ratio > colorThresholds[ i ][ 0 ]) {
 					color = colorThresholds[ i ][ 1 ];
 					break;
 				}
 			}
 
-			// Draw the filled rectangle inside the border
-			g.lineStyle(0); // No outline for the filled part
-			g.beginFill(parseInt(color.slice(1), 16)); // Convert hex string to numeric hex
-			// Adjust rectangle dimensions to fit inside the border
+			/* Draw the actual colored bar */
+			g.lineStyle(0);
+			/* Convert hex string to numeric hex */
+			g.beginFill(parseInt(color.slice(1), 16));
 			g.drawRect(
-				offsetX - maxWidth / 2 + borderWidth,
-				offsetY + borderWidth,
-				ratio * (maxWidth - 2 * borderWidth),
-				maxHeight - 2 * borderWidth
+				offsetX - maxWidth / 2 + borderSize / 2,
+				offsetY + borderSize / 2,
+				this.ratio * maxWidth - borderSize,
+				maxHeight - borderSize,
 			);
 			g.endFill();
 		}

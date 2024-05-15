@@ -37,7 +37,7 @@ export class Game extends RPGGame {
 					ox: 0,
 					oy: -5,
 					width: 24,
-					height: 4,
+					height: 6,
 				},
 				[ EnumResourceType.Mana ]: {
 					showBar: true,

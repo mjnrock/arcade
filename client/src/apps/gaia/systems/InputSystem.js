@@ -126,6 +126,7 @@ export class InputSystem extends CoreSystem {
 			}
 
 			/* Simulate automatic firing */
+			//TODO: Implement a more standardized way to spawn and manage ability entities
 			if(game.input.arcade?.buttons?.K1 || game.input.keyboard.has("Space") || game.input.mouse.has("RIGHT")) {
 				//* ABILITY TESTING */
 				const playerAbilities = game.player.entity.getComponent(EnumComponentType.Abilities);
