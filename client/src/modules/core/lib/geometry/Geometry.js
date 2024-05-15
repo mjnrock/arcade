@@ -7,6 +7,13 @@ export class Geometry {
 		this.x = x;
 		this.y = y;
 	}
+
+	copy({ ...next } = {}) {
+		return new this.constructor({
+			...this,
+			...next,
+		});
+	}
 };
 
 export default Geometry;

@@ -25,14 +25,12 @@ export class Abilities extends Component {
 	}
 
 	addAbility(...abilities) {
-		for(const ability of abilities) {
-			/* Allow either Ability payload, or Ability instance */
-			if(typeof ability === "object") {
-				const instance = new Ability(ability);
-				this.registry.registerWithAlias(instance, instance.name);
-			} else if(ability instanceof Ability) {
-				this.registry.registerWithAlias(ability, ability.name);
-			}
+		for(const abilityPayload of abilities) {
+			const [ alias, clazz, argsObj ] = abilityPayload;
+			const fn = ({ ...args } = {}) => new clazz({ ...argsObj, ...args });
+
+			/* Ultimately register a generator function */
+			this.registry.registerWithAlias(fn, alias);
 		}
 
 		return this;

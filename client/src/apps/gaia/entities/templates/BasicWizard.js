@@ -3,6 +3,7 @@ import Resource from "../../../../modules/rpg/components/Resource";
 
 import Abilities from "../../../../modules/rpg/components/Abilities";
 import DeathRayAbility from "../../abilities/DeathRayAbility";
+import EnumAbility from "../../abilities/EnumAbility";
 
 export const Components = (components = {}) => {
 	const compLookup = {
@@ -22,9 +23,10 @@ export const Components = (components = {}) => {
 		}),
 		abilities: new Abilities({
 			abilities: [
-				new DeathRayAbility({
+				/* [ alias, class, defaultArgs ] */
+				[ EnumAbility.DeathRay, DeathRayAbility, {
 					amount: 0.1,
-				}),
+				} ],
 			],
 		}),
 		...components,

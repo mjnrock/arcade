@@ -78,6 +78,10 @@ export class Entity {
 		return false;
 	}
 
+	get compObj() {
+		return Object.fromEntries(this.components);
+	}
+
 	update({ dt, ...args } = {}) {
 		/* Scale this to seconds to align with integer-millisecond TTL, and { dt } which is in fractional-seconds */
 		this.meta.age += (dt * 1000);

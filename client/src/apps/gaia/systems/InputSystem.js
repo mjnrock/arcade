@@ -6,6 +6,7 @@ import { EnumFacing, FacingMatrix } from "../components/EnumFacing";
 import EnumResourceType from "../../../modules/rpg/components/EnumResourceType";
 import AbilityEntity from "../../../modules/rpg/entities/AbilityEntity";
 import EnumAbility from "../abilities/EnumAbility";
+import Dice from "../../../modules/core/lib/Dice";
 
 export const hasDirection = (input, direction) => input.arcade?.joystick?.[ direction ] || input.keyboard?.hasFlag(direction);
 export const hasUp = input => hasDirection(input, "UP");
@@ -128,22 +129,36 @@ export class InputSystem extends CoreSystem {
 			if(game.input.arcade?.buttons?.K1 || game.input.keyboard.has("Space") || game.input.mouse.has("RIGHT")) {
 				//* ABILITY TESTING */
 				const playerAbilities = game.player.entity.getComponent(EnumComponentType.Abilities);
-				const mana = game.player.entity.getComponent(EnumResourceType.Mana);
-				const ability = playerAbilities.getAbility(EnumAbility.DeathRay);
+				const abilityFn = playerAbilities.getAbility(EnumAbility.DeathRay);
 
-				if(!ability.pay({ mana })) {
+				/* If the ability is not found, return */
+				if(!abilityFn) {
+					return;
+				}
+
+				const radius = Dice.weighted2([
+					[ 32, 0.25 ],
+					[ 16, 0.35 ],
+					[ 8, 0.45 ],
+					[ 1, 0.55 ],
+				]);
+				const ability = abilityFn({
+					speed: 12.5,
+					amount: 0.1 * (radius / 0.25),
+					radius,
+				});
+
+				/* true if all Resources were paid, else false */
+				const paid = ability.pay(game.player.entity.compObj);
+				if(!paid) {
 					return;
 				}
 
 				/* Get direction vector based on the current facing from the matrix */
 				let direction = FacingMatrix[ playerPhysics.facing ] || [ 0, 0 ];
 
-				let projSpeed = 12.5;
-				let vx = direction[ 0 ] * projSpeed;
-				let vy = direction[ 1 ] * projSpeed;
-
 				/* Spawn a projectile */
-				const entProjectile = AbilityEntity.Spawn({
+				const entProjectile = new AbilityEntity({
 					ability,
 					source: game.player.entity,
 					meta: {
@@ -151,15 +166,11 @@ export class InputSystem extends CoreSystem {
 					},
 					physics: {
 						facing: playerPhysics.facing,
-						vx,
-						vy,
+						vx: direction[ 0 ] * ability.speed,
+						vy: direction[ 1 ] * ability.speed,
 
-						speed: projSpeed,
-						model: new Circle({
-							x: playerPhysics.x,
-							y: playerPhysics.y,
-							radius: Math.random() > 0.33 ? 0.25 : 0.5,
-						}),
+						speed: ability.speed,
+						model: ability.model,
 					},
 					animus: {
 						color: "rgba(176, 64, 228, 0.25)",
