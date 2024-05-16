@@ -2,26 +2,13 @@ import RPGAbilitySystem from "../../../modules/rpg/systems/AbilitySystem";
 import AbilityEntity from "../../../modules/rpg/entities/AbilityEntity";
 
 import EnumComponentType from "../components/EnumComponentType";
+import { Message } from "../../../modules/core/lib/message/Message";
 
-/**
- * Actions are a part of the core/Actionable class, meant to be added into the system
- * to be used as dispatchable actions.
- * 
- * In practice, Actions are meant to be utilized at the game-loop level and therefore
- * more related to in-the-moment gameplay.
- */
 export const Actions = {};
 
-/**
- * Receivers are part of the core/lib/message System class, meant to be mounted to the system
- * to act as routeable endpoints for Messages.
- * 
- * In practice, Receivers are meant to be utilized at the message-passing level and therefore
- * more related to inter-system communication.
- */
 export const Receivers = {
-	castAbility({ data, message } = {}) {
-		const { name, entity, entityArgs = {}, abilityArgs = {}, game } = data;
+	castAbility(message) {
+		const { name, entity, entityArgs = {}, abilityArgs = {}, game } = message.data;
 		const abilities = entity.getComponent(EnumComponentType.Abilities);
 		const abilityFactory = abilities.getAbility(name);
 
@@ -48,11 +35,14 @@ export const Receivers = {
 		entPhysics.speed = ability.speed;
 		entPhysics.model = ability.model;
 
-		//TODO: Move this into a WorldSystem with a "joinWorld" action
 		/* Add the projectile to the world */
-		game.currentWorld.addEntity(entProjectile);
-
-		return entProjectile;
+		this.router.route(Message({
+			type: [ "WorldSystem", "joinWorld" ],
+			data: {
+				game,
+				entity: entProjectile,
+			},
+		}));
 	},
 };
 

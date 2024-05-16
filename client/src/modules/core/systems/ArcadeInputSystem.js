@@ -17,16 +17,16 @@ export class ArcadeInputSystem extends System {
 	 * input data and updates the game state accordingly.  As such, the controller
 	 * data actually "gets into the game" through this method.
 	 */
-	input({ data, message } = {}) {
+	input(message) {
 		/* Commented here to show values that map to the USB controller hardware pins and their names */
 		// const { buttons, joystick } = data;
 		// const { K1, K2, K3, K4, K11, K12, SE, ST } = buttons;
 		// const { UP, DOWN, LEFT, RIGHT } = joystick;
 
 		/* Pump the server state directly into the client state */
-		this.game.input.arcade = data;
+		this.game.input.arcade = message.data;
 
-		const { buttons, joystick } = data;
+		const { buttons, joystick } = message.data;
 		return {
 			...buttons,
 			...joystick,

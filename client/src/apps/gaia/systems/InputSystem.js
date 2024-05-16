@@ -126,24 +126,12 @@ export class InputSystem extends CoreSystem {
 
 			//TODO: Add a "cooldown" to prevent spamming
 			if(game.input.arcade?.buttons?.K1 || game.input.keyboard.has("Space") || game.input.mouse.has("RIGHT")) {
-				const radius = Dice.weighted2([
-					[ 32, 0.25 ],
-					[ 16, 0.35 ],
-					[ 8, 0.45 ],
-					[ 1, 0.55 ],
-				]);
-
 				this.router.route(Message({
 					type: [ "AbilitySystem", "castAbility" ],
 					data: {
 						name: EnumAbility.DeathRay,
 						entity: game.player.entity,
 						game,
-						abilityArgs: {
-							speed: 12.5,
-							amount: 0.1 * (radius / 0.25),
-							radius,
-						},
 						entityArgs: {
 							meta: {
 								ttl: 1500,
