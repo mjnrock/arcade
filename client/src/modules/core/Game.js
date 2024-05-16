@@ -132,7 +132,7 @@ export class Game {
 		if(systemClass instanceof System) {
 			this.systems[ systemClass.constructor ] = systemClass;
 		} else {
-			this.systems[ systemClass ] = new systemClass({ game: this, ...args });
+			this.systems[ systemClass.name ] = new systemClass({ game: this, ...args });
 		}
 
 		return this;

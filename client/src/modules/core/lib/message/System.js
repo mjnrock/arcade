@@ -9,6 +9,33 @@ export class System extends Actionable {
 		this.game = game;
 	}
 
+	addReceiver(fn) {
+		this[ fn.name ] = fn.bind(this);
+
+		return this;
+	}
+	addReceivers(fns) {
+		if(Array.isArray(fns)) {
+			fns.forEach(fn => this.addReceiver(fn));
+		} else if(typeof fns === "object") {
+			for(const key in fns) {
+				this.addReceiver(fns[ key ]);
+			}
+		}
+
+		return this;
+	}
+	removeReceiver(fn) {
+		delete this[ fn.name ];
+
+		return this;
+	}
+	removeReceivers(fns) {
+		fns.forEach(fn => this.removeReceiver(fn));
+
+		return this;
+	}
+
 	update({ game, dt } = {}) { }
 	render({ game, dt } = {}) { }
 

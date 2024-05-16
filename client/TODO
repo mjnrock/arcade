@@ -1,8 +1,14 @@
 DamageSource:
 
 Standardized Ability Management:
-	☐ Nuanced source Entity handling
-	Collision Resolution:
-		☐ Paradigm to differentiate things like "heal the source entity" vs "don't apply to source entity" and such
+	Process:
+		Get abilities:
+		Instantiate Ability:
+		Validate Costs, Pay:
+		Summon Entity:
+		From here, normal collision mechanics take over:
+	✔ Nuanced source Entity handling @done(24-05-15 16:40)
+	✔ Collision Resolution: @done(24-05-15 16:40)
+		✔ Paradigm to differentiate things like "heal the source entity" vs "don't apply to source entity" and such @done(24-05-15 16:40)
 
 Cooldowns:

@@ -114,6 +114,17 @@ export class Ability extends Identity {
 
 		return results;
 	}
+
+	copy({ ...props } = {}) {
+		return new Ability({
+			name: this.name,
+			model: this.model,
+			actions: this.actions,
+			cost: this.cost,
+			selector: this.selector,
+			...props,
+		});
+	}
 };
 
 export default Ability;

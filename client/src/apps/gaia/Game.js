@@ -8,6 +8,8 @@ import PhysicsSystem from "./systems/PhysicsSystem";
 import EnumResourceType from "../../modules/rpg/components/EnumResourceType";
 
 import BasicWizard from "./entities/templates/BasicWizard";
+import AbilitySystem from "./systems/AbilitySystem";
+import WorldSystem from "./systems/WorldSystem";
 
 
 export class Game extends RPGGame {
@@ -19,6 +21,8 @@ export class Game extends RPGGame {
 		this.mountSystems(
 			InputSystem,
 			PhysicsSystem,
+			AbilitySystem,
+			WorldSystem,
 		);
 
 		this.mergeConfig({
