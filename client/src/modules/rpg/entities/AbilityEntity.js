@@ -17,6 +17,9 @@ export class AbilityEntity extends AnimateEntity {
 		const sourcePhysics = source.getComponent(EnumComponentType.Physics);
 		this.ability.model.x = sourcePhysics.model.x;
 		this.ability.model.y = sourcePhysics.model.y;
+
+		/* A cache to manage collision mechanics */
+		this.collisions = new Set();
 	}
 };
 

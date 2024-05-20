@@ -58,7 +58,7 @@ export const Actions = {
 
 		/* If the terrain is VOID, move the entity to the nearest terrain */
 		if(terrain.type === "VOID") {
-			this.run("moveToNearestTerrain", { game, entity, dt });
+			this.dispatch("moveToNearestTerrain", { game, entity, dt });
 			return;
 		}
 
@@ -89,7 +89,7 @@ export const Actions = {
 				physics.setPosition({ x: x, y: y });
 			}
 		} else {
-			this.run("moveToNearestTerrain", { game, entity, dt });
+			this.dispatch("moveToNearestTerrain", { game, entity, dt });
 		}
 	},
 	handleCollisions({ game, dt } = {}) {
@@ -146,10 +146,10 @@ export class PhysicsSystem extends CorePhysicsSystem {
 
 			if(entity instanceof TerrainEntity) continue;
 
-			this.run("handleEntityTerrainCollision", { game, entity, dt });
+			this.dispatch("handleEntityTerrainCollision", { game, entity, dt });
 		}
 
-		this.run("handleCollisions", { game, dt });
+		this.dispatch("handleCollisions", { game, dt });
 
 	}
 	render({ game, dt } = {}) {

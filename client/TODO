@@ -1,14 +1,28 @@
 DamageSource:
+	☐ `ability <Ability>`
+	☐ `source <Entity>`
+	☐ `modifier <Map<Enum, fn({...})>>`
+		☐ Pass this as a parameter to the `Action.exec` method
 
 Standardized Ability Management:
 	Process:
-		Get abilities:
-		Instantiate Ability:
-		Validate Costs, Pay:
-		Summon Entity:
-		From here, normal collision mechanics take over:
+		✔ Get abilities @done(24-05-16 20:04)
+		✔ Instantiate Ability @done(24-05-16 20:04)
+		✔ Validate Costs, Pay @done(24-05-16 20:04)
+		✔ Summon Entity @done(24-05-16 20:04)
+		✔ From here, normal collision mechanics take over @done(24-05-16 20:04)
 	✔ Nuanced source Entity handling @done(24-05-15 16:40)
 	✔ Collision Resolution: @done(24-05-15 16:40)
 		✔ Paradigm to differentiate things like "heal the source entity" vs "don't apply to source entity" and such @done(24-05-15 16:40)
 
 Cooldowns:
+	☐ Incorporate cooldowns into the pay structure
+		☐ On `pay`, check if `.status === true`
+	☐ Add `cooldown` method to Ability
+		☐ Override in descendants to provide custom cooldown logic
+		☐ Should be a Resource of time, decrementing each tick
+			☐ `status` should return `true` if the cooldown is 0
+
+Actionables viz. Routing:
+	Actions:
+	Receivers:
