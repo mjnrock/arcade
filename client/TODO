@@ -2,8 +2,7 @@ DamageSource:
 	☐ `ability <Ability>`
 	☐ `source <Entity>`
 	☐ `modifier <Map<Enum, fn({...})>>`
-		☐ Pass this as a parameter to the `Action.exec` method\
-		☐ test
+		☐ Pass this as a parameter to the `Action.exec` method
 
 Standardized Ability Management:
 	Process:
