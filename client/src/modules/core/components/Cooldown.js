@@ -48,6 +48,7 @@ export class Cooldown extends Resource {
 		const height = 6;
 		const barWidth = width * this.ratio;
 
+		g.clear();
 		g.lineStyle(0);
 		g.beginFill("#000", 0.5);
 		g.drawRect(-width / 2, (height + 1) * i + 16, barWidth, height);

@@ -25,7 +25,7 @@ export const Components = (components = {}) => {
 				/* [ alias, class, defaultArgs ] */
 				[ EnumAbility.DeathRay, DeathRayAbility, {
 					amount: 0.1,
-					cooldown: 1,
+					cooldown: 500,
 				} ],
 				[ EnumAbility.HolyNova, HolyNovaAbility, {
 					amount: 0.25,
