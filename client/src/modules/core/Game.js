@@ -221,8 +221,6 @@ export class Game {
 		for(const system of Object.values(this.systems)) {
 			system.update(args);
 		}
-
-		this.currentWorld?.update(args);
 	}
 
 	render(dt, ip) {
@@ -235,8 +233,6 @@ export class Game {
 		for(const system of Object.values(this.systems)) {
 			system.render(args);
 		}
-
-		this.currentWorld?.render(args);
 	}
 }
 

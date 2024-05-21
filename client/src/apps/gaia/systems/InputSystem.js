@@ -6,6 +6,59 @@ import EnumResourceType from "../components/EnumResourceType";
 import { EnumFacing, FacingMatrix } from "../components/EnumFacing";
 import EnumAbility from "../abilities/EnumAbility"
 
+/* NOTE: Apparently keypress doesn't capture F-keys, so keydown with repeat check */
+export const KeyDownHandler = ({ game }) => (e) => {
+	//DEBUG: Development controls
+	if(e.code === "F5") {
+		window.location.reload();
+	} else if(e.code === "F12") {
+		//NOOP: Allow console access by not preventing default
+	} else {
+		/* Outside of meta controls, prevent default behavior */
+		e.preventDefault();
+	}
+
+	/* Put anything above this that needs to respect key holding */
+	if(e.repeat) return;
+
+	/* Randomly teleport the player */
+	if(e.code === "KeyQ") {
+		const physics = game.player.entity.getComponent(EnumComponentType.Physics);
+		const { facing } = physics;
+		let distance = 2;
+
+		// Move the player in the direction they're facing
+		physics.x += FacingMatrix[ facing ][ 0 ] * distance;
+		physics.y += FacingMatrix[ facing ][ 1 ] * distance;
+
+		console.log(`Teleported player to ${ physics.x }, ${ physics.y }`)
+	}
+
+	if(e.code === "Digit1") {
+		game.config.world.zoom = 1;
+	}
+	if(e.code === "Digit2") {
+		game.config.world.zoom = 2;
+	}
+	if(e.code === "Digit3") {
+		game.config.world.zoom = 4;
+	}
+	if(e.code === "Digit4") {
+		game.config.world.zoom = 8;
+	}
+
+	/* Toggle health bar */
+	if(e.code === "KeyV") {
+		game.config.ui[ EnumResourceType.Health ].showBar = !game.config.ui[ EnumResourceType.Health ].showBar;
+		game.config.ui[ EnumResourceType.Mana ].showBar = !game.config.ui[ EnumResourceType.Mana ].showBar;
+	}
+
+	/* Toggle arcade mode */
+	if(e.code === "F8" && e.ctrlKey) {
+		game.config.settings.arcadeMode = !game.config.settings.arcadeMode;
+		console.log(`Arcade mode is now ${ game.config.settings.arcadeMode ? "enabled" : "disabled" }`);
+	}
+};
 
 export class InputSystem extends CoreSystem {
 	constructor ({ game } = {}) {
@@ -16,60 +69,7 @@ export class InputSystem extends CoreSystem {
 			game.config.world.zoom = Math.min(Math.max(0.1, game.config.world.zoom), 33);
 		});
 
-		// game.input.keyboard.target.addEventListener("keypress", e => {
-		/* NOTE: Apparently keypress doesn't capture F-keys, so keydown with repeat check */
-		document.addEventListener("keydown", e => {
-			//DEBUG: Development controls
-			if(e.code === "F5") {
-				window.location.reload();
-			} else if(e.code === "F12") {
-				//NOOP: Allow console access by not preventing default
-			} else {
-				/* Outside of meta controls, prevent default behavior */
-				e.preventDefault();
-			}
-
-			/* Put anything above this that needs to respect key holding */
-			if(e.repeat) return;
-
-			/* Randomly teleport the player */
-			if(e.code === "KeyQ") {
-				const physics = game.player.entity.getComponent(EnumComponentType.Physics);
-				const { facing } = physics;
-				let distance = 2;
-
-				// Move the player in the direction they're facing
-				physics.x += FacingMatrix[ facing ][ 0 ] * distance;
-				physics.y += FacingMatrix[ facing ][ 1 ] * distance;
-
-				console.log(`Teleported player to ${ physics.x }, ${ physics.y }`)
-			}
-
-			if(e.code === "Digit1") {
-				game.config.world.zoom = 1;
-			}
-			if(e.code === "Digit2") {
-				game.config.world.zoom = 2;
-			}
-			if(e.code === "Digit3") {
-				game.config.world.zoom = 4;
-			}
-			if(e.code === "Digit4") {
-				game.config.world.zoom = 8;
-			}
-
-			/* Toggle health bar */
-			if(e.code === "KeyV") {
-				game.config.ui[ EnumResourceType.Health ].showBar = !game.config.ui[ EnumResourceType.Health ].showBar;
-				game.config.ui[ EnumResourceType.Mana ].showBar = !game.config.ui[ EnumResourceType.Mana ].showBar;
-			}
-
-			/* Toggle arcade mode */
-			if(e.code === "F8" && e.ctrlKey) {
-				game.config.settings.arcadeMode = !game.config.settings.arcadeMode;
-				console.log(`Arcade mode is now ${ game.config.settings.arcadeMode ? "enabled" : "disabled" }`);
-			}
-		});
+		document.addEventListener("keydown", KeyDownHandler({ game }));
 	}
 
 	// Helper functions for directional checks

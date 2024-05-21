@@ -99,6 +99,7 @@ export class World extends Actionable {
 
 		return this;
 	}
+	render({ game, dt } = {}) { }
 };
 
 export default World;
