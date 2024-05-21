@@ -1,6 +1,7 @@
 import chalk from "chalk";
 
 import Circle from "../../modules/core/lib/geometry/Circle";
+import Rectangle from "../../modules/core/lib/geometry/Rectangle";
 
 import CreatureEntity from "./entities/CreatureEntity";
 import World from "./worlds/World";
@@ -49,11 +50,17 @@ export const main = async ({ settings = {}, start = false } = {}) => {
 			CreatureEntity.Spawn({
 				components: BasicWizard.Components(),
 				physics: {
-					model: new Circle({
+					model: new Rectangle({
 						x: 2,
 						y: 8,
-						radius: 0.32,
+						width: 3,
+						height: 1,
 					}),
+					// model: new Circle({
+					// 	x: 2,
+					// 	y: 8,
+					// 	radius: 0.32,
+					// }),
 					speed: 2,
 				},
 				animus: {

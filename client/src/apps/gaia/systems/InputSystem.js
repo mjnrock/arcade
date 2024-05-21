@@ -35,8 +35,12 @@ export class InputSystem extends CoreSystem {
 			/* Randomly teleport the player */
 			if(e.code === "KeyQ") {
 				const physics = game.player.entity.getComponent(EnumComponentType.Physics);
-				physics.x = ~~(Math.random() * game.currentWorld.cols);
-				physics.y = ~~(Math.random() * game.currentWorld.rows);
+				const { facing } = physics;
+				let distance = 2;
+
+				// Move the player in the direction they're facing
+				physics.x += FacingMatrix[ facing ][ 0 ] * distance;
+				physics.y += FacingMatrix[ facing ][ 1 ] * distance;
 
 				console.log(`Teleported player to ${ physics.x }, ${ physics.y }`)
 			}
