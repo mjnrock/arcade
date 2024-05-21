@@ -9,7 +9,7 @@ import { EnumComponentType } from "../components/EnumComponentType";
  * performed by an Entity.
  * 
  * If a Registry is implemented, you can un/group Abilities
- * by utilizing pools (e.g. "melee", "ranged", "magic", "on cooldown", etc.)
+ * by utilizing pools (e.g. "melee", "ranged", "magic", "on state", etc.)
  */
 export class Abilities extends Component {
 	static Type = EnumComponentType.Abilities;
@@ -17,9 +17,29 @@ export class Abilities extends Component {
 	constructor ({ abilities = [] } = {}) {
 		super();
 
-		this.registry = new Registry();
+		/* Decoupled to allow game-time manipulation of state, while still being able to reset it (effectively a class/instance paradigm) */
+		this.library = new Registry();
+		this.state = new Map();
 
 		this.addAbility(...abilities);
+	}
+
+	[ Symbol.iterator ]() {
+		return this.state[ Symbol.iterator ]();
+	}
+
+	getState(name) {
+		return this.state.get(name);
+	}
+	setState(name, argsObj = {}) {
+		const fn = this.library.find(name);
+		if(fn) {
+			this.state.set(name, fn({ ...argsObj }));
+
+			return true;
+		}
+
+		return false;
 	}
 
 	addAbility(...abilities) {
@@ -27,15 +47,39 @@ export class Abilities extends Component {
 			const [ alias, clazz, argsObj ] = abilityPayload;
 			const fn = ({ ...args } = {}) => new clazz({ ...argsObj, ...args });
 
-			/* Ultimately register a generator function */
-			this.registry.registerWithAlias(fn, alias);
+			this.library.registerWithAlias(fn, alias);
+			/* Create a stubbed state for each ability */
+			this.setState(alias, { ...argsObj });
+		}
+
+		return this;
+	}
+	removeAbility(...names) {
+		for(const name of names) {
+			this.library.unregister(name);
+			this.removeState(name);
 		}
 
 		return this;
 	}
 
 	getAbility(name) {
-		return this.registry.find(name);
+		return this.library.find(name);
+	}
+
+	update({ game, dt, entity } = {}) {
+		for(const [ name, ability ] of this.state) {
+			ability.update({ game, dt, entity });
+		}
+	}
+	render({ dt, game, entity, g = this.graphics } = {}) {
+		let i = 0;
+		for(const [ name, ability ] of this.state) {
+			ability.render({ game, dt, entity,i });
+			i++;
+		}
+
+		return g
 	}
 };
 

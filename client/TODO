@@ -16,12 +16,12 @@ Standardized Ability Management:
 		✔ Paradigm to differentiate things like "heal the source entity" vs "don't apply to source entity" and such @done(24-05-15 16:40)
 
 Cooldowns:
-	☐ Incorporate cooldowns into the pay structure
-		☐ On `pay`, check if `.status === true`
-	☐ Add `cooldown` method to Ability
-		☐ Override in descendants to provide custom cooldown logic
-		☐ Should be a Resource of time, decrementing each tick
-			☐ `status` should return `true` if the cooldown is 0
+	✔ Incorporate cooldowns into the pay structure @done(24-05-19 20:23)
+		✔ On `pay`, check if `.status === true` @done(24-05-19 20:23)
+	✔ Add `cooldown` method to Ability @done(24-05-19 20:24)
+		✔ Override in descendants to provide custom cooldown logic @done(24-05-19 20:24)
+		✔ Should be a Resource of time, decrementing each tick @done(24-05-19 20:24)
+			✔ `status` should return `true` if the cooldown is 0 @done(24-05-19 20:24)
 
 Actionables viz. Routing:
 	Actions:

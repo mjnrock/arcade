@@ -1,5 +1,8 @@
+import * as PIXI from "pixi.js";
 import Geometry from "../../core/lib/geometry/Geometry";
 import { Identity } from "../../core/lib/Identity";
+import Cooldown from "../components/Cooldown";
+import EnumComponentType from "../components/EnumComponentType";
 import Resource from "../components/Resource";
 import Action from "./Action";
 
@@ -20,7 +23,7 @@ export const Selectors = {
 export class Ability extends Identity {
 	static Selectors = Selectors;
 
-	constructor ({ name, model, cost, actions = [], selector } = {}) {
+	constructor ({ name, model, cost, actions = [], cooldown = 1000, selector } = {}) {
 		super();
 
 		/* A unique identifier for the Ability */
@@ -36,9 +39,24 @@ export class Ability extends Identity {
 		/* The cost(s) to use the ability */
 		this.setCost(cost);
 
+		/* The cooldown status of the ability.  This should be managed through overriding this default instance. */
+		this.cooldown = new Cooldown({
+			current: cooldown,
+			max: cooldown,
+		});
+
+		/* A function to select the targets of the ability */
 		if(typeof selector === "function") {
 			this.selector = selector;
 		}
+
+		this.lastResults = [];
+
+		this.graphics = new PIXI.Graphics();
+	}
+
+	get isReady() {
+		return this.cooldown.isFull === true;
 	}
 
 	selector(entities = [], source) {
@@ -68,6 +86,12 @@ export class Ability extends Identity {
 		return this;
 	}
 	pay(resources = {}) {
+		if(!this.isReady) {
+			return false;
+		}
+
+		console.log("paying", this.isReady, this.cooldown.current);
+
 		for(const [ type, amount ] of this.cost) {
 			const resource = resources[ type ];
 			if(resource instanceof Resource) {
@@ -83,6 +107,9 @@ export class Ability extends Identity {
 			const resource = resources[ type ];
 			resource.sub(amount);
 		}
+
+		/* Drain the cooldown */
+		this.cooldown.drain();
 
 		return true;
 	}
@@ -112,6 +139,8 @@ export class Ability extends Identity {
 			results.push(action.exec.call(action, { dt, game, targets, source, ...args, ability: this }));
 		}
 
+		this.lastResults = Array.from(results);
+
 		return results;
 	}
 
@@ -124,6 +153,15 @@ export class Ability extends Identity {
 			selector: this.selector,
 			...props,
 		});
+	}
+
+	update({ game, dt, entity } = {}) {
+		this.cooldown.update({ game, dt, entity });
+	}
+	render({ game, dt, g = this.graphics, entity, i } = {}) {
+		this.cooldown.render({ game, dt, entity,i });
+
+		return g;
 	}
 };
 

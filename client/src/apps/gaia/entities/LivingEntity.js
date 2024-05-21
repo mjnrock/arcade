@@ -1,8 +1,15 @@
-import RPGPlayerEntity from "../../../modules/rpg/entities/PlayerEntity";
+import RPGAnimateEntity from "../../../modules/rpg/entities/AnimateEntity";
 import EnumComponentType from "../components/EnumComponentType";
 
-export class PlayerEntity extends RPGPlayerEntity {
-	constructor ({ abilities = [], ...props } = {}) {
+/**
+ * This is meant to be a slightly more restrictive version
+ * of the AnimateEntity, by enforcing some game-level concept
+ * of "being alive".  This could be thought of as something like
+ * a "CreatureEntity", but more general, while precluding something
+ * like "TerrainEntity".
+ */
+export class LivingEntity extends RPGAnimateEntity {
+	constructor ({ ...props } = {}) {
 		super({ ...props });
 	}
 
@@ -25,4 +32,4 @@ export class PlayerEntity extends RPGPlayerEntity {
 	}
 };
 
-export default PlayerEntity;
+export default LivingEntity;

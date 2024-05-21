@@ -20,6 +20,7 @@ export class DeathRayAbility extends Ability {
 				[ EnumResourceType.Mana, 3 ],
 				[ EnumResourceType.Health, 0.25 ],
 			],
+			cooldown: 1000,
 
 			...props,
 		});

@@ -19,6 +19,7 @@ export class HolyNovaAbility extends Ability {
 			cost: [
 				[ EnumResourceType.Mana, 10 ],
 			],
+			cooldown: 1000,
 
 			...props,
 		});

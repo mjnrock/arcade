@@ -8,16 +8,9 @@ export const Actions = {};
 
 export const Receivers = {
 	castAbility(message) {
-		const { name, entity, entityArgs = {}, abilityArgs = {}, game } = message.data;
+		const { name, entity, entityArgs = {}, game } = message.data;
 		const abilities = entity.getComponent(EnumComponentType.Abilities);
-		const abilityFactory = abilities.getAbility(name);
-
-		/* If the ability is not found, return */
-		if(!abilityFactory) {
-			return;
-		}
-
-		const ability = abilityFactory({ ...abilityArgs });
+		const ability = abilities.getState(name);
 		const paid = ability.pay(entity.compObj);
 		/* true if all Resources were paid, else false */
 		if(!paid) {

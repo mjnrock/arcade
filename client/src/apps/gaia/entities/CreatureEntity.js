@@ -1,4 +1,4 @@
-import LivingEntity from "../../../modules/rpg/entities/LivingEntity";
+import LivingEntity from "./LivingEntity";
 
 export class CreatureEntity extends LivingEntity {
 	constructor ({ ...props } = {}) {

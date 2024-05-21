@@ -53,6 +53,7 @@ export class Resource extends Component {
 	}
 
 	regen(dt = 1) {
+		// console.log(this.regenRate, dt, this.regenRate * dt)
 		this.add(this.regenRate * dt);
 		return this;
 	}
