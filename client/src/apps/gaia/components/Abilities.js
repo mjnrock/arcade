@@ -73,8 +73,9 @@ export class Abilities extends Component {
 		}
 	}
 	render({ dt, game, entity, g = this.graphics } = {}) {
-		let i = 0;
-		for(const [ name, ability ] of this.state) {
+		let i = 0,
+			entries = Array.from(this.state).reverse();
+		for(const [ name, ability ] of entries) {
 			ability.render({ game, dt, entity, i });
 			i++;
 		}

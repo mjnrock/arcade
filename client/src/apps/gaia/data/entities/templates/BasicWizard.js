@@ -3,7 +3,7 @@ import Resource from "../../../../../modules/core/components/Resource";
 import Abilities from "../../../components/Abilities";
 import EnumResourceType from "../../../components/EnumResourceType";
 import EnumAbility from "../../../abilities/EnumAbility";
-import DeathRayAbility from "../../../abilities/DeathRayAbility";
+import EnergyBallAbility from "../../../abilities/EnergyBallAbility";
 import HolyNovaAbility from "../../../abilities/HolyNovaAbility";
 
 export const Components = (components = {}) => {
@@ -23,13 +23,14 @@ export const Components = (components = {}) => {
 		abilities: new Abilities({
 			abilities: [
 				/* [ alias, class, defaultArgs ] */
-				[ EnumAbility.DeathRay, DeathRayAbility, {
-					amount: 0.1,
-					cooldown: 500,
+				[ EnumAbility.EnergyBall, EnergyBallAbility, {
+					amount: 0.25,
+					cooldown: 250,
 				} ],
 				[ EnumAbility.HolyNova, HolyNovaAbility, {
 					amount: 0.25,
 					radius: 1,
+					cooldown: 1000,
 				} ],
 			],
 		}),

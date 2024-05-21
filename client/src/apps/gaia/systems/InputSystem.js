@@ -127,7 +127,7 @@ export class InputSystem extends CoreSystem {
 				this.router.route(Message({
 					type: [ "AbilitySystem", "castAbility" ],
 					data: {
-						name: EnumAbility.DeathRay,
+						name: EnumAbility.EnergyBall,
 						source: game.player.entity,
 						game,
 						entityArgs: {
