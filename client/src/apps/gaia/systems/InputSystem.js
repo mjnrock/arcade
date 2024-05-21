@@ -66,8 +66,8 @@ export class InputSystem extends CoreSystem {
 
 			/* Toggle arcade mode */
 			if(e.code === "F8" && e.ctrlKey) {
-				game.config.arcadeMode = !game.config.arcadeMode;
-				console.log(`Arcade mode is now ${ game.config.arcadeMode ? "enabled" : "disabled" }`);
+				game.config.settings.arcadeMode = !game.config.settings.arcadeMode;
+				console.log(`Arcade mode is now ${ game.config.settings.arcadeMode ? "enabled" : "disabled" }`);
 			}
 		});
 	}
@@ -104,7 +104,7 @@ export class InputSystem extends CoreSystem {
 			return EnumFacing.SOUTH;
 		}
 
-		return EnumFacing.NORTH;
+		return facing;
 	}
 
 
@@ -118,7 +118,7 @@ export class InputSystem extends CoreSystem {
 			playerPhysics.vy = this.hasUp() ? -speed : this.hasDown() ? speed : 0;
 
 			/* Since there's no mouse, we'll use the joystick to determine facing */
-			if(game.config.arcadeMode) {
+			if(game.config.settings.arcadeMode) {
 				playerPhysics.facing = this.manageArcadeFacing(playerPhysics.facing);
 			}
 
@@ -179,18 +179,20 @@ export class InputSystem extends CoreSystem {
 	}
 
 	render({ dt, game }) {
-		const playerPhysics = game.player.entity.getComponent(EnumComponentType.Physics);
+		if(!game.config.settings.arcadeMode) {
+			const playerPhysics = game.player.entity.getComponent(EnumComponentType.Physics);
 
-		const centerX = window.innerWidth / 2;
-		const centerY = window.innerHeight / 2;
-		const mouseX = game.input.mouse.x;
-		const mouseY = game.input.mouse.y;
+			const centerX = window.innerWidth / 2;
+			const centerY = window.innerHeight / 2;
+			const mouseX = game.input.mouse.x;
+			const mouseY = game.input.mouse.y;
 
-		const angle = Math.atan2(mouseY - centerY, mouseX - centerX);
-		const angleDegrees = ((angle * 180 / Math.PI) - 90 + 540) % 360;
-		const angle45 = Math.round(angleDegrees / 45) * 45 % 360;
+			const angle = Math.atan2(mouseY - centerY, mouseX - centerX);
+			const angleDegrees = ((angle * 180 / Math.PI) - 90 + 540) % 360;
+			const angle45 = Math.round(angleDegrees / 45) * 45 % 360;
 
-		playerPhysics.facing = angle45;
+			playerPhysics.facing = angle45;
+		}
 	}
 
 };

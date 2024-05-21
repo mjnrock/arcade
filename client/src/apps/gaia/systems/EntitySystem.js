@@ -6,6 +6,9 @@ export const Receivers = {};
 export class EntitySystem extends System {
 	constructor ({ game } = {}) {
 		super({ game });
+
+		this.addActions(Actions);
+		this.addReceivers(Receivers);
 	}
 };
 
