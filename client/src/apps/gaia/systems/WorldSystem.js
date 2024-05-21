@@ -5,7 +5,6 @@ export const Receivers = {
 	joinWorld(message) {
 		const { entity, game } = message.data;
 
-		console.log(entity)
 		game.currentWorld.addEntity(entity);
 	},
 };
