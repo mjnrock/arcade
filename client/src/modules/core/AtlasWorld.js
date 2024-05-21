@@ -1,7 +1,7 @@
-import CoreWorld from "./World";
-import TerrainEntity from "./entities/TerrainEntity";
 import QuadTree from "./lib/QuadTree";
 import Rectangle from "./lib/geometry/Rectangle";
+import TerrainEntity from "./entities/TerrainEntity";
+import CoreWorld from "./World";
 
 export class AtlasWorld extends CoreWorld {
 	constructor ({ atlas, entities = [], ...args } = {}) {

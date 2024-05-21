@@ -1,13 +1,13 @@
 import chalk from "chalk";
 
+import Circle from "../../modules/core/lib/geometry/Circle";
+
+import CreatureEntity from "./entities/CreatureEntity";
+import World from "./worlds/World";
 import Game from "./Game";
-import World from "../../modules/rpg/worlds/World";
 
 import demoCaveMap from "./data/maps/demoCaveMap.json";
-import Circle from "../../modules/core/lib/geometry/Circle";
-import CreatureEntity from "./entities/CreatureEntity";
-
-import BasicWizard from "./entities/templates/BasicWizard";
+import BasicWizard from "./data/entities/templates/BasicWizard";
 
 /* Get GPU info */
 function getWebGLContext() {
@@ -54,6 +54,7 @@ export const main = async ({ settings = {}, start = false } = {}) => {
 						y: 8,
 						radius: 0.32,
 					}),
+					speed: 2,
 				},
 				animus: {
 					color: "#F33",

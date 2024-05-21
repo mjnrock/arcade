@@ -1,10 +1,10 @@
-import RPGAnimateEntity from "../../../modules/rpg/entities/AnimateEntity";
+import CoreAnimateEntity from "../../../modules/core/entities/AnimateEntity";
 
 import EnumComponentType from "../components/EnumComponentType";
-import Physics from "../../../apps/gaia/components/Physics";
-import Animus from "../../../apps/gaia/components/Animus";
+import Physics from "../components/Physics";
+import Animus from "../components/Animus";
 
-export class AnimateEntity extends RPGAnimateEntity {
+export class AnimateEntity extends CoreAnimateEntity {
 	constructor ({ physics = {}, animus = {}, ...props } = {}) {
 		super({
 			...props,
@@ -32,4 +32,4 @@ export class AnimateEntity extends RPGAnimateEntity {
 	}
 };
 
-export default RPGAnimateEntity;
+export default AnimateEntity;

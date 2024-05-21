@@ -1,10 +1,10 @@
 import { v4 as uuid } from "uuid";
 import * as PIXI from "pixi.js";
 
-import EntityManager from "./entities/EntityManager";
-import { EnumComponentType } from "./components/EnumComponentType";
 import { Actionable } from "./lib/Actionable";
+import EntityManager from "./entities/EntityManager";
 import TerrainEntity from "./entities/TerrainEntity";
+import { EnumComponentType } from "./components/EnumComponentType";
 
 export const ClientSide = {
 	initializeGraphics(world) {

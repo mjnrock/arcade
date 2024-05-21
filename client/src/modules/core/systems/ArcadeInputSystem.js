@@ -1,4 +1,4 @@
-import System from "../../core/lib/message/System";
+import System from "../lib/message/System";
 
 /**
  * Since this client-side input system is a receiver of data from the server,

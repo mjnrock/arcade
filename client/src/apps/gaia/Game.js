@@ -1,15 +1,14 @@
-import RPGGame from "../../modules/rpg/Game";
 import { Circle } from "../../modules/core/lib/geometry/Circle";
-
-import { PlayerEntity } from "./entities/PlayerEntity";
-import InputSystem from "./systems/InputSystem";
-import PhysicsSystem from "./systems/PhysicsSystem";
-
+import RPGGame from "../../modules/rpg/Game";
 import EnumResourceType from "../../modules/rpg/components/EnumResourceType";
 
-import BasicWizard from "./entities/templates/BasicWizard";
+import InputSystem from "./systems/InputSystem";
+import PhysicsSystem from "./systems/PhysicsSystem";
 import AbilitySystem from "./systems/AbilitySystem";
 import WorldSystem from "./systems/WorldSystem";
+import { PlayerEntity } from "./entities/PlayerEntity";
+
+import BasicWizard from "./data/entities/templates/BasicWizard";
 
 
 export class Game extends RPGGame {

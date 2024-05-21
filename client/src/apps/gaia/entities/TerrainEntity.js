@@ -1,7 +1,7 @@
-import CoreTerrainEntity from "../../core/entities/TerrainEntity";
+import CoreTerrainEntity from "../../../modules/core/entities/TerrainEntity";
 
-import Physics from "../../../apps/gaia/components/Physics";
-import Animus from "../../../apps/gaia/components/Animus";
+import Physics from "../components/Physics";
+import Animus from "../components/Animus";
 
 export class TerrainEntity extends CoreTerrainEntity {
 	constructor ({ animus, physics, ...props } = {}) {

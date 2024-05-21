@@ -1,9 +1,10 @@
 import * as PIXI from "pixi.js";
-import Geometry from "../../core/lib/geometry/Geometry";
+
 import { Identity } from "../../core/lib/Identity";
+import Geometry from "../../core/lib/geometry/Geometry";
+import Resource from "../../core/components/Resource";
+
 import Cooldown from "../components/Cooldown";
-import EnumComponentType from "../components/EnumComponentType";
-import Resource from "../components/Resource";
 import Action from "./Action";
 
 /* Self is synonymous with the Source here, as its Entity-level by this point is use */
@@ -108,7 +109,6 @@ export class Ability extends Identity {
 
 		/* Drain the cooldown */
 		this.cooldown.drain();
-		console.log(this.cooldown.current);
 
 		return true;
 	}
@@ -158,7 +158,7 @@ export class Ability extends Identity {
 		this.cooldown.update({ game, dt, entity });
 	}
 	render({ game, dt, g = this.graphics, entity, i } = {}) {
-		this.cooldown.render({ game, dt, entity,i });
+		this.cooldown.render({ game, dt, entity, i });
 
 		return g;
 	}

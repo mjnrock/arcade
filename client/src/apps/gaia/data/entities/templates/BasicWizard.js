@@ -1,10 +1,10 @@
-import EnumResourceType from "../../components/EnumResourceType";
-import Resource from "../../../../modules/rpg/components/Resource";
+import Resource from "../../../../../modules/core/components/Resource";
+import Abilities from "../../../../../modules/rpg/components/Abilities";
 
-import Abilities from "../../../../modules/rpg/components/Abilities";
-import DeathRayAbility from "../../abilities/DeathRayAbility";
-import EnumAbility from "../../abilities/EnumAbility";
-import HolyNovaAbility from "../../abilities/HolyNovaAbility";
+import EnumResourceType from "../../../components/EnumResourceType";
+import EnumAbility from "../../../abilities/EnumAbility";
+import DeathRayAbility from "../../../abilities/DeathRayAbility";
+import HolyNovaAbility from "../../../abilities/HolyNovaAbility";
 
 export const Components = (components = {}) => {
 	const compLookup = {

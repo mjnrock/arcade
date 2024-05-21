@@ -1,5 +1,5 @@
-import EnumComponentType from "../components/EnumComponentType";
 import AnimateEntity from "./AnimateEntity";
+import EnumComponentType from "../components/EnumComponentType";
 
 /**
  * @class AbilityEntity

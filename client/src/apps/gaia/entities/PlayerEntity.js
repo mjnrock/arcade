@@ -1,6 +1,6 @@
-import RPGLivingEntity from "../../../modules/rpg/entities/LivingEntity";
+import LivingEntity from "./LivingEntity";
 
-export class PlayerEntity extends RPGLivingEntity {
+export class PlayerEntity extends LivingEntity {
 	constructor ({ abilities = [], ...props } = {}) {
 		super({ ...props });
 	}

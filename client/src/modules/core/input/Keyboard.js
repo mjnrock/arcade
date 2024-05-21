@@ -1,4 +1,4 @@
-const MaskKeys = {
+export const MaskKeys = {
 	LEFT: 1 << 1,	// 2
 	RIGHT: 1 << 2,  // 4
 	UP: 1 << 3,     // 8
@@ -9,7 +9,7 @@ const MaskKeys = {
 	SPACE: 1 << 8,  // 256
 };
 
-const KeyMaskMap = {
+export const KeyMaskMap = {
 	ArrowLeft: MaskKeys.LEFT,
 	ArrowRight: MaskKeys.RIGHT,
 	ArrowUp: MaskKeys.UP,

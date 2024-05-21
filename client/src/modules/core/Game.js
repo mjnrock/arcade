@@ -2,15 +2,15 @@ import * as PIXI from "pixi.js";
 import { v4 as uuid } from "uuid";
 import GameLoop from "./GameLoop";
 
-import KeyboardInput from "./input/Keyboard";
-import MouseInput from "./input/Mouse";
-
-import ArcadeInputSystem from "./systems/ArcadeInputSystem";
-
 import Router from "./lib/message/Router";
 import System from "./lib/message/System";
 import WebSocketBrowserClient from "./lib/ws/WebSocketBrowserClient";
 import { nestedMerge } from "./util/nestedMerge";
+
+import KeyboardInput from "./input/Keyboard";
+import MouseInput from "./input/Mouse";
+
+import ArcadeInputSystem from "./systems/ArcadeInputSystem";
 
 export const CommonSide = {
 	initializeNetworking({ game, args }) {

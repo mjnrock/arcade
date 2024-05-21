@@ -1,4 +1,5 @@
-import AtlasWorld from "../../core/AtlasWorld";
+import AtlasWorld from "../../../modules/core/AtlasWorld";
+
 import EnumComponentType from "../components/EnumComponentType";
 import { TerrainEntity } from "../entities/TerrainEntity";
 

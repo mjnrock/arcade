@@ -1,4 +1,4 @@
-import Resource from "./Resource";
+import Resource from "../../core/components/Resource";
 
 export class Cooldown extends Resource {
 	constructor ({ current = 0, max = 1000, ...props } = {}) {

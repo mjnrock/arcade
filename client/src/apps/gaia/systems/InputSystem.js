@@ -130,7 +130,7 @@ export class InputSystem extends CoreSystem {
 					type: [ "AbilitySystem", "castAbility" ],
 					data: {
 						name: EnumAbility.DeathRay,
-						entity: game.player.entity,
+						source: game.player.entity,
 						game,
 						entityArgs: {
 							meta: {
@@ -155,7 +155,7 @@ export class InputSystem extends CoreSystem {
 					type: [ "AbilitySystem", "castAbility" ],
 					data: {
 						name: EnumAbility.HolyNova,
-						entity: game.player.entity,
+						source: game.player.entity,
 						game,
 						entityArgs: {
 							meta: {

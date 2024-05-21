@@ -1,6 +1,6 @@
-import Component from "./Component";
-import { EnumComponentType } from "./EnumComponentType";
 import Geometry from "../lib/geometry/Geometry";
+import { EnumComponentType } from "./EnumComponentType";
+import Component from "./Component";
 
 export class Physics extends Component {
 	static Type = EnumComponentType.Physics;
