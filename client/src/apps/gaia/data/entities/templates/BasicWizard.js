@@ -1,6 +1,6 @@
 import Resource from "../../../../../modules/core/components/Resource";
-import Abilities from "../../../../../modules/rpg/components/Abilities";
 
+import Abilities from "../../../components/Abilities";
 import EnumResourceType from "../../../components/EnumResourceType";
 import EnumAbility from "../../../abilities/EnumAbility";
 import DeathRayAbility from "../../../abilities/DeathRayAbility";

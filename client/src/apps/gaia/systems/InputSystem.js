@@ -1,11 +1,10 @@
+import { Message } from "../../../modules/core/lib/message/Message";
 import CoreSystem from "../../../modules/core/lib/message/System";
 
 import EnumComponentType from "../components/EnumComponentType";
+import EnumResourceType from "../components/EnumResourceType";
 import { EnumFacing, FacingMatrix } from "../components/EnumFacing";
-import EnumResourceType from "../../../modules/rpg/components/EnumResourceType";
-import { Message } from "../../../modules/core/lib/message/Message";
-import EnumAbility from "../abilities/EnumAbility";
-import Dice from "../../../modules/core/lib/Dice";
+import EnumAbility from "../abilities/EnumAbility"
 
 
 export class InputSystem extends CoreSystem {

@@ -1,6 +1,6 @@
+import CoreGame from "../../modules/core/Game";
 import { Circle } from "../../modules/core/lib/geometry/Circle";
-import RPGGame from "../../modules/rpg/Game";
-import EnumResourceType from "../../modules/rpg/components/EnumResourceType";
+import EnumResourceType from "./components/EnumResourceType";
 
 import InputSystem from "./systems/InputSystem";
 import PhysicsSystem from "./systems/PhysicsSystem";
@@ -11,7 +11,7 @@ import { PlayerEntity } from "./entities/PlayerEntity";
 import BasicWizard from "./data/entities/templates/BasicWizard";
 
 
-export class Game extends RPGGame {
+export class Game extends CoreGame {
 	constructor ({ config = {}, ...args } = {}) {
 		super({
 			...args,

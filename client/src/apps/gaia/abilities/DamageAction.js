@@ -1,5 +1,5 @@
-import Action from "../../../modules/rpg/abilities/Action";
 import EnumComponentType from "../components/EnumComponentType";
+import Action from "./Action";
 
 export class DamageAction extends Action {
 	constructor ({ amount = 1 } = {}) {

@@ -1,4 +1,4 @@
-import Action from "../../../modules/rpg/abilities/Action";
+import Action from "./Action";
 import EnumComponentType from "../components/EnumComponentType";
 
 export class HealAction extends Action {

@@ -1,8 +1,8 @@
-import RPGAbilitySystem from "../../../modules/rpg/systems/AbilitySystem";
 import AbilityEntity from "../entities/AbilityEntity";
 
 import EnumComponentType from "../components/EnumComponentType";
 import { Message } from "../../../modules/core/lib/message/Message";
+import System from "../../../modules/core/lib/message/System";
 
 export const Actions = {};
 
@@ -43,7 +43,7 @@ export const Receivers = {
 	},
 };
 
-export class AbilitySystem extends RPGAbilitySystem {
+export class AbilitySystem extends System {
 	constructor ({ game } = {}) {
 		super({ game });
 

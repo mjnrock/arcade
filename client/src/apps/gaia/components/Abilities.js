@@ -1,5 +1,5 @@
-import { Registry } from "../../core/lib/Registry";
-import { Component } from "../../core/components/Component";
+import Registry from "../../../modules/core/lib/Registry";
+import Component from "../../../modules/core/components/Component";
 
 import { EnumComponentType } from "../components/EnumComponentType";
 

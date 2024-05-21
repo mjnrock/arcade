@@ -1,10 +1,10 @@
 import * as PIXI from "pixi.js";
 
-import { Identity } from "../../core/lib/Identity";
-import Geometry from "../../core/lib/geometry/Geometry";
-import Resource from "../../core/components/Resource";
+import { Identity } from "../../../modules/core/lib/Identity";
+import Geometry from "../../../modules/core/lib/geometry/Geometry";
+import Resource from "../../../modules/core/components/Resource";
+import Cooldown from "../../../modules/core/components/Cooldown";
 
-import Cooldown from "../components/Cooldown";
 import Action from "./Action";
 
 /* Self is synonymous with the Source here, as its Entity-level by this point is use */

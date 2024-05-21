@@ -1,4 +1,4 @@
-import { Identity } from "../../core/lib/Identity";
+import { Identity } from "../../../modules/core/lib/Identity";
 
 /**
  * @class Action

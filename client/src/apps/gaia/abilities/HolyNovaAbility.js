@@ -1,7 +1,8 @@
-import Ability from "../../../modules/rpg/abilities/Ability";
-import EnumAbility from "./EnumAbility";
-import EnumResourceType from "../../../modules/rpg/components/EnumResourceType";
 import Circle from "../../../modules/core/lib/geometry/Circle";
+
+import Ability from "./Ability";
+import EnumResourceType from "../components/EnumResourceType";
+import EnumAbility from "./EnumAbility";
 import HealAction from "./HealAction";
 
 export class HolyNovaAbility extends Ability {

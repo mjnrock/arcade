@@ -71,8 +71,6 @@ export class Entity {
 					return comp;
 				}
 			}
-		} else {
-			return this.components.get(component.id);
 		}
 
 		return false;

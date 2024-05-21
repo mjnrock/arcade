@@ -1,8 +1,9 @@
-import Ability from "../../../modules/rpg/abilities/Ability";
 import Circle from "../../../modules/core/lib/geometry/Circle";
+
+import EnumResourceType from "../components/EnumResourceType";
+import Ability from "./Ability";
 import DamageAction from "./DamageAction";
 import EnumAbility from "./EnumAbility";
-import EnumResourceType from "../components/EnumResourceType";
 
 export class DeathRayAbility extends Ability {
 	constructor ({ speed = 10, amount = 0.1, radius = 0.25, x, y, ...props } = {}) {
