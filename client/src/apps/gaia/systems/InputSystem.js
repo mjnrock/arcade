@@ -119,11 +119,10 @@ export class InputSystem extends CoreSystem {
 			}
 
 			if(game.input.keyboard.has("Backquote")) {
-				const health = game.player.entity.getComponent(EnumComponentType.Health);
+				const health = game.player.entity.getComponent(EnumResourceType.Health);
 				health.fill();
 			}
 
-			//TODO: Add a "cooldown" to prevent spamming
 			if(game.input.arcade?.buttons?.K1 || game.input.keyboard.has("Space") || game.input.mouse.has("RIGHT")) {
 				this.router.route(Message({
 					type: [ "AbilitySystem", "castAbility" ],
@@ -159,6 +158,11 @@ export class InputSystem extends CoreSystem {
 						entityArgs: {
 							meta: {
 								ttl: 25,
+							},
+							physics: {
+								facing: playerPhysics.facing,
+								x: playerPhysics.x,
+								y: playerPhysics.y,
 							},
 							animus: {
 								color: "rgba(176, 176, 228, 0.25)",

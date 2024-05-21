@@ -1,5 +1,5 @@
 import Action from "./Action";
-import EnumComponentType from "../components/EnumComponentType";
+import EnumResourceType from "../components/EnumResourceType";
 
 export class HealAction extends Action {
 	constructor ({ amount = 1 } = {}) {
@@ -13,8 +13,10 @@ export class HealAction extends Action {
 
 	action({ dt, game, source, targets } = {}) {
 		for(const target of targets) {
-			const health = target.getComponent(EnumComponentType.Health);
+			const health = target.getComponent(EnumResourceType.Health);
 
+			console.log(health)
+			console.log(target)
 			health.add(this.amount);
 		}
 	}

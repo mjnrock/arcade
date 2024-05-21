@@ -1,4 +1,4 @@
-import EnumComponentType from "../components/EnumComponentType";
+import EnumResourceType from "../components/EnumResourceType";
 import Action from "./Action";
 
 export class DamageAction extends Action {
@@ -10,7 +10,7 @@ export class DamageAction extends Action {
 
 	action({ dt, game, source, targets } = {}) {
 		for(const target of targets) {
-			const health = target.getComponent(EnumComponentType.Health);
+			const health = target.getComponent(EnumResourceType.Health);
 
 			health.sub(this.amount);
 		}

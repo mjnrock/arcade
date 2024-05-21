@@ -21,16 +21,11 @@ export const Receivers = {
 
 		/* Spawn a projectile */
 		const abilityInstance = abilityFn(abilityArgs);
-		console.log(entityArgs)
 		const entProjectile = new AbilityEntity({
 			...entityArgs,
 			ability: abilityInstance,
 			source: source,
 		});
-
-		const entPhysics = entProjectile.getComponent(EnumComponentType.Physics);
-		entPhysics.speed = ability.speed;
-		entPhysics.model = ability.model;
 
 		/* Add the projectile to the world */
 		this.router.route(Message({

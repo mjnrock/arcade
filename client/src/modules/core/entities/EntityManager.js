@@ -6,7 +6,7 @@ export class EntityManager {
 
 		/* a registry of all Entities that are managed by this EntityManager */
 		this.entities = new Map();
-		/* a formalization of the "I only need a subset" pattern) */
+		/* a formalization of the game-loop-dictated "I only need a subset" pattern */
 		this.cache = new Set();
 
 		this.add(...entities);

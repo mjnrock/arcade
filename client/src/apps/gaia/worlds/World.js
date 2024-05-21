@@ -1,6 +1,7 @@
 import AtlasWorld from "../../../modules/core/AtlasWorld";
 
 import EnumComponentType from "../components/EnumComponentType";
+import EnumResourceType from "../components/EnumResourceType";
 import { TerrainEntity } from "../entities/TerrainEntity";
 
 export class World extends AtlasWorld {
@@ -31,7 +32,7 @@ export class World extends AtlasWorld {
 			const physics = entity.getComponent(EnumComponentType.Physics);
 			const { x, y } = physics;
 
-			const health = entity.getComponent(EnumComponentType.Health);
+			const health = entity.getComponent(EnumResourceType.Health);
 			if(health?.isEmpty) {
 				this.removeEntity(entity);
 				continue;

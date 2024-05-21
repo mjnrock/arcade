@@ -13,10 +13,13 @@ export class AbilityEntity extends AnimateEntity {
 		/* The Ability that this represents */
 		this.ability = ability;
 
-		/* By default, spawn the Ability at the source's position */
+		/* By default, spawn the Ability at the source's position */		
 		const sourcePhysics = source.getComponent(EnumComponentType.Physics);
-		this.ability.model.x = sourcePhysics.model.x;
-		this.ability.model.y = sourcePhysics.model.y;
+		const physics = this.getComponent(EnumComponentType.Physics);
+		physics.speed = this.ability.speed;
+		physics.model = this.ability.model;
+		physics.x = sourcePhysics.x;
+		physics.y = sourcePhysics.y;
 
 		/* A cache to manage collision mechanics */
 		this.collisions = new Set();
