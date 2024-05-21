@@ -68,6 +68,7 @@ export class AtlasWorld extends CoreWorld {
 						}),
 					},
 					animus: {
+						//TODO: Currently only supports color, not the textures, if present
 						color,
 					},
 				}));
