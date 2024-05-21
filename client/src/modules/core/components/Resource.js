@@ -1,9 +1,9 @@
 import * as PIXI from "pixi.js";
 
-import { Component } from "../../core/components/Component";
-import EnumComponentType from "../../core/components/EnumComponentType";
-import Circle from "../../core/lib/geometry/Circle";
-import Rectangle from "../../core/lib/geometry/Rectangle";
+import Circle from "../lib/geometry/Circle";
+import Rectangle from "../lib/geometry/Rectangle";
+import EnumComponentType from "./EnumComponentType";
+import { Component } from "./Component";
 
 export class Resource extends Component {
 	constructor ({ current = 0, min = 0, max = Infinity, step = 0.0001, regenRate = 0, ...props } = {}) {

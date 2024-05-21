@@ -1,10 +1,10 @@
 import { v4 as uuid } from "uuid";
 import * as PIXI from "pixi.js";
 
-import { Actionable } from "./lib/Actionable";
-import EntityManager from "./entities/EntityManager";
-import TerrainEntity from "./entities/TerrainEntity";
-import { EnumComponentType } from "./components/EnumComponentType";
+import { Actionable } from "../lib/Actionable";
+import EntityManager from "../entities/EntityManager";
+import TileEntity from "../entities/TileEntity";
+import { EnumComponentType } from "../components/EnumComponentType";
 
 export const ClientSide = {
 	initializeGraphics(world) {
@@ -91,7 +91,7 @@ export class World extends Actionable {
 			if(entity.isDead) {
 				this.removeEntity(entity);
 			} else {
-				if(!(entity instanceof TerrainEntity)) {
+				if(!(entity instanceof TileEntity)) {
 					this.quadTree.insert(entity);
 				}
 			}

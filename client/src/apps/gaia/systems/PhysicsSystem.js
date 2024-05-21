@@ -1,8 +1,8 @@
 import CorePhysicsSystem from "../../../modules/core/systems/PhysicsSystem";
 import CollisionHelper from "../../../modules/core/lib/geometry/CollisionHelper";
-import TerrainEntity from "../../../modules/core/entities/TerrainEntity";
 
 import AbilityEntity from "../entities/AbilityEntity";
+import TerrainEntity from "../entities/TerrainEntity";
 import EnumComponentType from "../components/EnumComponentType";
 
 export const Actions = {

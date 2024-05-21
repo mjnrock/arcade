@@ -1,6 +1,6 @@
-import QuadTree from "./lib/QuadTree";
-import Rectangle from "./lib/geometry/Rectangle";
-import TerrainEntity from "./entities/TerrainEntity";
+import QuadTree from "../lib/QuadTree";
+import Rectangle from "../lib/geometry/Rectangle";
+import TileEntity from "../entities/TileEntity";
 import CoreWorld from "./World";
 
 export class AtlasWorld extends CoreWorld {
@@ -37,7 +37,7 @@ export class AtlasWorld extends CoreWorld {
 		return false;
 	}
 
-	loadFromAtlas(atlas, terrainEntityClass = TerrainEntity) {
+	loadFromAtlas(atlas, terrainEntityClass = TileEntity) {
 		if(!atlas) return;
 
 		this.atlas = atlas;

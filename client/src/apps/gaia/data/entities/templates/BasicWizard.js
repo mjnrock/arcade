@@ -12,7 +12,7 @@ export const Components = (components = {}) => {
 			type: EnumResourceType.Health,
 			current: 100,
 			max: 100,
-			// regenRate: 0.1,
+			regenRate: 0.05,
 		}),
 		mana: new Resource({
 			type: EnumResourceType.Mana,

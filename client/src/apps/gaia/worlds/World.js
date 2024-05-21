@@ -1,4 +1,4 @@
-import AtlasWorld from "../../../modules/core/AtlasWorld";
+import AtlasWorld from "../../../modules/core/worlds/AtlasWorld";
 
 import EnumComponentType from "../components/EnumComponentType";
 import EnumResourceType from "../components/EnumResourceType";
