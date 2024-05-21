@@ -1,16 +1,16 @@
 import RPGAnimateEntity from "../../../modules/rpg/entities/AnimateEntity";
-import EnumComponentType from "../components/EnumComponentType";
 
-/**
- * This is meant to be a slightly more restrictive version
- * of the AnimateEntity, by enforcing some game-level concept
- * of "being alive".  This could be thought of as something like
- * a "CreatureEntity", but more general, while precluding something
- * like "TerrainEntity".
- */
-export class LivingEntity extends RPGAnimateEntity {
-	constructor ({ ...props } = {}) {
-		super({ ...props });
+import EnumComponentType from "../components/EnumComponentType";
+import Physics from "../../../apps/gaia/components/Physics";
+import Animus from "../../../apps/gaia/components/Animus";
+
+export class AnimateEntity extends RPGAnimateEntity {
+	constructor ({ physics = {}, animus = {}, ...props } = {}) {
+		super({
+			...props,
+			physics: [ Physics, physics ],
+			animus: [ Animus, animus ],
+		});
 	}
 
 	update({ game, dt, entity } = {}) {
@@ -32,4 +32,4 @@ export class LivingEntity extends RPGAnimateEntity {
 	}
 };
 
-export default LivingEntity;
+export default RPGAnimateEntity;

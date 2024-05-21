@@ -12,21 +12,20 @@ export const Components = (components = {}) => {
 			type: EnumResourceType.Health,
 			current: 100,
 			max: 100,
-			step: 0.1,
 			// regenRate: 0.1,
 		}),
 		mana: new Resource({
 			type: EnumResourceType.Mana,
 			current: 250,
 			max: 250,
-			step: 0.1,
-			regenRate: 0.5,
+			regenRate: 5,
 		}),
 		abilities: new Abilities({
 			abilities: [
 				/* [ alias, class, defaultArgs ] */
 				[ EnumAbility.DeathRay, DeathRayAbility, {
 					amount: 0.1,
+					cooldown: 1,
 				} ],
 				[ EnumAbility.HolyNova, HolyNovaAbility, {
 					amount: 0.25,

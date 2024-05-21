@@ -1,27 +1,8 @@
-import RPGPlayerEntity from "../../../modules/rpg/entities/PlayerEntity";
-import EnumComponentType from "../components/EnumComponentType";
+import RPGLivingEntity from "../../../modules/rpg/entities/LivingEntity";
 
-export class PlayerEntity extends RPGPlayerEntity {
+export class PlayerEntity extends RPGLivingEntity {
 	constructor ({ abilities = [], ...props } = {}) {
 		super({ ...props });
-	}
-
-	update({ game, dt, entity } = {}) {
-		super.update({ game, dt, entity });
-
-		const abilities = this.components.get(EnumComponentType.Abilities);
-		if(abilities) {
-			abilities.update({ dt, game, entity: this });
-		}
-	}
-	render({ game, dt } = {}) {
-		super.render({ game, dt });
-
-		/* Render abilities */
-		const abilities = this.components.get(EnumComponentType.Abilities);
-		if(abilities) {
-			abilities.render({ dt, game, entity: this });
-		}
 	}
 };
 

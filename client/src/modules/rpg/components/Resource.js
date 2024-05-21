@@ -6,7 +6,7 @@ import Circle from "../../core/lib/geometry/Circle";
 import Rectangle from "../../core/lib/geometry/Rectangle";
 
 export class Resource extends Component {
-	constructor ({ current = 0, min = 0, max = Infinity, step = 1, regenRate = 0, ...props } = {}) {
+	constructor ({ current = 0, min = 0, max = Infinity, step = 0.0001, regenRate = 0, ...props } = {}) {
 		super({ ...props });
 
 		this.step = step;
@@ -52,6 +52,7 @@ export class Resource extends Component {
 		return this.ratio * 100;
 	}
 
+	/* Scale by 1000 for .max to represent cooldown time in integer milliseconds */
 	regen(dt = 1) {
 		this.add(this.regenRate * dt);
 		return this;
