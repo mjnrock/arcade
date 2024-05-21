@@ -26,14 +26,14 @@ export class Cooldown extends Resource {
 		return this;
 	}
 
-	update({ game, dt, entity } = {}) {
-		console.log(dt, this.regenRate, (1 / dt) * this.regenRate)
-		super.update({
-			game,
-			dt: (1 / dt) * this.regenRate,
-			entity,
-		});
+	/* Scale by 1000 for .max to represent cooldown time in integer milliseconds */
+	regen(dt = 1) {
+		const dtSeconds = dt * 1000;
+
+		this.add(this.regenRate * dtSeconds);
+		return this;
 	}
+
 	render({ entity, g = this.graphics, i } = {}) {
 		//DEBUG: Black bar of the Cooldown for testing
 		/* Check if the pixi graphic has been parented to the entity's container */

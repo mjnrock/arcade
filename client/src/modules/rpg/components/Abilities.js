@@ -75,7 +75,7 @@ export class Abilities extends Component {
 	render({ dt, game, entity, g = this.graphics } = {}) {
 		let i = 0;
 		for(const [ name, ability ] of this.state) {
-			ability.render({ game, dt, entity,i });
+			ability.render({ game, dt, entity, i });
 			i++;
 		}
 

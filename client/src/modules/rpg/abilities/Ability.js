@@ -90,8 +90,6 @@ export class Ability extends Identity {
 			return false;
 		}
 
-		console.log("paying", this.isReady, this.cooldown.current);
-
 		for(const [ type, amount ] of this.cost) {
 			const resource = resources[ type ];
 			if(resource instanceof Resource) {
@@ -110,6 +108,7 @@ export class Ability extends Identity {
 
 		/* Drain the cooldown */
 		this.cooldown.drain();
+		console.log(this.cooldown.current);
 
 		return true;
 	}

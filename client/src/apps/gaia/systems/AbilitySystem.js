@@ -11,6 +11,7 @@ export const Receivers = {
 		const { name, entity, entityArgs = {}, game } = message.data;
 		const abilities = entity.getComponent(EnumComponentType.Abilities);
 		const ability = abilities.getState(name);
+
 		const paid = ability.pay(entity.compObj);
 		/* true if all Resources were paid, else false */
 		if(!paid) {
