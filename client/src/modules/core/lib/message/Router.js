@@ -18,14 +18,10 @@ export class Router {
 
 	route(message) {
 		try {
-			for(const name in this.systems) {
-				const system = this.systems[ name ];
-				const [ to ] = message.type;
+			const [ to ] = message.type;
+			const system = this.systems[ to ];
 
-				if(name === to || system.id === to) {
-					return system.receive(message);
-				}
-			}
+			system.receive(message);
 		} catch(e) {
 			console.log("Invalid message sent to router");
 			console.log(message);

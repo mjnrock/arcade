@@ -1,6 +1,6 @@
 import AnimateEntity from "./AnimateEntity";
 
-export class TerrainEntity extends AnimateEntity {
+export class TileEntity extends AnimateEntity {
 	constructor ({ physics, animus, ...props } = {}) {
 		super({
 			...props,
@@ -10,4 +10,4 @@ export class TerrainEntity extends AnimateEntity {
 	}
 };
 
-export default TerrainEntity;
+export default TileEntity;

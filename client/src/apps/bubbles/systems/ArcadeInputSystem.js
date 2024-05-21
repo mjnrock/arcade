@@ -9,6 +9,9 @@ export class ArcadeInputSystem extends CoreArcadeInputSystem {
 		super({ game });
 	}
 
+	//FIXME: This paradigm has been deprecated in favor of the new input(message) paradigm
+	// input(message) {
+	// 	const { ST } = super.input(message);
 	input({ data, message } = {}) {
 		const { ST } = super.input({ data, message });
 

@@ -1,4 +1,3 @@
-//TODO: Tidy up Chord and import it instead of redefining it here.
 /**
  * @class Tags
  * The general idea of a "Tag" is a unique term, with optional properties.  As

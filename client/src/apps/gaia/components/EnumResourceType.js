@@ -1,7 +1,6 @@
-import { EnumResourceType as CoreEnumResourceType } from "../../../modules/rpg/components/EnumResourceType";
-
 export const EnumResourceType = {
-	...CoreEnumResourceType,
+	Health: "health",
+	Mana: "mana",
 };
 
 export default EnumResourceType;

@@ -3,9 +3,9 @@ import Entity from "./Entity";
 import Physics from "../components/Physics";
 import Animus from "../components/Animus";
 import Component from "../components/Component";
-import Resource from "../../rpg/components/Resource";
-
 import EnumComponentType from "../components/EnumComponentType";
+import Resource from "../components/Resource";
+
 
 /**
  * I vascillate on the naming here, but an AnimateEntity

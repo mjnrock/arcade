@@ -4,7 +4,12 @@ export class Circle extends Geometry {
 	constructor ({ radius, ...geometry } = {}) {
 		super(geometry);
 
-		this.radius = radius;
+		if(typeof radius === "function") {
+			console.log(123)
+			this.radius = radius();
+		} else {
+			this.radius = radius;
+		}
 	}
 
 	get area() {

@@ -56,10 +56,10 @@ export class Entity {
 	}
 
 	hasComponent(component) {
-		if(validate(component)) {
+		if(validate(component?.id)) {
 			return this.components.has(component);
 		}
-		return this.components.has(component.id);
+		return this.components.has(component);
 	}
 
 	getComponent(component) {
@@ -71,18 +71,20 @@ export class Entity {
 					return comp;
 				}
 			}
-		} else {
-			return this.components.get(component.id);
 		}
 
 		return false;
+	}
+
+	get compObj() {
+		return Object.fromEntries(this.components);
 	}
 
 	update({ dt, ...args } = {}) {
 		/* Scale this to seconds to align with integer-millisecond TTL, and { dt } which is in fractional-seconds */
 		this.meta.age += (dt * 1000);
 
-		this.components.forEach(component => component?.update({ entity: this, ...args }));
+		this.components.forEach(component => component?.update({ dt, entity: this, ...args }));
 		return this;
 	}
 

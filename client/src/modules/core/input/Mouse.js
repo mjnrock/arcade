@@ -1,10 +1,10 @@
-const MouseButtons = {
+export const MouseButtons = {
 	LEFT: 1 << 0,   // 1
 	MIDDLE: 1 << 1, // 2
 	RIGHT: 1 << 2,  // 4
 };
 
-const ButtonMaskMap = {
+export const ButtonMaskMap = {
 	0: MouseButtons.LEFT,
 	1: MouseButtons.MIDDLE,
 	2: MouseButtons.RIGHT,

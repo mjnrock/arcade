@@ -1,17 +1,11 @@
+import { Message } from "../../../modules/core/lib/message/Message";
 import CoreSystem from "../../../modules/core/lib/message/System";
-import { Circle } from "../../../modules/core/lib/geometry/Circle";
 
 import EnumComponentType from "../components/EnumComponentType";
+import EnumResourceType from "../components/EnumResourceType";
 import { EnumFacing, FacingMatrix } from "../components/EnumFacing";
-import EnumResourceType from "../../../modules/rpg/components/EnumResourceType";
-import AbilityEntity from "../../../modules/rpg/entities/AbilityEntity";
-import EnumAbility from "../abilities/EnumAbility";
+import EnumAbility from "../abilities/EnumAbility"
 
-export const hasDirection = (input, direction) => input.arcade?.joystick?.[ direction ] || input.keyboard?.hasFlag(direction);
-export const hasUp = input => hasDirection(input, "UP");
-export const hasDown = input => hasDirection(input, "DOWN");
-export const hasLeft = input => hasDirection(input, "LEFT");
-export const hasRight = input => hasDirection(input, "RIGHT");
 
 export class InputSystem extends CoreSystem {
 	constructor ({ game } = {}) {
@@ -25,6 +19,16 @@ export class InputSystem extends CoreSystem {
 		// game.input.keyboard.target.addEventListener("keypress", e => {
 		/* NOTE: Apparently keypress doesn't capture F-keys, so keydown with repeat check */
 		document.addEventListener("keydown", e => {
+			//DEBUG: Development controls
+			if(e.code === "F5") {
+				window.location.reload();
+			} else if(e.code === "F12") {
+				//NOOP: Allow console access by not preventing default
+			} else {
+				/* Outside of meta controls, prevent default behavior */
+				e.preventDefault();
+			}
+
 			/* Put anything above this that needs to respect key holding */
 			if(e.repeat) return;
 
@@ -35,11 +39,6 @@ export class InputSystem extends CoreSystem {
 				physics.y = ~~(Math.random() * game.currentWorld.rows);
 
 				console.log(`Teleported player to ${ physics.x }, ${ physics.y }`)
-			}
-
-			//FIXME: Debug only
-			if(e.code === "F5") {
-				window.location.reload();
 			}
 
 			if(e.code === "Digit1") {
@@ -120,58 +119,57 @@ export class InputSystem extends CoreSystem {
 			}
 
 			if(game.input.keyboard.has("Backquote")) {
-				const health = game.player.entity.getComponent(EnumComponentType.Health);
+				const health = game.player.entity.getComponent(EnumResourceType.Health);
 				health.fill();
 			}
 
-			/* Simulate automatic firing */
 			if(game.input.arcade?.buttons?.K1 || game.input.keyboard.has("Space") || game.input.mouse.has("RIGHT")) {
-				//* ABILITY TESTING */
-				const playerAbilities = game.player.entity.getComponent(EnumComponentType.Abilities);
-				const mana = game.player.entity.getComponent(EnumResourceType.Mana);
-
-				//TODO: Incorporate resource costs into Abilities
-				//NOTE: Probably need like `attempt` with contingencies for failure
-				const abilityCost = 2.5;
-				if(mana.current >= abilityCost) {
-					mana.sub(abilityCost);
-				} else {
-					return;
-				}
-
-				/* Get direction vector based on the current facing from the matrix */
-				let direction = FacingMatrix[ playerPhysics.facing ] || [ 0, 0 ];
-
-				let projSpeed = 12.5;
-				let vx = direction[ 0 ] * projSpeed;
-				let vy = direction[ 1 ] * projSpeed;
-
-				/* Spawn a projectile */
-				const entProjectile = AbilityEntity.Spawn({
-					ability: playerAbilities.getAbility(EnumAbility.DeathRay),
-					source: game.player.entity,
-					meta: {
-						ttl: 1500,
+				this.router.route(Message({
+					type: [ "AbilitySystem", "castAbility" ],
+					data: {
+						name: EnumAbility.EnergyBall,
+						source: game.player.entity,
+						game,
+						entityArgs: {
+							meta: {
+								ttl: 1500,
+							},
+							physics: {
+								facing: playerPhysics.facing,
+								x: playerPhysics.x,
+								y: playerPhysics.y,
+								vx: FacingMatrix[ playerPhysics.facing ][ 0 ] * 12.5,
+								vy: FacingMatrix[ playerPhysics.facing ][ 1 ] * 12.5,
+							},
+							animus: {
+								color: "rgba(176, 64, 228, 0.25)",
+							},
+						},
 					},
-					physics: {
-						facing: playerPhysics.facing,
-						vx,
-						vy,
-
-						speed: projSpeed,
-						model: new Circle({
-							x: playerPhysics.x,
-							y: playerPhysics.y,
-							radius: Math.random() > 0.33 ? 0.25 : 0.5,
-						}),
+				}));
+			}
+			if(game.input.mouse.has("LEFT")) {
+				this.router.route(Message({
+					type: [ "AbilitySystem", "castAbility" ],
+					data: {
+						name: EnumAbility.HolyNova,
+						source: game.player.entity,
+						game,
+						entityArgs: {
+							meta: {
+								ttl: 25,
+							},
+							physics: {
+								facing: playerPhysics.facing,
+								x: playerPhysics.x,
+								y: playerPhysics.y,
+							},
+							animus: {
+								color: "rgba(176, 176, 228, 0.25)",
+							},
+						},
 					},
-					animus: {
-						color: "rgba(176, 64, 228, 0.25)",
-					},
-				});
-
-				/* Add the projectile to the world */
-				game.currentWorld.addEntity(entProjectile);
+				}));
 			}
 		}
 	}

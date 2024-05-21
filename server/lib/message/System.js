@@ -12,11 +12,10 @@ export class System {
 	}
 
 	receive(message) {
-		const { data } = message;
 		const [ to, type ] = message.type;
 
 		if(typeof this[ type ] === "function") {
-			return this[ type ]({ data, message });
+			return this[ type ](message);
 		}
 	}
 

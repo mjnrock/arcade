@@ -1,5 +1,6 @@
 export const EnumAbility = {
-	DeathRay: "death-ray",
+	EnergyBall: "energy-ball",
+	HolyNova: "holy-nova",
 };
 
 export default EnumAbility;

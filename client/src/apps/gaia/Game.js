@@ -1,15 +1,17 @@
-import RPGGame from "../../modules/rpg/Game";
+import CoreGame from "../../modules/core/Game";
 import { Circle } from "../../modules/core/lib/geometry/Circle";
+import EnumResourceType from "./components/EnumResourceType";
 
-import { PlayerEntity } from "./entities/PlayerEntity";
 import InputSystem from "./systems/InputSystem";
 import PhysicsSystem from "./systems/PhysicsSystem";
+import AbilitySystem from "./systems/AbilitySystem";
+import WorldSystem from "./systems/WorldSystem";
+import { PlayerEntity } from "./entities/PlayerEntity";
 
-import EnumResourceType from "../../modules/rpg/components/EnumResourceType";
-import Resource from "../../modules/rpg/components/Resource";
+import BasicWizard from "./data/entities/templates/BasicWizard";
 
 
-export class Game extends RPGGame {
+export class Game extends CoreGame {
 	constructor ({ config = {}, ...args } = {}) {
 		super({
 			...args,
@@ -18,11 +20,16 @@ export class Game extends RPGGame {
 		this.mountSystems(
 			InputSystem,
 			PhysicsSystem,
+			AbilitySystem,
+			WorldSystem,
 		);
 
 		this.mergeConfig({
 			/* If enabled, locks facing to the joystick direction */
 			arcadeMode: false,
+			/* Difficulty level, as a scaling factor */
+			difficulty: 1,
+			/* UI configuration for resources */
 			ui: {
 				[ EnumResourceType.Health ]: {
 					showBar: true,
@@ -36,7 +43,7 @@ export class Game extends RPGGame {
 					ox: 0,
 					oy: -5,
 					width: 24,
-					height: 4,
+					height: 6,
 				},
 				[ EnumResourceType.Mana ]: {
 					showBar: true,
@@ -52,6 +59,7 @@ export class Game extends RPGGame {
 					height: 3,
 				},
 			},
+			/* World tile configuration */
 			world: {
 				tileWidth: 32,
 				tileHeight: 32,
@@ -65,40 +73,9 @@ export class Game extends RPGGame {
 			},
 		}, config);
 
-
-
-		//FIXME: This paradigm is currently insane, but it demonstrates each requirement
-		// const abilities = new Abilities({
-		// 	abilities: [
-		// 		{
-		// 			name: EnumAbility.DeathRay,
-		// 			model: new Rectangle({ width: 4, height: 4 }),
-		// 			actions: [
-		// 				new ActionDamage({ amount: 0.1 }),
-		// 			],
-		// 		},
-		// 	],
-		// });
-		// this.addComponent(abilities);
-
 		this.player = {
 			entity: PlayerEntity.Spawn({
-				components: [
-					new Resource({
-						type: EnumResourceType.Health,
-						current: 100,
-						max: 100,
-						step: 0.1,
-						regenRate: 0.1,
-					}),
-					new Resource({
-						type: EnumResourceType.Mana,
-						current: 250,
-						max: 250,
-						step: 0.1,
-						regenRate: 0.5,
-					}),
-				],
+				components: BasicWizard.Components(),
 				physics: {
 					speed: 4,
 					model: new Circle({

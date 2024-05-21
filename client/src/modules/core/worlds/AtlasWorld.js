@@ -1,7 +1,7 @@
+import QuadTree from "../lib/QuadTree";
+import Rectangle from "../lib/geometry/Rectangle";
+import TileEntity from "../entities/TileEntity";
 import CoreWorld from "./World";
-import TerrainEntity from "./entities/TerrainEntity";
-import QuadTree from "./lib/QuadTree";
-import Rectangle from "./lib/geometry/Rectangle";
 
 export class AtlasWorld extends CoreWorld {
 	constructor ({ atlas, entities = [], ...args } = {}) {
@@ -37,7 +37,7 @@ export class AtlasWorld extends CoreWorld {
 		return false;
 	}
 
-	loadFromAtlas(atlas, terrainEntityClass = TerrainEntity) {
+	loadFromAtlas(atlas, terrainEntityClass = TileEntity) {
 		if(!atlas) return;
 
 		this.atlas = atlas;
@@ -68,6 +68,7 @@ export class AtlasWorld extends CoreWorld {
 						}),
 					},
 					animus: {
+						//TODO: Currently only supports color, not the textures, if present
 						color,
 					},
 				}));

@@ -1,13 +1,13 @@
 import chalk from "chalk";
 
+import Circle from "../../modules/core/lib/geometry/Circle";
+
+import CreatureEntity from "./entities/CreatureEntity";
+import World from "./worlds/World";
 import Game from "./Game";
-import World from "../../modules/rpg/worlds/World";
 
 import demoCaveMap from "./data/maps/demoCaveMap.json";
-import Circle from "../../modules/core/lib/geometry/Circle";
-import CreatureEntity from "./entities/CreatureEntity";
-import Resource from "../../modules/rpg/components/Resource";
-import EnumResourceType from "../../modules/rpg/components/EnumResourceType";
+import BasicWizard from "./data/entities/templates/BasicWizard";
 
 /* Get GPU info */
 function getWebGLContext() {
@@ -44,30 +44,17 @@ export const main = async ({ settings = {}, start = false } = {}) => {
 		atlas: demoCaveMap,
 		entities: [
 			game.player.entity,
-			// STUB: Extra entity for collision testing
+
+			/* STUB: Extra entity for collision testing */
 			CreatureEntity.Spawn({
-				components: [
-					new Resource({
-						type: EnumResourceType.Health,
-						current: 100,
-						max: 100,
-						step: 0.1,
-						regenRate: 0.1,
-					}),
-					new Resource({
-						type: EnumResourceType.Mana,
-						current: 250,
-						max: 250,
-						step: 0.1,
-						regenRate: 0.5,
-					}),
-				],
+				components: BasicWizard.Components(),
 				physics: {
 					model: new Circle({
 						x: 2,
 						y: 8,
 						radius: 0.32,
 					}),
+					speed: 2,
 				},
 				animus: {
 					color: "#F33",

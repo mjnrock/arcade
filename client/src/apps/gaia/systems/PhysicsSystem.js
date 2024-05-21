@@ -1,14 +1,9 @@
-import chalk from "chalk";
-
 import CorePhysicsSystem from "../../../modules/core/systems/PhysicsSystem";
-import TerrainEntity from "../../../modules/rpg/entities/TerrainEntity";
-
-import EnumComponentType from "../components/EnumComponentType";
-import { PlayerEntity } from "../entities/PlayerEntity";
-
 import CollisionHelper from "../../../modules/core/lib/geometry/CollisionHelper";
-import AbilityEntity from "../../../modules/rpg/entities/AbilityEntity";
-import CreatureEntity from "../entities/CreatureEntity";
+
+import AbilityEntity from "../entities/AbilityEntity";
+import TerrainEntity from "../entities/TerrainEntity";
+import EnumComponentType from "../components/EnumComponentType";
 
 export const Actions = {
 	/**
@@ -63,7 +58,7 @@ export const Actions = {
 
 		/* If the terrain is VOID, move the entity to the nearest terrain */
 		if(terrain.type === "VOID") {
-			this.run("moveToNearestTerrain", { game, entity, dt });
+			this.dispatch("moveToNearestTerrain", { game, entity, dt });
 			return;
 		}
 
@@ -84,9 +79,8 @@ export const Actions = {
 
 			/* If the *next* terrain is VOID or OOB, undo the movement */
 			if(nextTerrain?.type === "VOID" || !world.isInBounds(nextX, nextY)) {
-				//FIXME: Adjust this to be more robust once a "ProjectileEntity" is implemented
-				/* Kill any projectile that hits the VOID */
-				if(!(entity instanceof TerrainEntity) && !(entity instanceof PlayerEntity)) {
+				/* Kill any ability that hits the VOID */
+				if(entity instanceof AbilityEntity) {
 					entity.meta.ttl = 0;
 				}
 
@@ -95,7 +89,7 @@ export const Actions = {
 				physics.setPosition({ x: x, y: y });
 			}
 		} else {
-			this.run("moveToNearestTerrain", { game, entity, dt });
+			this.dispatch("moveToNearestTerrain", { game, entity, dt });
 		}
 	},
 	handleCollisions({ game, dt } = {}) {
@@ -124,22 +118,9 @@ export const Actions = {
 				const shape2 = other.getComponent(EnumComponentType.Physics).model;
 
 				if(CollisionHelper.collide(shape1, shape2)) {
-					if(entity instanceof PlayerEntity) {
-						if(other instanceof AbilityEntity && other.source !== entity) {
-							console.log(chalk.yellow("Player collided with an ability!"), entity.id, other.id);
-						} else if(other instanceof CreatureEntity) {
-							console.log(chalk.yellow("Player collided with a creature!"), entity.id, other.id);
-						}
-					}
-
-					if(entity instanceof CreatureEntity) {
-						if(other instanceof AbilityEntity && other.source !== entity) {
-							// console.log(chalk.red("Creature collided with an ability!"), entity.id, other.id);
-							const { ability } = other;
-							ability.exec({ dt, game, source: other.source, target: entity });
-
-							const health = entity.getComponent(EnumComponentType.Health);
-						}
+					if(other instanceof AbilityEntity) {
+						const { ability } = other;
+						ability.exec([ entity, other.source ], { dt, game, source: other.source });
 					}
 
 					checkedPairs.add(getPairKey(entity.id, other.id));
@@ -165,10 +146,10 @@ export class PhysicsSystem extends CorePhysicsSystem {
 
 			if(entity instanceof TerrainEntity) continue;
 
-			this.run("handleEntityTerrainCollision", { game, entity, dt });
+			this.dispatch("handleEntityTerrainCollision", { game, entity, dt });
 		}
 
-		this.run("handleCollisions", { game, dt });
+		this.dispatch("handleCollisions", { game, dt });
 
 	}
 	render({ game, dt } = {}) {

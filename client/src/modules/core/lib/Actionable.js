@@ -30,6 +30,12 @@ export class Actionable {
 			this.dispatch(action, { ...vargs, ...args });
 		}
 	}
+	async processAsync({ ...args } = {}) {
+		while(this.queue.length) {
+			const [ action, ...vargs ] = this.dequeue();
+			await this.dispatchAsync(action, { ...vargs, ...args });
+		}
+	}
 
 
 	/**
@@ -45,6 +51,17 @@ export class Actionable {
 
 		return;
 	}
+	async runAsync(action, ...args) {
+		const fn = this.actions.get(action);
+		if(fn) {
+			const result = await fn.call(this, ...args);
+
+			return result;
+		}
+
+		return;
+	}
+
 	/**
 	 * Dispatch an action and emit any effects
 	 */
@@ -60,6 +77,19 @@ export class Actionable {
 
 		return;
 	}
+	async dispatchAsync(action, ...args) {
+		const fn = this.actions.get(action);
+		if(fn) {
+			const result = await fn.call(this, ...args);
+
+			this.emit(action, result);
+
+			return result;
+		}
+
+		return;
+	}
+
 	async emit(action, ...args) {
 		if(this.effects.has(action)) {
 			const effects = this.effects.get(action);

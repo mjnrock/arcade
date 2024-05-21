@@ -10,10 +10,10 @@ export class ArcadeInputSystem extends System {
 		})
 	}
 
-	input({ data, message } = {}) {
+	input(message) {
 		this.sendToNetwork(Message.Message({
 			type: [ "ArcadeInputSystem", "input" ],
-			data,
+			data: message.data,
 		}));
 	}
 };

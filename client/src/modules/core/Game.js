@@ -2,15 +2,15 @@ import * as PIXI from "pixi.js";
 import { v4 as uuid } from "uuid";
 import GameLoop from "./GameLoop";
 
-import KeyboardInput from "./input/Keyboard";
-import MouseInput from "./input/Mouse";
-
-import ArcadeInputSystem from "./systems/ArcadeInputSystem";
-
 import Router from "./lib/message/Router";
 import System from "./lib/message/System";
 import WebSocketBrowserClient from "./lib/ws/WebSocketBrowserClient";
 import { nestedMerge } from "./util/nestedMerge";
+
+import KeyboardInput from "./input/Keyboard";
+import MouseInput from "./input/Mouse";
+
+import ArcadeInputSystem from "./systems/ArcadeInputSystem";
 
 export const CommonSide = {
 	initializeNetworking({ game, args }) {
@@ -56,7 +56,7 @@ export const ClientSide = {
 		});
 
 		/*FIXME: _this$pixi.resize is not a function keeps happening a lot on resizes */
-		// window.addEventListener("resize", (...args) => game.resize.call(game, ...args));
+		// window.addEventListener("resize", (...args) => game.resize.call(game, ...args));/
 	},
 	initializeControls({ game, args }) {
 		game.input = {
@@ -132,7 +132,7 @@ export class Game {
 		if(systemClass instanceof System) {
 			this.systems[ systemClass.constructor ] = systemClass;
 		} else {
-			this.systems[ systemClass ] = new systemClass({ game: this, ...args });
+			this.systems[ systemClass.name ] = new systemClass({ game: this, ...args });
 		}
 
 		return this;
