@@ -1,12 +1,16 @@
 export const CollisionHelper = {
 	collisionFunctions: {
+		"Line:Line": (...args) => CollisionHelper.lineToLine(...args),
+		"Circle:Line": (...args) => CollisionHelper.lineToCircle(...args),
 		"Circle:Circle": (...args) => CollisionHelper.circleToCircle(...args),
 		"Circle:Rectangle": (...args) => CollisionHelper.rectangleToCircle(...args),
+		"Rectangle:Line": (...args) => CollisionHelper.lineToRectangle(...args),
 		"Rectangle:Rectangle": (...args) => CollisionHelper.rectangleToRectangle(...args),
+		"Polygon:Line": (...args) => CollisionHelper.lineToPolygon(...args),
 		"Polygon:Polygon": (...args) => CollisionHelper.polygonToPolygon(...args),
+		"Triangle:Line": (...args) => CollisionHelper.lineToTriangle(...args),
 		"Triangle:Triangle": (...args) => CollisionHelper.polygonToPolygon(...args),
 		"Triangle:Polygon": (...args) => CollisionHelper.polygonToPolygon(...args),
-		"Polygon:Triangle": (...args) => CollisionHelper.polygonToPolygon(...args)
 	},
 
 	collide(shape1, shape2) {
@@ -19,6 +23,86 @@ export const CollisionHelper = {
 		}
 
 		throw new Error(`Collision detection not supported for ${ shape1.constructor.name } and ${ shape2.constructor.name }`);
+	},
+
+	lineToLine(line1, line2) {
+		const { x, y, x2, y2 } = line1;
+		const { x: x3, y: y3, x2: x4, y2: y4 } = line2;
+
+		const denominator = (y4 - y3) * (x2 - x) - (x4 - x3) * (y2 - y);
+		if(denominator === 0) {
+			return false;
+		}
+
+		let a = y - y3;
+		let b = x - x3;
+		const numerator1 = (x4 - x3) * a - (y4 - y3) * b;
+		const numerator2 = (x2 - x) * a - (y2 - y) * b;
+		a = numerator1 / denominator;
+		b = numerator2 / denominator;
+
+		return a > 0 && a < 1 && b > 0 && b < 1;
+	},
+	lineToRectangle(line, rect) {
+		const { x, y, x2, y2 } = line;
+		const { x: rx, y: ry, width, height } = rect;
+
+		// Check if the line intersects any of the rectangle's sides
+		const left = CollisionHelper.lineToLine({ x, y, x2, y2 }, { x: rx, y: ry, x2: rx, y2: ry + height });
+		const right = CollisionHelper.lineToLine({ x, y, x2, y2 }, { x: rx + width, y: ry, x2: rx + width, y2: ry + height });
+		const top = CollisionHelper.lineToLine({ x, y, x2, y2 }, { x: rx, y: ry, x2: rx + width, y2: ry });
+		const bottom = CollisionHelper.lineToLine({ x, y, x2, y2 }, { x: rx, y: ry + height, x2: rx + width, y2: ry + height });
+
+		return left || right || top || bottom;
+	},
+	lineToCircle(line, circle) {
+		const { x, y, x2, y2 } = line;
+		const { x: cx, y: cy, radius } = circle;
+
+		const dx = x2 - x;
+		const dy = y2 - y;
+		const fx = x - cx;
+		const fy = y - cy;
+
+		const a = dx * dx + dy * dy;
+		const b = 2 * (fx * dx + fy * dy);
+		const c = fx * fx + fy * fy - radius * radius;
+
+		const discriminant = b * b - 4 * a * c;
+		if(discriminant < 0) {
+			return false;
+		}
+
+		const t1 = (-b + Math.sqrt(discriminant)) / (2 * a);
+		const t2 = (-b - Math.sqrt(discriminant)) / (2 * a);
+
+		return (t1 >= 0 && t1 <= 1) || (t2 >= 0 && t2 <= 1);
+	},
+	lineToTriangle(line, triangle) {
+		const { x, y, x2, y2 } = line;
+		const { vertices } = triangle;
+
+		for(let i = 0; i < vertices.length; i++) {
+			const next = (i + 1) % vertices.length;
+			if(CollisionHelper.lineToLine({ x, y, x2, y2 }, { x: vertices[ i ].x, y: vertices[ i ].y, x2: vertices[ next ].x, y2: vertices[ next ].y })) {
+				return true;
+			}
+		}
+
+		return false;
+	},
+	lineToPolygon(line, polygon) {
+		const { x, y, x2, y2 } = line;
+		const { vertices } = polygon;
+
+		for(let i = 0; i < vertices.length; i++) {
+			const next = (i + 1) % vertices.length;
+			if(CollisionHelper.lineToLine({ x, y, x2, y2 }, { x: vertices[ i ].x, y: vertices[ i ].y, x2: vertices[ next ].x, y2: vertices[ next ].y })) {
+				return true;
+			}
+		}
+
+		return false;
 	},
 
 	rectangleToRectangle(rect1, rect2) {
