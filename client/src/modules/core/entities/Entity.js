@@ -84,14 +84,10 @@ export class Entity {
 		/* Scale this to seconds to align with integer-millisecond TTL, and { dt } which is in fractional-seconds */
 		this.meta.age += (dt * 1000);
 
-		this.components.forEach(component => component?.update({ dt, entity: this, ...args }));
 		return this;
 	}
 
-	render({ ...args } = {}) {
-		this.components.forEach(component => component?.render({ entity: this, ...args }));
-		return this;
-	}
+	render({ ...args } = {}) { }
 
 	static Factory(qty = 1, ...args) {
 		if(qty === false) {

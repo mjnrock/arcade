@@ -47,12 +47,12 @@ export const main = async ({ settings = {}, start = false } = {}) => {
 			game.player.entity,
 
 			/* STUB: Extra entity for collision testing */
-			CreatureEntity.Spawn({
+			...CreatureEntity.Factory(6, () => ({
 				components: BasicWizard.Components(),
 				physics: {
 					model: new Rectangle({
-						x: 2,
-						y: 8,
+						x: Math.floor(Math.random() * 10),
+						y: Math.floor(Math.random() * 10),
 						width: 3,
 						height: 1,
 					}),
@@ -66,7 +66,7 @@ export const main = async ({ settings = {}, start = false } = {}) => {
 				animus: {
 					color: "#F33",
 				},
-			}),
+			})),
 		],
 	});
 

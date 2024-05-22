@@ -22,9 +22,9 @@ export class Game extends CoreGame {
 		this.mountSystems(
 			InputSystem,
 			PhysicsSystem,
-			AbilitySystem,
 			WorldSystem,
 			EntitySystem,
+			AbilitySystem,
 		);
 
 		this.mergeConfig(Config, config);

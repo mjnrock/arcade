@@ -142,8 +142,6 @@ export class PhysicsSystem extends CorePhysicsSystem {
 
 	update({ game, dt } = {}) {
 		for(const entity of game.currentWorld.entityManager.cached) {
-			entity.update({ game, dt });
-
 			if(entity instanceof TerrainEntity) continue;
 
 			this.dispatch("handleEntityTerrainCollision", { game, entity, dt });

@@ -43,7 +43,7 @@ export class WorldSystem extends System {
 
 			const health = entity.getComponent(EnumResourceType.Health);
 			if(health?.isEmpty) {
-				this.removeEntity(entity);
+				game.currentWorld.removeEntity(entity);
 				continue;
 			}
 
