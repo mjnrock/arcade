@@ -9,6 +9,8 @@ import Game from "./Game";
 
 import demoCaveMap from "./data/maps/demoCaveMap.json";
 import BasicWizard from "./data/entities/templates/BasicWizard";
+import Wayfinder from "./components/Wayfinder";
+import EnumComponentType from "./components/EnumComponentType";
 
 /* Get GPU info */
 function getWebGLContext() {
@@ -33,6 +35,8 @@ const gpuInfo = getWebGLContext();
 console.log(chalk.bold.blue('GPU Vendor:'), gpuInfo.vendor);
 console.log(chalk.bold.blue('GPU Renderer:'), gpuInfo.renderer);
 
+console.log(BasicWizard.Components())
+
 export const main = async ({ settings = {}, start = false } = {}) => {
 	const game = new Game({
 		...settings,
@@ -47,21 +51,22 @@ export const main = async ({ settings = {}, start = false } = {}) => {
 			game.player.entity,
 
 			/* STUB: Extra entity for collision testing */
-			...CreatureEntity.Factory(6, () => ({
-				components: BasicWizard.Components(),
+			...CreatureEntity.Factory(5, () => ({
+				components: [
+					...BasicWizard.Components(),
+					new Wayfinder()
+						.addPath({
+							x: ~~(9 + ((Math.random() > 0.5 ? -1 : 1) * Math.random() * 4)),
+							y: ~~(9 + ((Math.random() > 0.5 ? -1 : 1) * Math.random() * 4)),
+						}),
+				],
 				physics: {
-					model: new Rectangle({
-						x: Math.floor(Math.random() * 10),
-						y: Math.floor(Math.random() * 10),
-						width: 3,
-						height: 1,
+					speed: 10,
+					model: new Circle({
+						x: 10 + Math.floor(Math.random() * 10),
+						y: 10 + Math.floor(Math.random() * 10),
+						radius: 0.32,
 					}),
-					// model: new Circle({
-					// 	x: 2,
-					// 	y: 8,
-					// 	radius: 0.32,
-					// }),
-					speed: 2,
 				},
 				animus: {
 					color: "#F33",
@@ -73,6 +78,11 @@ export const main = async ({ settings = {}, start = false } = {}) => {
 	console.log(game)
 	console.log(world)
 	console.log(game.player.entity)
+	// get the last entity in the world
+	const entity = world.entities[ world.entities.length - 1 ];
+	console.log(entity)
+	const wayfinder = entity.getComponent(EnumComponentType.Wayfinder);
+	console.log(wayfinder)
 
 	if(start) {
 		game.start();

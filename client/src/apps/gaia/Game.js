@@ -11,7 +11,7 @@ import BasicWizard from "./data/entities/templates/BasicWizard";
 import EntitySystem from "./systems/EntitySystem";
 
 import Config from "./game.config";
-
+import Wayfinder from "./components/Wayfinder";
 
 export class Game extends CoreGame {
 	constructor ({ config = {}, ...args } = {}) {
@@ -31,7 +31,10 @@ export class Game extends CoreGame {
 
 		this.player = {
 			entity: PlayerEntity.Spawn({
-				components: BasicWizard.Components(),
+				components: [
+					...BasicWizard.Components(),
+					new Wayfinder(),
+				],
 				physics: {
 					speed: 4,
 					model: new Circle({

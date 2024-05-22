@@ -33,7 +33,7 @@ export const UIConfig = {
 export const WorldConfig = {
 	tileWidth: 32,
 	tileHeight: 32,
-	zoom: 4,
+	zoom: 1,
 	viewport: {
 		tx: 0,
 		ty: 0,

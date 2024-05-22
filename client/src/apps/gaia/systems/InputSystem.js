@@ -76,10 +76,10 @@ export class InputSystem extends CoreSystem {
 	hasDirection(input, direction) {
 		return input.arcade?.joystick?.[ direction ] || input.keyboard?.hasFlag(direction);
 	}
-	hasUp() { return this.hasDirection(this.game.input, "UP"); }
-	hasDown() { return this.hasDirection(this.game.input, "DOWN"); }
-	hasLeft() { return this.hasDirection(this.game.input, "LEFT"); }
-	hasRight() { return this.hasDirection(this.game.input, "RIGHT"); }
+	get hasUp() { return this.hasDirection(this.game.input, "UP"); }
+	get hasDown() { return this.hasDirection(this.game.input, "DOWN"); }
+	get hasLeft() { return this.hasDirection(this.game.input, "LEFT"); }
+	get hasRight() { return this.hasDirection(this.game.input, "RIGHT"); }
 	manageArcadeFacing(facing) {
 		const left = this.hasLeft();
 		const right = this.hasRight();
@@ -110,12 +110,46 @@ export class InputSystem extends CoreSystem {
 
 	update({ game, dt }) {
 		const playerPhysics = game.player.entity.getComponent(EnumComponentType.Physics);
+		const playerWayfinder = game.player.entity.getComponent(EnumComponentType.Wayfinder);
 		const { speed } = playerPhysics;
 
 		if(playerPhysics) {
-			/* Map controller inputs into player physics state */
-			playerPhysics.vx = this.hasLeft() ? -speed : this.hasRight() ? speed : 0;
-			playerPhysics.vy = this.hasUp() ? -speed : this.hasDown() ? speed : 0;
+			//FIXME: This prevents Wayfinding from working, because of the zeroing out of the velocity
+			if(playerWayfinder.current) {
+				/* Map controller inputs into player physics state */
+				if(this.hasLeft) {
+					playerPhysics.vx = -speed;
+				} else if(this.hasRight) {
+					playerPhysics.vx = speed;
+				} else {
+					// playerPhysics.vx = 0;
+				}
+
+				if(this.hasUp) {
+					playerPhysics.vy = -speed;
+				} else if(this.hasDown) {
+					playerPhysics.vy = speed;
+				} else {
+					// playerPhysics.vy = 0;
+				}
+			} else {
+				/* Map controller inputs into player physics state */
+				if(this.hasLeft) {
+					playerPhysics.vx = -speed;
+				} else if(this.hasRight) {
+					playerPhysics.vx = speed;
+				} else {
+					playerPhysics.vx = 0;
+				}
+
+				if(this.hasUp) {
+					playerPhysics.vy = -speed;
+				} else if(this.hasDown) {
+					playerPhysics.vy = speed;
+				} else {
+					playerPhysics.vy = 0;
+				}
+			}
 
 			/* Since there's no mouse, we'll use the joystick to determine facing */
 			if(game.config.settings.arcadeMode) {
