@@ -38,7 +38,7 @@ export class Game extends CoreGame {
 				physics: {
 					speed: 4,
 					model: new Circle({
-						x: 0,
+						x: 2,
 						y: 8,
 						radius: 0.16,
 					}),

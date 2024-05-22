@@ -61,10 +61,10 @@ export const main = async ({ settings = {}, start = false } = {}) => {
 						}),
 				],
 				physics: {
-					speed: 10,
+					speed: 3,
 					model: new Circle({
-						x: 10 + Math.floor(Math.random() * 10),
-						y: 10 + Math.floor(Math.random() * 10),
+						x: 0 + Math.floor(Math.random() * 10),
+						y: 0 + Math.floor(Math.random() * 10),
 						radius: 0.32,
 					}),
 				},
