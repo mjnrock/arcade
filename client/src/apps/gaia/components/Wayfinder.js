@@ -99,10 +99,6 @@ export class Wayfinder extends Component {
 				physics.vy = 0;
 			}
 		}
-
-		if(entity === game.player.entity) {
-			console.log(this, x, y);
-		}
 	}
 };
 

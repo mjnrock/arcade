@@ -1,3 +1,4 @@
+import chalk from "chalk";
 import { Message } from "../../../modules/core/lib/message/Message";
 import CoreSystem from "../../../modules/core/lib/message/System";
 
@@ -9,7 +10,15 @@ import EnumAbility from "../abilities/EnumAbility"
 /* NOTE: Apparently keypress doesn't capture F-keys, so keydown with repeat check */
 export const KeyDownHandler = ({ game }) => (e) => {
 	//DEBUG: Development controls
-	if(e.code === "F5") {
+	if(e.code === "F2") {
+		console.clear();
+		console.log(chalk.underline(`Game`) + ": " + chalk.red.bold(game.loop.ticks), game);
+		console.log(chalk.underline(`Player`) + ": " + chalk.green(game.player.entity.id), game.player.entity);
+
+		for(const [ name, comp ] of Object.entries(game.player.entity.compObj)) {
+			console.log(chalk.underline(`Component`) + ": " + chalk.blue.bold(name), comp);
+		}
+	} else if(e.code === "F5") {
 		window.location.reload();
 	} else if(e.code === "F12") {
 		//NOOP: Allow console access by not preventing default
